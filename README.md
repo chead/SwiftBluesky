@@ -1,3 +1,3 @@
 # SwiftBluesky
 
-A description of this package.
+A package for interacting with the Bluesky Social API.
