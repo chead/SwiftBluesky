@@ -8,8 +8,8 @@
 import Foundation
 
 public struct BlueskyViewer: Decodable {
-    let muted: Bool
-    let blockedBy: Bool
+    public let muted: Bool
+    public let blockedBy: Bool
 }
 
 public struct BlueskyProfile: Decodable {
@@ -28,18 +28,18 @@ public struct BlueskyProfile: Decodable {
         case labels
     }
 
-    let did: String
-    let handle: String
-    let displayName: String
-    let description: String
-    let avatar: String
-    let banner: String
-    let followsCount: Int
-    let followersCount: Int
-    let postsCount: Int
-    let indexedAt: Date
-    let viewer: BlueskyViewer
-    let labels: [String]
+    public let did: String
+    public let handle: String
+    public let displayName: String
+    public let description: String
+    public let avatar: String
+    public let banner: String
+    public let followsCount: Int
+    public let followersCount: Int
+    public let postsCount: Int
+    public let indexedAt: Date
+    public let viewer: BlueskyViewer
+    public let labels: [String]
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -72,5 +72,5 @@ public struct BlueskyProfile: Decodable {
 }
 
 public struct GetProfilesResponseBody: Decodable {
-    let profiles: [BlueskyProfile]
+    public let profiles: [BlueskyProfile]
 }
