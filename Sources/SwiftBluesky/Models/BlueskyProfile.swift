@@ -1,16 +1,11 @@
 //
-//  GetProfilesResponseBody.swift
+//  BlueskyProfile.swift
 //  
 //
-//  Created by Christopher Head on 7/28/23.
+//  Created by Christopher Head on 7/29/23.
 //
 
 import Foundation
-
-public struct BlueskyViewer: Decodable {
-    public let muted: Bool
-    public let blockedBy: Bool
-}
 
 public struct BlueskyProfile: Decodable {
     private enum CodingKeys: CodingKey {
@@ -38,7 +33,7 @@ public struct BlueskyProfile: Decodable {
     public let followersCount: Int
     public let postsCount: Int
     public let indexedAt: Date
-    public let viewer: BlueskyViewer
+    public let viewer: BlueskyProfileViewerState
     public let labels: [String]
 
     public init(from decoder: Decoder) throws {
@@ -66,11 +61,7 @@ public struct BlueskyProfile: Decodable {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
         }
 
-        self.viewer = try container.decode(BlueskyViewer.self, forKey: .viewer)
+        self.viewer = try container.decode(BlueskyProfileViewerState.self, forKey: .viewer)
         self.labels = try container.decode([String].self, forKey: .labels)
     }
-}
-
-public struct GetProfilesResponseBody: Decodable {
-    public let profiles: [BlueskyProfile]
 }

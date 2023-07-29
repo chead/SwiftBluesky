@@ -42,8 +42,8 @@ public class BlueskyClient {
                 case .success(let createSessionResponseBody):
                     return .success(createSessionResponseBody)
                 
-                case .failure(_):
-                    return .failure(BlueskyClientError.invalidResponse)
+                case .failure(let error):
+                    return .failure(error)
                 }
             default:
                 break
@@ -70,6 +70,35 @@ public class BlueskyClient {
                 switch getProfilesResponse {
                 case .success(let getProfilesResponseBody):
                     return .success(getProfilesResponseBody)
+
+                case .failure(_):
+                    return .failure(BlueskyClientError.invalidResponse)
+                }
+            default:
+                break
+            }
+        }
+
+        return .failure(BlueskyClientError.unknown)
+    }
+
+    public func getAuthorFeed(token: String, actor: String, limit: Int, cursor: String) async throws -> Result<GetAuthorFeedResponseBody, Error> {
+        let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
+        
+        let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
+        
+        let getAuthorFeedLexicon = try JSONDecoder().decode(Lexicon.self, from: getAuthorFeedJSONData)
+        
+        if let mainDef = getAuthorFeedLexicon.defs["main"] {
+            switch mainDef {
+            case .query(let query):
+                let getAuthorFeedRequest = try ATProtoHTTPRequest(host: host, nsid: getAuthorFeedLexicon.id, parameters: ["actor" : actor, "limit" : limit, "cursor" : cursor], body: nil, token: token, requestable: query)
+
+                let getAuthorFeedResponse: Result<GetAuthorFeedResponseBody, Error> = try await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
+
+                switch getAuthorFeedResponse {
+                case .success(let getAuthorFeedResponseBody):
+                    return .success(getAuthorFeedResponseBody)
 
                 case .failure(_):
                     return .failure(BlueskyClientError.invalidResponse)
