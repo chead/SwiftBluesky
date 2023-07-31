@@ -7,6 +7,31 @@
 
 import Foundation
 
+public enum BlueskyFeedPostViewRecordType: Decodable {
+    private enum FieldType: String, Decodable {
+        case blueskyFeedPost = "app.bsky.feed.post"
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
+    }
+
+    case blueskyFeedPost(BlueskyFeedPost)
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let fieldType = try container.decode(FieldType.self, forKey: .type)
+        
+        let singleValueContainer = try decoder.singleValueContainer()
+        
+        switch fieldType {
+        case .blueskyFeedPost:
+            try self = .blueskyFeedPost(singleValueContainer.decode(BlueskyFeedPost.self))
+        }
+    }
+}
+
 public struct BlueskyFeedViewerState: Decodable {
     public let repost: String?
     public let like: String?
@@ -17,7 +42,7 @@ public struct BlueskyFeedPostView: Decodable {
         case uri
         case cid
         case author
-//        case record
+        case record
         case embed
         case replyCount
         case likeCount
@@ -29,7 +54,7 @@ public struct BlueskyFeedPostView: Decodable {
     public let uri: String
     public let cid: String
     public let author: BlueskyActorProfileViewBasic
-//    public let record: BlueskyRecord
+    public let record: BlueskyFeedPostViewRecordType
     public let embed: BlueskyEmbedType?
     public let replyCount: Int
     public let likeCount: Int
@@ -43,7 +68,7 @@ public struct BlueskyFeedPostView: Decodable {
         self.uri = try container.decode(String.self, forKey: .uri)
         self.cid = try container.decode(String.self, forKey: .cid)
         self.author = try container.decode(BlueskyActorProfileViewBasic.self, forKey: .author)
-//        self.record = try container.decode(BlueskyRecord.self, forKey: .record)
+        self.record = try container.decode(BlueskyFeedPostViewRecordType.self, forKey: .record)
         self.embed = try container.decodeIfPresent(BlueskyEmbedType.self, forKey: .embed)
         self.replyCount = try container.decode(Int.self, forKey: .replyCount)
         self.likeCount = try container.decode(Int.self, forKey: .likeCount)
