@@ -8,5 +8,5 @@
 import Foundation
 
 public struct GetProfilesResponseBody: Decodable {
-    public let profiles: [BlueskyProfile]
+    public let profiles: [BlueskyActorProfileViewDetailed]
 }
