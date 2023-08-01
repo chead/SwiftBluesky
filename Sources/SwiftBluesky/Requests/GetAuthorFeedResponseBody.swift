@@ -8,5 +8,5 @@
 import Foundation
 
 public struct GetAuthorFeedResponseBody: Decodable {
-    let feed: [BlueskyFeedFeedViewPost]
+    public let feed: [BlueskyFeedFeedViewPost]
 }
