@@ -16,6 +16,8 @@ public enum BlueskyClientError: Error {
 
 @available(iOS 16.0, *)
 public class BlueskyClient {
+    public init() {}
+
     public func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, Error> {
         let createSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.createSession", withExtension: "json")!
         
