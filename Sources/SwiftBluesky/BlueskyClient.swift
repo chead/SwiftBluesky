@@ -16,13 +16,7 @@ public enum BlueskyClientError: Error {
 
 @available(iOS 16.0, *)
 public class BlueskyClient {
-    public let host: URL
-    
-    public init(host: URL) {
-        self.host = host
-    }
-
-    public func createSession(identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, Error> {
+    public func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, Error> {
         let createSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.createSession", withExtension: "json")!
         
         let createSessionJSONData = try Data(contentsOf: createSessionJSONURL)
@@ -53,7 +47,7 @@ public class BlueskyClient {
         return .failure(BlueskyClientError.unknown)
     }
 
-    public func getProfiles(token: String, actors: [String]) async throws -> Result<GetProfilesResponseBody, Error> {
+    public func getProfiles(host: URL, token: String, actors: [String]) async throws -> Result<GetProfilesResponseBody, Error> {
         let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
         
         let getProfilesJSONData = try Data(contentsOf: getProfilesJSONURL)
@@ -82,7 +76,7 @@ public class BlueskyClient {
         return .failure(BlueskyClientError.unknown)
     }
 
-    public func getAuthorFeed(token: String, actor: String, limit: Int, cursor: String) async throws -> Result<GetAuthorFeedResponseBody, Error> {
+    public func getAuthorFeed(host: URL, token: String, actor: String, limit: Int, cursor: String) async throws -> Result<GetAuthorFeedResponseBody, Error> {
         let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
         
         let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
@@ -111,7 +105,7 @@ public class BlueskyClient {
         return .failure(BlueskyClientError.unknown)
     }
 
-    public func refreshSession(token: String) async throws -> Result<RefreshSessionResponseBody, Error> {
+    public func refreshSession(host: URL, token: String) async throws -> Result<RefreshSessionResponseBody, Error> {
         let refreshSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json")!
         
         let refreshSessionJSONData = try Data(contentsOf: refreshSessionJSONURL)
