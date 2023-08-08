@@ -61,7 +61,7 @@ public class BlueskyClient {
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
             default:
-                return .failure(BlueskyClientError.invalidRequest)
+                return .failure(.invalidRequest)
             }
         }
         
@@ -90,7 +90,7 @@ public class BlueskyClient {
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
             default:
-                return .failure(BlueskyClientError.invalidRequest)
+                return .failure(.invalidRequest)
             }
         }
 
@@ -119,11 +119,11 @@ public class BlueskyClient {
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
             default:
-                return .failure(BlueskyClientError.invalidRequest)
+                return .failure(.invalidRequest)
             }
         }
 
-        return .failure(BlueskyClientError.unknown)
+        return .failure(.unknown)
     }
 
     public func refreshSession(host: URL, token: String) async throws -> Result<RefreshSessionResponseBody, BlueskyClientError> {
@@ -148,10 +148,10 @@ public class BlueskyClient {
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
             default:
-                return .failure(BlueskyClientError.invalidRequest)
+                return .failure(.invalidRequest)
             }
         }
         
-        return .failure(BlueskyClientError.unknown)
+        return .failure(.unknown)
     }
 }
