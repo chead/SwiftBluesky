@@ -65,7 +65,7 @@ public class BlueskyClient {
             }
         }
         
-        return .failure(BlueskyClientError.unknown)
+        return .failure(.unknown)
     }
 
     public func getProfiles(host: URL, token: String, actors: [String]) async throws -> Result<GetProfilesResponseBody, BlueskyClientError> {
@@ -94,7 +94,8 @@ public class BlueskyClient {
             }
         }
 
-        return .failure(BlueskyClientError.unknown)
+        return .failure(.unknown)
+        return .failure(.unknown)
     }
 
     public func getAuthorFeed(host: URL, token: String, actor: String, limit: Int, cursor: String) async throws -> Result<GetAuthorFeedResponseBody, BlueskyClientError> {
