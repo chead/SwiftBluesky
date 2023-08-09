@@ -21,7 +21,7 @@ final class BlueskyClientTests: XCTestCase {
     func testGetProfiles() async throws {
         let blueskyClient = BlueskyClient()
 
-        let getProfilesResponse = try await blueskyClient.getProfiles(host: URL(string: "")!, token: "", actors: [])
+        let getProfilesResponse = try await blueskyClient.getProfiles(host: URL(string: "")!, accessToken: "", refreshToken: "", actors: [])
         
 //        switch createSessionResponse {
 //        case .success(let createSessionResponseValue):
@@ -433,24 +433,29 @@ final class BlueskyClientTests: XCTestCase {
         
         let getAuthorFeedResponsebody = try JSONDecoder().decode(GetAuthorFeedResponseBody.self, from: authorFeedJSONData)
         
-//        let blueskyClient = BlueskyClient()
-//
-//        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "")!, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImNvbS5hdHByb3RvLmFjY2VzcyIsInN1YiI6ImRpZDpwbGM6ZXRkY2I0N3Y1NG13djJ3ZHVmaGk0dHU2IiwiaWF0IjoxNjkwNzY4Mzc3LCJleHAiOjE2OTA3NzU1Nzd9.EdlSRytvMY-rTPSSPGlnYcj-h9qjGGsNttUm8xb9tZA", actor: "osmote.net", limit: 5, cursor: "")
-//
-//        switch getAuthorFeedResponse {
-//        case .success(let getAuthorFeedResponseValue):
-//            break
-//
-//        case .failure(_):
-//            break
-//        }
+        let blueskyClient = BlueskyClient()
+
+        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "")!,
+                                                                          accessToken: "",
+                                                                          refreshToken: "",
+                                                                          actor: "",
+                                                                          limit: 5,
+                                                                          cursor: "")
+
+        switch getAuthorFeedResponse {
+        case .success(let getAuthorFeedResponseValue):
+            break
+
+        case .failure(let error):
+            break
+        }
     }
 
     @available(iOS 16.0, *)
     func testRefreshSession() async throws {
         let blueskyClient = BlueskyClient()
         
-        let refreshSessionResponse = try await blueskyClient.refreshSession(host: URL(string: "")!, token: "")
+        let refreshSessionResponse = try await blueskyClient.refreshSession(host: URL(string: "")!, refreshToken: "")
 
         switch refreshSessionResponse {
         case .success(let refreshSessionResponseValue):
