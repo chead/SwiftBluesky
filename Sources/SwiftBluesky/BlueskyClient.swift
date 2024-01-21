@@ -79,7 +79,12 @@ public class BlueskyClient {
         if let mainDef = getProfilesLexicon.defs["main"] {
             switch mainDef {
             case .query(let query):
-                let getProfilesRequest = try ATProtoHTTPRequest(host: host, nsid: getProfilesLexicon.id, parameters: ["actors" : actors], body: nil, token: accessToken, requestable: query)
+                let getProfilesRequest = try ATProtoHTTPRequest(host: host, 
+                                                                nsid: getProfilesLexicon.id,
+                                                                parameters: ["actors" : actors],
+                                                                body: nil,
+                                                                token: accessToken, 
+                                                                requestable: query)
 
                 let getProfilesResponse: Result<GetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
 
@@ -125,7 +130,14 @@ public class BlueskyClient {
         if let mainDef = getAuthorFeedLexicon.defs["main"] {
             switch mainDef {
             case .query(let query):
-                let getAuthorFeedRequest = try ATProtoHTTPRequest(host: host, nsid: getAuthorFeedLexicon.id, parameters: ["actor" : actor, "limit" : limit, "cursor" : cursor], body: nil, token: accessToken, requestable: query)
+                let getAuthorFeedRequest = try ATProtoHTTPRequest(host: host, 
+                                                                  nsid: getAuthorFeedLexicon.id,
+                                                                  parameters: ["actor" : actor, 
+                                                                               "limit" : limit,
+                                                                               "cursor" : cursor],
+                                                                  body: nil,
+                                                                  token: accessToken,
+                                                                  requestable: query)
 
                 let getAuthorFeedResponse: Result<GetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
 
@@ -171,7 +183,12 @@ public class BlueskyClient {
         if let mainDef = refreshSessionLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let refreshSessionRequest = try ATProtoHTTPRequest(host: host, nsid: refreshSessionLexicon.id, parameters: [:], body: nil, token: refreshToken, requestable: procedure)
+                let refreshSessionRequest = try ATProtoHTTPRequest(host: host, 
+                                                                   nsid: refreshSessionLexicon.id,
+                                                                   parameters: [:],
+                                                                   body: nil,
+                                                                   token: refreshToken,
+                                                                   requestable: procedure)
 
                 let refreshSessionResponse: Result<ATProtoRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
 

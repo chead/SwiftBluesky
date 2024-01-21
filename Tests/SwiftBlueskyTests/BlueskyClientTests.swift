@@ -12,7 +12,7 @@ final class BlueskyClientTests: XCTestCase {
         case .success(let createSessionResponseValue):
             break
 
-        case .failure(_):
+        case .failure(let error):
             break
         }
     }
@@ -435,10 +435,10 @@ final class BlueskyClientTests: XCTestCase {
         
         let blueskyClient = BlueskyClient()
 
-        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "")!,
-                                                                          accessToken: "",
-                                                                          refreshToken: "",
-                                                                          actor: "",
+        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "https://bsky.social")!,
+                                                                          accessToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLmFjY2VzcyIsInN1YiI6ImRpZDpwbGM6ZXRkY2I0N3Y1NG13djJ3ZHVmaGk0dHU2IiwiaWF0IjoxNzA1NzkzNjUzLCJleHAiOjE3MDU4MDA4NTMsImF1ZCI6ImRpZDp3ZWI6ZW5va2kudXMtZWFzdC5ob3N0LmJza3kubmV0d29yayJ9.xp1qfD0k7d3dO-yKvVGanLgrT8am8Dq5J8Y9L1qbm7twRGDrXrWUAnGaIf6B3mP8eoA99O7B_CF-pHOA3aCKsA",
+                                                                          refreshToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLnJlZnJlc2giLCJzdWIiOiJkaWQ6cGxjOmV0ZGNiNDd2NTRtd3Yyd2R1ZmhpNHR1NiIsImF1ZCI6ImRpZDp3ZWI6YnNreS5zb2NpYWwiLCJqdGkiOiI0WkFkTkt0aTduVDd2NnoxSjZiYTdPNTc2QnNvd2kwNFIwOXpjVE1CenFJIiwiaWF0IjoxNzA1NzkzNjUzLCJleHAiOjE3MTM1Njk2NTN9.8TFex_ezD52MaTEGAYTwCb9wlA0TrQHziwJBHIoRnAODGQEKAapE_UKA89VcOHen85SJFMu_QEILZ9dLRpq7mg",
+                                                                          actor: "osmote.net",
                                                                           limit: 5,
                                                                           cursor: "")
 
