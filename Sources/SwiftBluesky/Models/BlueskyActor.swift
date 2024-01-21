@@ -69,7 +69,7 @@ public struct BlueskyActorProfileViewDetailed: Decodable {
     public let postsCount: Int?
     public let indexedAt: Date?
     public let viewer: BlueskyActorViewerState?
-    public let labels: [String]?
+    public let labels: [ATProtoLabel]?
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -99,6 +99,6 @@ public struct BlueskyActorProfileViewDetailed: Decodable {
         }
 
         self.viewer = try container.decodeIfPresent(BlueskyActorViewerState.self, forKey: .viewer)
-        self.labels = try container.decodeIfPresent([String].self, forKey: .labels)
+        self.labels = try container.decodeIfPresent([ATProtoLabel].self, forKey: .labels)
     }
 }
