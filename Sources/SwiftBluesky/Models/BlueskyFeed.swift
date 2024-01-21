@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftATProto
 
 public enum BlueskyFeedPostViewRecordType: Decodable {
     private enum FieldType: String, Decodable {
@@ -60,7 +61,7 @@ public struct BlueskyFeedPostView: Decodable {
     public let likeCount: Int
     public let indexedAt: Date
     public let viewer: BlueskyFeedViewerState
-    public let labels: [String]
+    public let labels: [ATProtoLabel]
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -86,7 +87,7 @@ public struct BlueskyFeedPostView: Decodable {
         }
 
         self.viewer = try container.decode(BlueskyFeedViewerState.self, forKey: .viewer)
-        self.labels = try container.decode([String].self, forKey: .labels)
+        self.labels = try container.decode([ATProtoLabel].self, forKey: .labels)
     }
 }
 
