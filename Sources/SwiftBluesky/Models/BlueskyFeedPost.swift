@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftATProto
 
 public struct BlueskyFeedPostRepyRef: Decodable {
     public let root: ATProtoRepoStrongRef

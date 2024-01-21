@@ -37,7 +37,7 @@ public enum BlueskyClientError: Error {
 public class BlueskyClient {
     public init() {}
 
-    public func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, BlueskyClientError> {
+    public func createSession(host: URL, identifier: String, password: String) async throws -> Result<ATProtoCreateSessionResponseBody, BlueskyClientError> {
         let createSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.createSession", withExtension: "json")!
         
         let createSessionJSONData = try Data(contentsOf: createSessionJSONURL)
@@ -47,11 +47,11 @@ public class BlueskyClient {
         if let mainDef = createSessionLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let createSessionRequestBody = CreateSessionRequestBody(identifier: identifier, password: password)
-                
+                let createSessionRequestBody = ATProtoCreateSessionRequestBody(identifier: identifier, password: password)
+
                 let createSessionRequest = try ATProtoHTTPRequest(host: host, nsid: createSessionLexicon.id, parameters: [:], body: createSessionRequestBody, token: nil, requestable: procedure)
                 
-                let createSessionResponse: Result<CreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
+                let createSessionResponse: Result<ATProtoCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
 
                 switch createSessionResponse {
                 case .success(let createSessionResponseBody):
@@ -161,7 +161,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<RefreshSessionResponseBody, BlueskyClientError> {
+    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoRefreshSessionResponseBody, BlueskyClientError> {
         let refreshSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json")!
         
         let refreshSessionJSONData = try Data(contentsOf: refreshSessionJSONURL)
@@ -173,7 +173,7 @@ public class BlueskyClient {
             case .procedure(let procedure):
                 let refreshSessionRequest = try ATProtoHTTPRequest(host: host, nsid: refreshSessionLexicon.id, parameters: [:], body: nil, token: refreshToken, requestable: procedure)
 
-                let refreshSessionResponse: Result<RefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+                let refreshSessionResponse: Result<ATProtoRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
 
                 switch refreshSessionResponse {
                 case .success(let refreshSessionResponseBody):

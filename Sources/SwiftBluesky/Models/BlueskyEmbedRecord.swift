@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftATProto
 
 public enum BlueskyEmbedRecordViewRecordValueType: Decodable {
     private enum FieldType: String, Decodable {
