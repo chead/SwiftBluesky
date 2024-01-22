@@ -51,7 +51,7 @@ public struct BlueskyEmbedExternalViewExternal: Decodable {
     let uri: String
     let title: String
     let description: String
-    let thumb: BlueskyEmbedImagesImageImageBlob?
+    let thumb: String?
 }
 
 public struct BlueskyEmbedExternalView: Decodable {
@@ -62,7 +62,7 @@ public struct BlueskyEmbedExternalExternal: Decodable {
     let uri: String
     let title: String
     let description: String
-    let thumb: String?
+    let thumb: BlueskyEmbedImagesImageImageBlob?
 }
 
 public struct BlueskyEmbedExternal: Decodable {
