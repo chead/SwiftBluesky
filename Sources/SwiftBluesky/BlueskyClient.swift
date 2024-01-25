@@ -69,7 +69,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<GetProfilesResponseBody, BlueskyClientError> {
+    public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<BlueskyGetProfilesResponseBody, BlueskyClientError> {
         let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
         
         let getProfilesJSONData = try Data(contentsOf: getProfilesJSONURL)
@@ -86,7 +86,7 @@ public class BlueskyClient {
                                                                 token: accessToken, 
                                                                 requestable: query)
 
-                let getProfilesResponse: Result<GetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
+                let getProfilesResponse: Result<BlueskyGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
 
                 switch getProfilesResponse {
                 case .success(let getProfilesResponseBody):
@@ -120,7 +120,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String?, actor: String, limit: Int, cursor: String) async throws -> Result<GetAuthorFeedResponseBody, BlueskyClientError> {
+    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String?, actor: String, limit: Int, cursor: String) async throws -> Result<BlueskyGetAuthorFeedResponseBody, BlueskyClientError> {
         let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
         
         let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
@@ -139,7 +139,7 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getAuthorFeedResponse: Result<GetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
+                let getAuthorFeedResponse: Result<BlueskyGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
 
                 switch getAuthorFeedResponse {
                 case .success(let getAuthorFeedResponseBody):

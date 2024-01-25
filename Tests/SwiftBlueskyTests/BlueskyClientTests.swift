@@ -38,43 +38,207 @@ final class BlueskyClientTests: XCTestCase {
         {
             "feed": [{
                 "post": {
-                    "uri": "at://did:plc:katl2n3xfpfwpv45aiwwtbrb/app.bsky.feed.post/3k3qugjur6l2k",
-                    "cid": "bafyreie5tzr2hj2vqml6lqise3efcnf4kbq3n3da5upaelpywdlzas7tx4",
+                    "uri": "at://did:plc:i3xtmaoi6vysczm5c6v2iuxs/app.bsky.feed.post/3kjitqhkzqn2j",
+                    "cid": "bafyreiarpfl6fstmfiudpaj7eoidagqfszfs5lp4fdy5j4dxujebhpbrvq",
                     "author": {
-                        "did": "did:plc:katl2n3xfpfwpv45aiwwtbrb",
-                        "handle": "cara.city",
-                        "displayName": "Cara Esten",
-                        "avatar": "https://cdn.bsky.social/imgproxy/JHVRMZMxsKsD2wVzuTlW3pHooBwu_wYJ05E18C5lMSM/rs:fill:1000:1000:1:0/plain/bafkreicdwsx7drxkrkxfeqqom3roholmph3ucawk5gzvncpdva7pwv2cle@jpeg",
+                        "did": "did:plc:i3xtmaoi6vysczm5c6v2iuxs",
+                        "handle": "revelatrix.bsky.social",
+                        "displayName": "Ohio is for Lydias",
+                        "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:i3xtmaoi6vysczm5c6v2iuxs/bafkreidmvo7otvyiuqu67lm34lvosfoig4qwtxgdbjogmtg47bugmuiyci@jpeg",
                         "viewer": {
                             "muted": false,
-                            "blockedBy": false,
-                            "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3jwgqjr25tt2e"
+                            "blockedBy": false
                         },
                         "labels": []
                     },
                     "record": {
-                        "text": "the main way people were introduced to software or computing as a whole was through work, meaning the process was both inherently forced and deeply alienating, and this is still true about software today",
+                        "text": "unlike you i get my news from a reliable source...",
                         "$type": "app.bsky.feed.post",
-                        "langs": ["en"],
-                        "reply": {
-                            "root": {
-                                "cid": "bafyreigf6grw6z6yeclddjqhnixstrlq5y7x4smbllvl4e5t56ggsrrl7e",
-                                "uri": "at://did:plc:katl2n3xfpfwpv45aiwwtbrb/app.bsky.feed.post/3k3quav3yrz2z"
+                        "embed": {
+                            "$type": "app.bsky.embed.recordWithMedia",
+                            "media": {
+                                "$type": "app.bsky.embed.images",
+                                "images": [{
+                                    "alt": "a black-and-white illustration of Ningauble of the Seven Eyes, a mysterious, inhuman sorcerer from Fritz Leiber's Fafhrd and the Gray Mouser stories. Ningauble appears to be a bulbous or amorphous inhuman figure entirely hidden in voluminous robes, with a point of light shining from within the hood for each of his seven eyes. In this illustration, one of the eyes is currently extended out of the hood on a long, tentacle-like appendage to glance upward. Behind the sorcerer is a hookah or perhaps magic bong of some kind. Kinda based tbh",
+                                    "image": {
+                                        "$type": "blob",
+                                        "ref": {
+                                            "$link": "bafkreiertzz7w3qgslvm2lyxy7tae3pcmg6jr5phrbbkhmneb22wkc6vum"
+                                        },
+                                        "mimeType": "image/jpeg",
+                                        "size": 308992
+                                    },
+                                    "aspectRatio": {
+                                        "width": 668,
+                                        "height": 924
+                                    }
+                                }]
                             },
-                            "parent": {
-                                "cid": "bafyreigf6grw6z6yeclddjqhnixstrlq5y7x4smbllvl4e5t56ggsrrl7e",
-                                "uri": "at://did:plc:katl2n3xfpfwpv45aiwwtbrb/app.bsky.feed.post/3k3quav3yrz2z"
+                            "record": {
+                                "$type": "app.bsky.embed.record",
+                                "record": {
+                                    "cid": "bafyreia2u4nrc2ftgyd374bepqsq3jgygvrlcra2l4nc6sdmpahprfpyrm",
+                                    "uri": "at://did:plc:zljlg7cgdfsl7maqvjjpp7i4/app.bsky.feed.post/3kjikuzphnw25"
+                                }
                             }
                         },
-                        "createdAt": "2023-07-30T16:13:42.191Z"
+                        "langs": ["en"],
+                        "createdAt": "2024-01-21T15:32:46.823Z"
                     },
-                    "replyCount": 7,
-                    "repostCount": 2,
-                    "likeCount": 46,
-                    "indexedAt": "2023-07-30T16:13:42.701Z",
+                    "embed": {
+                        "$type": "app.bsky.embed.recordWithMedia#view",
+                        "record": {
+                            "record": {
+                                "$type": "app.bsky.embed.record#viewRecord",
+                                "uri": "at://did:plc:zljlg7cgdfsl7maqvjjpp7i4/app.bsky.feed.post/3kjikuzphnw25",
+                                "cid": "bafyreia2u4nrc2ftgyd374bepqsq3jgygvrlcra2l4nc6sdmpahprfpyrm",
+                                "author": {
+                                    "did": "did:plc:zljlg7cgdfsl7maqvjjpp7i4",
+                                    "handle": "starshine.bsky.social",
+                                    "displayName": "☀️ Starshine",
+                                    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:zljlg7cgdfsl7maqvjjpp7i4/bafkreiddhnuvzpdtqqyv6tdoiuwn2lb6e3v32sdtvewkovsh5aqpobh4oe@jpeg",
+                                    "viewer": {
+                                        "muted": false,
+                                        "blockedBy": false,
+                                        "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3k2nlnceilg25",
+                                        "followedBy": "at://did:plc:zljlg7cgdfsl7maqvjjpp7i4/app.bsky.graph.follow/3k2nlocyisc2t"
+                                    },
+                                    "labels": [{
+                                        "src": "did:plc:zljlg7cgdfsl7maqvjjpp7i4",
+                                        "uri": "at://did:plc:zljlg7cgdfsl7maqvjjpp7i4/app.bsky.actor.profile/self",
+                                        "cid": "bafyreidqsrrsgiu5o7s5osays3horwcvuykkmin2i75efkyzyhj4a27waq",
+                                        "val": "!no-unauthenticated",
+                                        "cts": "1970-01-01T00:00:00.000Z",
+                                        "neg": false
+                                    }]
+                                },
+                                "value": {
+                                    "text": "Unlike you i get my news from a realiable source…",
+                                    "$type": "app.bsky.feed.post",
+                                    "embed": {
+                                        "$type": "app.bsky.embed.recordWithMedia",
+                                        "media": {
+                                            "$type": "app.bsky.embed.images",
+                                            "images": [{
+                                                "alt": "A bunch of small bones in a circlish triangle, their configuration says darkness will befall you, the light closes in, your screams will be heard naught as the terror closes in around you, you feel its icy grip clenching, surrender to it, give in, it consumes you. your soul belongs to them now your existence is but that of a shade eternally doomed to wander the endless halls tormented by desires that are forever denied. A thirst that can be quenched, a hunger that cant be satiated, the warmth of the sun but a memory. Food turns to ash and water to ice as they press your lips. All feelings grow numb but that pain, pain and torment. For the bones do not lie.",
+                                                "image": {
+                                                    "$type": "blob",
+                                                    "ref": {
+                                                        "$link": "bafkreig3wvaqzi4utrv6itkk3o26mbezr3326vluvdzcf4bsvya2qtyxl4"
+                                                    },
+                                                    "mimeType": "image/jpeg",
+                                                    "size": 629681
+                                                },
+                                                "aspectRatio": {
+                                                    "width": 2000,
+                                                    "height": 1588
+                                                }
+                                            }]
+                                        },
+                                        "record": {
+                                            "$type": "app.bsky.embed.record",
+                                            "record": {
+                                                "cid": "bafyreihhymwv6lkei5x3ah5p3l2dqlgpjousahz2mmfrym2cpaf2gcijva",
+                                                "uri": "at://did:plc:aawupovstz4yqkxqe6awgaci/app.bsky.feed.post/3kjijdexmmm2d"
+                                            }
+                                        }
+                                    },
+                                    "langs": ["en"],
+                                    "createdAt": "2024-01-21T12:54:16.318Z"
+                                },
+                                "labels": [],
+                                "indexedAt": "2024-01-21T12:54:16.318Z",
+                                "embeds": [{
+                                    "$type": "app.bsky.embed.recordWithMedia#view",
+                                    "record": {
+                                        "record": {
+                                            "$type": "app.bsky.embed.record#viewRecord",
+                                            "uri": "at://did:plc:aawupovstz4yqkxqe6awgaci/app.bsky.feed.post/3kjijdexmmm2d",
+                                            "cid": "bafyreihhymwv6lkei5x3ah5p3l2dqlgpjousahz2mmfrym2cpaf2gcijva",
+                                            "author": {
+                                                "did": "did:plc:aawupovstz4yqkxqe6awgaci",
+                                                "handle": "vaguebiscuit.bsky.social",
+                                                "displayName": "Glen",
+                                                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:aawupovstz4yqkxqe6awgaci/bafkreid2ley56dhedsvorhhyeg6ocnzdxqnrg6ereaed4hnh4iv5sr5dme@jpeg",
+                                                "viewer": {
+                                                    "muted": false,
+                                                    "blockedBy": false
+                                                },
+                                                "labels": []
+                                            },
+                                            "value": {
+                                                "text": "Unlike you I get my news from a reliable source...",
+                                                "$type": "app.bsky.feed.post",
+                                                "embed": {
+                                                    "$type": "app.bsky.embed.recordWithMedia",
+                                                    "media": {
+                                                        "$type": "app.bsky.embed.images",
+                                                        "images": [{
+                                                            "alt": "Donald Trump at one of his rallies. He looks like he's screaming and his hands are held.apart like he's showing you how big a fish was",
+                                                            "image": {
+                                                                "$type": "blob",
+                                                                "ref": {
+                                                                    "$link": "bafkreigzx2p4nm4g6bv6lv3s5ucqeup2qqi3pufxymzd5p47yxq55c74he"
+                                                                },
+                                                                "mimeType": "image/jpeg",
+                                                                "size": 350389
+                                                            },
+                                                            "aspectRatio": {
+                                                                "width": 1480,
+                                                                "height": 833
+                                                            }
+                                                        }]
+                                                    },
+                                                    "record": {
+                                                        "$type": "app.bsky.embed.record",
+                                                        "record": {
+                                                            "cid": "bafyreiaorfecfkabgcklhmvh6ux3beu2iktmry64l46iqj6b4zqaiy7f6q",
+                                                            "uri": "at://did:plc:z4qvvpxlc3h34cslchnedmzn/app.bsky.feed.post/3kjigyoplht2z"
+                                                        }
+                                                    }
+                                                },
+                                                "langs": ["en"],
+                                                "createdAt": "2024-01-21T12:26:29.540Z"
+                                            },
+                                            "labels": [],
+                                            "indexedAt": "2024-01-21T12:26:29.540Z"
+                                        }
+                                    },
+                                    "media": {
+                                        "$type": "app.bsky.embed.images#view",
+                                        "images": [{
+                                            "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:zljlg7cgdfsl7maqvjjpp7i4/bafkreig3wvaqzi4utrv6itkk3o26mbezr3326vluvdzcf4bsvya2qtyxl4@jpeg",
+                                            "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:zljlg7cgdfsl7maqvjjpp7i4/bafkreig3wvaqzi4utrv6itkk3o26mbezr3326vluvdzcf4bsvya2qtyxl4@jpeg",
+                                            "alt": "A bunch of small bones in a circlish triangle, their configuration says darkness will befall you, the light closes in, your screams will be heard naught as the terror closes in around you, you feel its icy grip clenching, surrender to it, give in, it consumes you. your soul belongs to them now your existence is but that of a shade eternally doomed to wander the endless halls tormented by desires that are forever denied. A thirst that can be quenched, a hunger that cant be satiated, the warmth of the sun but a memory. Food turns to ash and water to ice as they press your lips. All feelings grow numb but that pain, pain and torment. For the bones do not lie.",
+                                            "aspectRatio": {
+                                                "width": 2000,
+                                                "height": 1588
+                                            }
+                                        }]
+                                    }
+                                }]
+                            }
+                        },
+                        "media": {
+                            "$type": "app.bsky.embed.images#view",
+                            "images": [{
+                                "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3xtmaoi6vysczm5c6v2iuxs/bafkreiertzz7w3qgslvm2lyxy7tae3pcmg6jr5phrbbkhmneb22wkc6vum@jpeg",
+                                "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:i3xtmaoi6vysczm5c6v2iuxs/bafkreiertzz7w3qgslvm2lyxy7tae3pcmg6jr5phrbbkhmneb22wkc6vum@jpeg",
+                                "alt": "a black-and-white illustration of Ningauble of the Seven Eyes, a mysterious, inhuman sorcerer from Fritz Leiber's Fafhrd and the Gray Mouser stories. Ningauble appears to be a bulbous or amorphous inhuman figure entirely hidden in voluminous robes, with a point of light shining from within the hood for each of his seven eyes. In this illustration, one of the eyes is currently extended out of the hood on a long, tentacle-like appendage to glance upward. Behind the sorcerer is a hookah or perhaps magic bong of some kind. Kinda based tbh",
+                                "aspectRatio": {
+                                    "width": 668,
+                                    "height": 924
+                                }
+                            }]
+                        }
+                    },
+                    "replyCount": 0,
+                    "repostCount": 3,
+                    "likeCount": 11,
+                    "indexedAt": "2024-01-21T15:32:46.823Z",
                     "viewer": {
-                        "repost": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.repost/3k3rcfq3hnm25",
-                        "like": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.like/3k3rcfjgbjn2g"
+                        "repost": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.repost/3kjivimniqz2d",
+                        "like": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.like/3kjivil6lrf2f"
                     },
                     "labels": []
                 },
@@ -84,371 +248,39 @@ final class BlueskyClientTests: XCTestCase {
                         "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
                         "handle": "osmote.net",
                         "displayName": "OSMOTE",
-                        "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
+                        "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:etdcb47v54mwv2wdufhi4tu6/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
                         "viewer": {
                             "muted": false,
                             "blockedBy": false
                         },
                         "labels": []
                     },
-                    "indexedAt": "2023-07-30T20:23:47.880Z"
-                },
-                "reply": {
-                    "root": {
-                        "$type": "app.bsky.feed.defs#postView",
-                        "uri": "at://did:plc:katl2n3xfpfwpv45aiwwtbrb/app.bsky.feed.post/3k3quav3yrz2z",
-                        "cid": "bafyreigf6grw6z6yeclddjqhnixstrlq5y7x4smbllvl4e5t56ggsrrl7e",
-                        "author": {
-                            "did": "did:plc:katl2n3xfpfwpv45aiwwtbrb",
-                            "handle": "cara.city",
-                            "displayName": "Cara Esten",
-                            "avatar": "https://cdn.bsky.social/imgproxy/JHVRMZMxsKsD2wVzuTlW3pHooBwu_wYJ05E18C5lMSM/rs:fill:1000:1000:1:0/plain/bafkreicdwsx7drxkrkxfeqqom3roholmph3ucawk5gzvncpdva7pwv2cle@jpeg",
-                            "viewer": {
-                                "muted": false,
-                                "blockedBy": false,
-                                "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3jwgqjr25tt2e"
-                            },
-                            "labels": []
-                        },
-                        "record": {
-                            "text": "it's easy to forget that people actively hated computers until the mid 90s and honestly were right to do so",
-                            "$type": "app.bsky.feed.post",
-                            "embed": {
-                                "$type": "app.bsky.embed.images",
-                                "images": [{
-                                    "alt": "A book open to page 194, chapter 6, the text:\n\ning Computer Fear and Technostress, both published in 1984, indicates that \"for many people, computers were extremely unpleasant objects and their introduction into some people's lives caused extreme duress.\" However prevalent among hobbyists and futurists, discourses about the home computer revolution were largely lost on the broader American public.",
-                                    "image": {
-                                        "$type": "blob",
-                                        "ref": {
-                                            "$link": "bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge"
-                                        },
-                                        "mimeType": "image/jpeg",
-                                        "size": 555818
-                                    }
-                                }]
-                            },
-                            "langs": ["en"],
-                            "createdAt": "2023-07-30T16:10:32.665Z"
-                        },
-                        "embed": {
-                            "$type": "app.bsky.embed.images#view",
-                            "images": [{
-                                "thumb": "https://cdn.bsky.social/imgproxy/A2WhjFDtzPhNljSEqhF8tzhLE-tvjDNDR2NGIUnfYrg/rs:fit:1000:1000:1:0/plain/bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge@jpeg",
-                                "fullsize": "https://cdn.bsky.social/imgproxy/h_g3R7CMWFeavdG9DWFncllqnMHHyacjyBNcdTeUE80/rs:fit:2000:2000:1:0/plain/bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge@jpeg",
-                                "alt": "A book open to page 194, chapter 6, the text:\n\ning Computer Fear and Technostress, both published in 1984, indicates that \"for many people, computers were extremely unpleasant objects and their introduction into some people's lives caused extreme duress.\" However prevalent among hobbyists and futurists, discourses about the home computer revolution were largely lost on the broader American public."
-                            }]
-                        },
-                        "replyCount": 8,
-                        "repostCount": 9,
-                        "likeCount": 93,
-                        "indexedAt": "2023-07-30T16:10:33.154Z",
-                        "viewer": {
-                            "like": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.like/3k3rcfmd3mu2c"
-                        },
-                        "labels": []
-                    },
-                    "parent": {
-                        "$type": "app.bsky.feed.defs#postView",
-                        "uri": "at://did:plc:katl2n3xfpfwpv45aiwwtbrb/app.bsky.feed.post/3k3quav3yrz2z",
-                        "cid": "bafyreigf6grw6z6yeclddjqhnixstrlq5y7x4smbllvl4e5t56ggsrrl7e",
-                        "author": {
-                            "did": "did:plc:katl2n3xfpfwpv45aiwwtbrb",
-                            "handle": "cara.city",
-                            "displayName": "Cara Esten",
-                            "avatar": "https://cdn.bsky.social/imgproxy/JHVRMZMxsKsD2wVzuTlW3pHooBwu_wYJ05E18C5lMSM/rs:fill:1000:1000:1:0/plain/bafkreicdwsx7drxkrkxfeqqom3roholmph3ucawk5gzvncpdva7pwv2cle@jpeg",
-                            "viewer": {
-                                "muted": false,
-                                "blockedBy": false,
-                                "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3jwgqjr25tt2e"
-                            },
-                            "labels": []
-                        },
-                        "record": {
-                            "text": "it's easy to forget that people actively hated computers until the mid 90s and honestly were right to do so",
-                            "$type": "app.bsky.feed.post",
-                            "embed": {
-                                "$type": "app.bsky.embed.images",
-                                "images": [{
-                                    "alt": "A book open to page 194, chapter 6, the text:\n\ning Computer Fear and Technostress, both published in 1984, indicates that \"for many people, computers were extremely unpleasant objects and their introduction into some people's lives caused extreme duress.\" However prevalent among hobbyists and futurists, discourses about the home computer revolution were largely lost on the broader American public.",
-                                    "image": {
-                                        "$type": "blob",
-                                        "ref": {
-                                            "$link": "bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge"
-                                        },
-                                        "mimeType": "image/jpeg",
-                                        "size": 555818
-                                    }
-                                }]
-                            },
-                            "langs": ["en"],
-                            "createdAt": "2023-07-30T16:10:32.665Z"
-                        },
-                        "embed": {
-                            "$type": "app.bsky.embed.images#view",
-                            "images": [{
-                                "thumb": "https://cdn.bsky.social/imgproxy/A2WhjFDtzPhNljSEqhF8tzhLE-tvjDNDR2NGIUnfYrg/rs:fit:1000:1000:1:0/plain/bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge@jpeg",
-                                "fullsize": "https://cdn.bsky.social/imgproxy/h_g3R7CMWFeavdG9DWFncllqnMHHyacjyBNcdTeUE80/rs:fit:2000:2000:1:0/plain/bafkreigorl6ng46ks6zyyfokf4ol254yzqwmorhsapdlvocqv4j3q26qge@jpeg",
-                                "alt": "A book open to page 194, chapter 6, the text:\n\ning Computer Fear and Technostress, both published in 1984, indicates that \"for many people, computers were extremely unpleasant objects and their introduction into some people's lives caused extreme duress.\" However prevalent among hobbyists and futurists, discourses about the home computer revolution were largely lost on the broader American public."
-                            }]
-                        },
-                        "replyCount": 8,
-                        "repostCount": 9,
-                        "likeCount": 93,
-                        "indexedAt": "2023-07-30T16:10:33.154Z",
-                        "viewer": {
-                            "like": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.like/3k3rcfmd3mu2c"
-                        },
-                        "labels": []
-                    }
-                }
-            }, {
-                "post": {
-                    "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3r7myqqzo2z",
-                    "cid": "bafyreiayqma55bb66p2xzuslxsh4e2d35qjks5vbmv3cidbmnu5wyj65py",
-                    "author": {
-                        "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
-                        "handle": "osmote.net",
-                        "displayName": "OSMOTE",
-                        "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
-                        "viewer": {
-                            "muted": false,
-                            "blockedBy": false
-                        },
-                        "labels": []
-                    },
-                    "record": {
-                        "text": "Test Two",
-                        "$type": "app.bsky.feed.post",
-                        "embed": {
-                            "$type": "app.bsky.embed.record",
-                            "record": {
-                                "cid": "bafyreignshupwvhurhh6ytxiirktho6hbxq5z4otspteycndgo7uc5ehcy",
-                                "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3r7mrdhvc2c"
-                            }
-                        },
-                        "langs": ["en"],
-                        "createdAt": "2023-07-30T19:34:10.911Z"
-                    },
-                    "embed": {
-                        "$type": "app.bsky.embed.record#view",
-                        "record": {
-                            "$type": "app.bsky.embed.record#viewRecord",
-                            "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3r7mrdhvc2c",
-                            "cid": "bafyreignshupwvhurhh6ytxiirktho6hbxq5z4otspteycndgo7uc5ehcy",
-                            "author": {
-                                "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
-                                "handle": "osmote.net",
-                                "displayName": "OSMOTE",
-                                "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
-                                "viewer": {
-                                    "muted": false,
-                                    "blockedBy": false
-                                },
-                                "labels": []
-                            },
-                            "value": {
-                                "text": "Test One",
-                                "$type": "app.bsky.feed.post",
-                                "langs": ["en"],
-                                "createdAt": "2023-07-30T19:34:03.137Z"
-                            },
-                            "labels": [],
-                            "indexedAt": "2023-07-30T19:34:03.131Z",
-                            "embeds": []
-                        }
-                    },
-                    "replyCount": 0,
-                    "repostCount": 0,
-                    "likeCount": 0,
-                    "indexedAt": "2023-07-30T19:34:10.809Z",
-                    "viewer": {},
-                    "labels": []
-                }
-            }, {
-                "post": {
-                    "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3r7mrdhvc2c",
-                    "cid": "bafyreignshupwvhurhh6ytxiirktho6hbxq5z4otspteycndgo7uc5ehcy",
-                    "author": {
-                        "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
-                        "handle": "osmote.net",
-                        "displayName": "OSMOTE",
-                        "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
-                        "viewer": {
-                            "muted": false,
-                            "blockedBy": false
-                        },
-                        "labels": []
-                    },
-                    "record": {
-                        "text": "Test One",
-                        "$type": "app.bsky.feed.post",
-                        "langs": ["en"],
-                        "createdAt": "2023-07-30T19:34:03.137Z"
-                    },
-                    "replyCount": 0,
-                    "repostCount": 0,
-                    "likeCount": 0,
-                    "indexedAt": "2023-07-30T19:34:03.131Z",
-                    "viewer": {},
-                    "labels": []
-                }
-            }, {
-                "post": {
-                    "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3qyqku4bq2u",
-                    "cid": "bafyreihbxjyipara5dssrghzvycsg36qsknnix7d3dzhhsh2euqurxwecy",
-                    "author": {
-                        "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
-                        "handle": "osmote.net",
-                        "displayName": "OSMOTE",
-                        "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
-                        "viewer": {
-                            "muted": false,
-                            "blockedBy": false
-                        },
-                        "labels": []
-                    },
-                    "record": {
-                        "text": "get out",
-                        "$type": "app.bsky.feed.post",
-                        "langs": ["en"],
-                        "reply": {
-                            "root": {
-                                "cid": "bafyreih2z2mijaliovyjhggyktwci4chenlvclrp2riy2ikwmsvquner4q",
-                                "uri": "at://did:plc:53kudcqj7sizx2eaclc5sicc/app.bsky.feed.post/3k3qwrbkblx2c"
-                            },
-                            "parent": {
-                                "cid": "bafyreibt3jtvss7anixhjdh72qp7jkqcjcohmmvzzg5oxybmrzwghsvoti",
-                                "uri": "at://did:plc:vpgewixeiml7eg2nxqs77agr/app.bsky.feed.post/3k3qxgzmh272g"
-                            }
-                        },
-                        "createdAt": "2023-07-30T17:30:53.958Z"
-                    },
-                    "replyCount": 0,
-                    "repostCount": 0,
-                    "likeCount": 5,
-                    "indexedAt": "2023-07-30T17:30:54.255Z",
-                    "viewer": {},
-                    "labels": []
-                },
-                "reply": {
-                    "root": {
-                        "$type": "app.bsky.feed.defs#postView",
-                        "uri": "at://did:plc:53kudcqj7sizx2eaclc5sicc/app.bsky.feed.post/3k3qwrbkblx2c",
-                        "cid": "bafyreih2z2mijaliovyjhggyktwci4chenlvclrp2riy2ikwmsvquner4q",
-                        "author": {
-                            "did": "did:plc:53kudcqj7sizx2eaclc5sicc",
-                            "handle": "bennie.gay",
-                            "displayName": "Bennie Dorothy Gay ",
-                            "avatar": "https://cdn.bsky.social/imgproxy/3r02V906meaIgRmt8hCZc3N8WygflRsrAHNoy-edoLk/rs:fill:1000:1000:1:0/plain/bafkreienhkpjaow2wkmtgcsjacqaz5son55nmp3grq2wkpm3eoays7knhq@jpeg",
-                            "viewer": {
-                                "muted": false,
-                                "blockedBy": false
-                            },
-                            "labels": []
-                        },
-                        "record": {
-                            "text": "Amazing seeing men posting pics that are just as revealing as one of my most recent pics but theirs isn't flagged at all and mine is flagged as \"nudity\" LMAOO",
-                            "$type": "app.bsky.feed.post",
-                            "langs": ["en"],
-                            "createdAt": "2023-07-30T16:55:28.839Z"
-                        },
-                        "replyCount": 12,
-                        "repostCount": 15,
-                        "likeCount": 236,
-                        "indexedAt": "2023-07-30T16:55:30.668Z",
-                        "viewer": {},
-                        "labels": []
-                    },
-                    "parent": {
-                        "$type": "app.bsky.feed.defs#postView",
-                        "uri": "at://did:plc:vpgewixeiml7eg2nxqs77agr/app.bsky.feed.post/3k3qxgzmh272g",
-                        "cid": "bafyreibt3jtvss7anixhjdh72qp7jkqcjcohmmvzzg5oxybmrzwghsvoti",
-                        "author": {
-                            "did": "did:plc:vpgewixeiml7eg2nxqs77agr",
-                            "handle": "jennscarlet.bsky.social",
-                            "displayName": "Jenn Scarlet ",
-                            "avatar": "https://cdn.bsky.social/imgproxy/Fei-E9jmU4S56HQkzSFGxMrofUdUIh_sZVVglFIDGd0/rs:fill:1000:1000:1:0/plain/bafkreicc4ekwof6txvx5cum235r5a2a4ux3z2baeqyjmzwdqckupul3q5a@jpeg",
-                            "viewer": {
-                                "muted": false,
-                                "blockedBy": false
-                            },
-                            "labels": []
-                        },
-                        "record": {
-                            "text": "Don't know who you are but stop posting porn on not Twitter. Class it up.",
-                            "$type": "app.bsky.feed.post",
-                            "langs": ["en"],
-                            "reply": {
-                                "root": {
-                                    "cid": "bafyreih2z2mijaliovyjhggyktwci4chenlvclrp2riy2ikwmsvquner4q",
-                                    "uri": "at://did:plc:53kudcqj7sizx2eaclc5sicc/app.bsky.feed.post/3k3qwrbkblx2c"
-                                },
-                                "parent": {
-                                    "cid": "bafyreih2z2mijaliovyjhggyktwci4chenlvclrp2riy2ikwmsvquner4q",
-                                    "uri": "at://did:plc:53kudcqj7sizx2eaclc5sicc/app.bsky.feed.post/3k3qwrbkblx2c"
-                                }
-                            },
-                            "createdAt": "2023-07-30T17:07:40.826Z"
-                        },
-                        "replyCount": 129,
-                        "repostCount": 0,
-                        "likeCount": 8,
-                        "indexedAt": "2023-07-30T17:07:40.419Z",
-                        "viewer": {},
-                        "labels": []
-                    }
-                }
-            }, {
-                "post": {
-                    "uri": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.feed.post/3k3qym3dygx2g",
-                    "cid": "bafyreibj5vh7kfqzttdqkwnjsvs5drq5q3ugldodoaqxkv56jaeex6rkhy",
-                    "author": {
-                        "did": "did:plc:etdcb47v54mwv2wdufhi4tu6",
-                        "handle": "osmote.net",
-                        "displayName": "OSMOTE",
-                        "avatar": "https://cdn.bsky.social/imgproxy/RBZIac2OfcH-vYiDZZbglv00yjvIqzNbDXu_FX5tMoM/rs:fill:1000:1000:1:0/plain/bafkreigyn3j5dusyiijtpvqvehcpcb3fbflz5vnggsmq23rw22mgtq7fha@jpeg",
-                        "viewer": {
-                            "muted": false,
-                            "blockedBy": false
-                        },
-                        "labels": []
-                    },
-                    "record": {
-                        "text": "how would you explain phone prank comedy tapes to a zoomer",
-                        "$type": "app.bsky.feed.post",
-                        "langs": ["en"],
-                        "createdAt": "2023-07-30T17:28:23.473Z"
-                    },
-                    "replyCount": 0,
-                    "repostCount": 0,
-                    "likeCount": 1,
-                    "indexedAt": "2023-07-30T17:28:23.815Z",
-                    "viewer": {},
-                    "labels": []
+                    "indexedAt": "2024-01-21T16:04:11.253Z"
                 }
             }],
-            "cursor": "1690738103473::bafyreibj5vh7kfqzttdqkwnjsvs5drq5q3ugldodoaqxkv56jaeex6rkhy"
+            "cursor": "1705710317346::bafyreienbpv65nbuypqeofqfdjmyxf4ijszncp6clavdekjyamhnn2jl4u"
         }
         """#.data(using: .utf8)!
         
-        let getAuthorFeedResponsebody = try JSONDecoder().decode(GetAuthorFeedResponseBody.self, from: authorFeedJSONData)
+        let getAuthorFeedResponsebody = try JSONDecoder().decode(BlueskyGetAuthorFeedResponseBody.self, from: authorFeedJSONData)
         
-        let blueskyClient = BlueskyClient()
 
-        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "https://bsky.social")!,
-                                                                          accessToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLmFjY2VzcyIsInN1YiI6ImRpZDpwbGM6ZXRkY2I0N3Y1NG13djJ3ZHVmaGk0dHU2IiwiaWF0IjoxNzA1NzkzNjUzLCJleHAiOjE3MDU4MDA4NTMsImF1ZCI6ImRpZDp3ZWI6ZW5va2kudXMtZWFzdC5ob3N0LmJza3kubmV0d29yayJ9.xp1qfD0k7d3dO-yKvVGanLgrT8am8Dq5J8Y9L1qbm7twRGDrXrWUAnGaIf6B3mP8eoA99O7B_CF-pHOA3aCKsA",
-                                                                          refreshToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLnJlZnJlc2giLCJzdWIiOiJkaWQ6cGxjOmV0ZGNiNDd2NTRtd3Yyd2R1ZmhpNHR1NiIsImF1ZCI6ImRpZDp3ZWI6YnNreS5zb2NpYWwiLCJqdGkiOiI0WkFkTkt0aTduVDd2NnoxSjZiYTdPNTc2QnNvd2kwNFIwOXpjVE1CenFJIiwiaWF0IjoxNzA1NzkzNjUzLCJleHAiOjE3MTM1Njk2NTN9.8TFex_ezD52MaTEGAYTwCb9wlA0TrQHziwJBHIoRnAODGQEKAapE_UKA89VcOHen85SJFMu_QEILZ9dLRpq7mg",
-                                                                          actor: "osmote.net",
-                                                                          limit: 5,
-                                                                          cursor: "")
-
-        switch getAuthorFeedResponse {
-        case .success(let getAuthorFeedResponseValue):
-            break
-
-        case .failure(let error):
-            break
-        }
+//        let blueskyClient = BlueskyClient()
+//
+//        let getAuthorFeedResponse = try await blueskyClient.getAuthorFeed(host: URL(string: "https://bsky.social")!,
+//                                                                          accessToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLmFjY2VzcyIsInN1YiI6ImRpZDpwbGM6ZXRkY2I0N3Y1NG13djJ3ZHVmaGk0dHU2IiwiaWF0IjoxNzA1ODkzOTM5LCJleHAiOjE3MDU5MDExMzksImF1ZCI6ImRpZDp3ZWI6ZW5va2kudXMtZWFzdC5ob3N0LmJza3kubmV0d29yayJ9.NSZwJt-VfmLPZoAlEZ_ZANqnvkIR-MVa77NLoCh2FO5O_ESFG0TaGgiesOmpwUPqALbP9gWoeGbujgT0va4RSA",
+//                                                                          refreshToken: "eyJhbGciOiJFUzI1NksifQ.eyJzY29wZSI6ImNvbS5hdHByb3RvLnJlZnJlc2giLCJzdWIiOiJkaWQ6cGxjOmV0ZGNiNDd2NTRtd3Yyd2R1ZmhpNHR1NiIsImF1ZCI6ImRpZDp3ZWI6YnNreS5zb2NpYWwiLCJqdGkiOiJiZEF6dWpyOXF6dXZSekx5UHVkMEdDRHVhdW9mblpPYzFwdkxldGw5L1BRIiwiaWF0IjoxNzA1ODkzOTM5LCJleHAiOjE3MTM2Njk5Mzl9.wQOjV89tDF1L-Cxp9sZX3gPJdERU6_Z6Rvc9boE5WKgvUnHoKk8Tz-BV6zJ9AwRzh3jKs2ThTqWP0I_dudkrDQ",
+//                                                                          actor: "osmote.net",
+//                                                                          limit: 50,
+//                                                                          cursor: "")
+//
+//        switch getAuthorFeedResponse {
+//        case .success(let getAuthorFeedResponseValue):
+//            break
+//
+//        case .failure(let error):
+//            break
+//        }
     }
 
     @available(iOS 16.0, *)
