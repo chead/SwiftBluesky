@@ -254,9 +254,38 @@ public struct BlueskyFeedPostView: Decodable {
 }
 
 public indirect enum BlueskyFeedThreadViewPostPostType: Decodable {
-    case threadViewPost(BlueskyFeedThreadViewPost)
-    case notFoundPost(BlueskyFeedNotFoundPost)
-    case blockedPost(BlueskyFeedBlockedPost)
+    private enum FieldType: String, Decodable {
+        case blueskyFeedThreadViewPost = "app.bsky.feed.defs#threadViewPost"
+        case blueskyFeedNotFoundPost = "app.bsky.feed.defs#notFoundPost"
+        case blueskyFeedBlockedPost = "app.bsky.feed.defs#blockedPost"
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
+    }
+
+    case blueskyFeedThreadViewPost(BlueskyFeedThreadViewPost)
+    case blueskyFeedNotFoundPost(BlueskyFeedNotFoundPost)
+    case blueskyFeedBlockedPost(BlueskyFeedBlockedPost)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let fieldType = try container.decode(FieldType.self, forKey: .type)
+
+        let singleValueContainer = try decoder.singleValueContainer()
+
+        switch fieldType {
+        case .blueskyFeedThreadViewPost:
+            try self = .blueskyFeedThreadViewPost(singleValueContainer.decode(BlueskyFeedThreadViewPost.self))
+
+        case .blueskyFeedNotFoundPost:
+            try self = .blueskyFeedNotFoundPost(singleValueContainer.decode(BlueskyFeedNotFoundPost.self))
+
+        case .blueskyFeedBlockedPost:
+            try self = .blueskyFeedBlockedPost(singleValueContainer.decode(BlueskyFeedBlockedPost.self))
+        }
+    }
 }
 
 public struct BlueskyFeedThreadViewPost: Decodable {
@@ -292,9 +321,44 @@ public struct BlueskyFeedReasonRepost: Decodable {
     }
 }
 
+public enum BlueskyFeedReplyRefPostType: Decodable {
+    private enum FieldType: String, Decodable {
+        case blueskyFeedPostView = "app.bsky.feed.defs#postView"
+        case blueskyFeedNotFoundPost = "app.bsky.feed.defs#notFoundPost"
+        case blueskyFeedBlockedPost = "app.bsky.feed.defs#blockedPost"
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
+    }
+
+    case blueskyFeedPostView(BlueskyFeedPostView)
+    case blueskyFeedNotFoundPost(BlueskyFeedNotFoundPost)
+    case blueskyFeedBlockedPost(BlueskyFeedBlockedPost)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let fieldType = try container.decode(FieldType.self, forKey: .type)
+
+        let singleValueContainer = try decoder.singleValueContainer()
+
+        switch fieldType {
+        case .blueskyFeedPostView:
+            try self = .blueskyFeedPostView(singleValueContainer.decode(BlueskyFeedPostView.self))
+
+        case .blueskyFeedNotFoundPost:
+            try self = .blueskyFeedNotFoundPost(singleValueContainer.decode(BlueskyFeedNotFoundPost.self))
+
+        case .blueskyFeedBlockedPost:
+            try self = .blueskyFeedBlockedPost(singleValueContainer.decode(BlueskyFeedBlockedPost.self))
+        }
+    }
+}
+
 public struct BlueskyFeedReplyRef: Decodable {
-    public let root: BlueskyFeedThreadViewPostPostType
-    public let parent: BlueskyFeedThreadViewPostPostType
+    public let root: BlueskyFeedReplyRefPostType
+    public let parent: BlueskyFeedReplyRefPostType
 }
 
 public enum BlueskyFeedFeedViewPostReasonType: Decodable {
