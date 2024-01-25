@@ -13,7 +13,7 @@ fileprivate let maxFeedGeneratorViewDisplayNameLength = 3000
 public struct BlueskyFeedThreadgateView: Decodable {
     public let uri: String?
     public let cid: String?
-    // "record": { "type": "unknown" }
+    public let record: BlueskyFeedPost
     public let lists: [BlueskyGraphListViewBasic]?
 }
 
