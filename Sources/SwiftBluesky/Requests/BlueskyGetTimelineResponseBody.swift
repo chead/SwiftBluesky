@@ -8,6 +8,6 @@
 import Foundation
 
 public struct BlueskyGetTimelineResponseBody: Decodable {
-    let cursor: String
-    let feed: [BlueskyFeedFeedViewPost]
+    public let cursor: String
+    public let feed: [BlueskyFeedFeedViewPost]
 }
