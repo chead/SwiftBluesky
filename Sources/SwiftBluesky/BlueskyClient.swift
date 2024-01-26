@@ -69,6 +69,41 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
+    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoRefreshSessionResponseBody, BlueskyClientError> {
+        let refreshSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json")!
+
+        let refreshSessionJSONData = try Data(contentsOf: refreshSessionJSONURL)
+
+        let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self, from: refreshSessionJSONData)
+
+        if let mainDef = refreshSessionLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let refreshSessionRequest = try ATProtoHTTPRequest(host: host,
+                                                                   nsid: refreshSessionLexicon.id,
+                                                                   parameters: [:],
+                                                                   body: nil,
+                                                                   token: refreshToken,
+                                                                   requestable: procedure)
+
+                let refreshSessionResponse: Result<ATProtoRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+
+                switch refreshSessionResponse {
+                case .success(let refreshSessionResponseBody):
+                    return .success(refreshSessionResponseBody)
+
+                case .failure(let error):
+                    return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+        }
+
+        return .failure(.unknown)
+    }
+
     public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<BlueskyGetProfilesResponseBody, BlueskyClientError> {
         let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
         
@@ -173,38 +208,56 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoRefreshSessionResponseBody, BlueskyClientError> {
-        let refreshSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json")!
-        
-        let refreshSessionJSONData = try Data(contentsOf: refreshSessionJSONURL)
-        
-        let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self, from: refreshSessionJSONData)
+    public func getTimeline(host: URL, accessToken: String, refreshToken: String?, algorithm: String, limit: Int, cursor: String) async throws -> Result<BlueskyGetTimelineResponseBody, BlueskyClientError> {
+        let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getTimeline", withExtension: "json")!
 
-        if let mainDef = refreshSessionLexicon.defs["main"] {
+        let getTimelineJSONData = try Data(contentsOf: getTimelineJSONURL)
+
+        let getTimelineLexicon = try JSONDecoder().decode(Lexicon.self, from: getTimelineJSONData)
+
+        if let mainDef = getTimelineLexicon.defs["main"] {
             switch mainDef {
-            case .procedure(let procedure):
-                let refreshSessionRequest = try ATProtoHTTPRequest(host: host, 
-                                                                   nsid: refreshSessionLexicon.id,
-                                                                   parameters: [:],
-                                                                   body: nil,
-                                                                   token: refreshToken,
-                                                                   requestable: procedure)
+            case .query(let query):
+                let getTimelineRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: getTimelineLexicon.id,
+                                                                  parameters: ["algorithm" : algorithm,
+                                                                               "limit" : limit,
+                                                                               "cursor" : cursor],
+                                                                  body: nil,
+                                                                  token: accessToken,
+                                                                  requestable: query)
 
-                let refreshSessionResponse: Result<ATProtoRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+                let getTimelineResponse: Result<BlueskyGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
 
-                switch refreshSessionResponse {
-                case .success(let refreshSessionResponseBody):
-                    return .success(refreshSessionResponseBody)
-                
+                switch getTimelineResponse {
+                case .success(let getTimelineResponseBody):
+                    return .success(getTimelineResponseBody)
+
                 case .failure(let error):
-                    return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    switch(error) {
+                    case .badRequest:
+                        if let refreshToken = refreshToken {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponseBody):
+                                return try await self.getTimeline(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, algorithm: algorithm, limit: limit, cursor: cursor)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
                 }
 
             default:
                 return .failure(.invalidRequest)
             }
         }
-        
+
         return .failure(.unknown)
     }
 }
