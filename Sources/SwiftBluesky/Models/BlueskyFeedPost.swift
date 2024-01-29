@@ -40,9 +40,15 @@ public struct BlueskyFeedPost: Decodable {
         
         let dateFormatterLong = DateFormatter()
 
-        let dateFormatLong = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        let dateFormatLong = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
         dateFormatterLong.dateFormat = dateFormatLong
+
+        let dateFormatterMedium = DateFormatter()
+
+        let dateFormatMedium = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+
+        dateFormatterMedium.dateFormat = dateFormatMedium
 
         let dateFormatterShort = DateFormatter()
 
@@ -52,6 +58,8 @@ public struct BlueskyFeedPost: Decodable {
 
         if let createdAtDateLong = dateFormatterLong.date(from: createdAtString) {
             self.createdAt = createdAtDateLong
+        } else if let createdAtDateMedium = dateFormatterMedium.date(from: createdAtString) {
+            self.createdAt = createdAtDateMedium
         } else if let createdAtDateShort = dateFormatterShort.date(from: createdAtString) {
             self.createdAt = createdAtDateShort
         } else {

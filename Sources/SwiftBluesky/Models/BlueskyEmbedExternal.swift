@@ -11,7 +11,7 @@ import SwiftATProto
 public struct BlueskyEmbedExternalViewExternal: Decodable {
     public let uri: String
     public let description: String
-    public let thumb: String
+    public let thumb: String?
 }
 
 public struct BlueskyEmbedExternalView: Decodable {
@@ -22,7 +22,7 @@ public struct BlueskyEmbedExternalExternal: Decodable {
     public let uri: String
     public let title: String
     public let description: String
-    public let thumb: ATProtoBlob
+    public let thumb: ATProtoBlob?
 }
 
 public struct BlueskyEmbedExternal: Decodable {

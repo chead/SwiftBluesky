@@ -158,6 +158,7 @@ public struct BlueskyEmbedRecordViewRecord: Decodable {
         self.embeds = try container.decodeIfPresent([BlueskyEmbedRecordViewRecordEmbedType].self, forKey: .embeds)
 
         let indexedAtString = try container.decode(String.self, forKey: .indexedAt)
+
         let dateFormatter = DateFormatter()
 
         let dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
