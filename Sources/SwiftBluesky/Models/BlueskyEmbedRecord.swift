@@ -160,12 +160,13 @@ public struct BlueskyEmbedRecordViewRecord: Decodable {
         let indexedAtString = try container.decode(String.self, forKey: .indexedAt)
         let dateFormatter = DateFormatter()
 
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        let dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.dateFormat = dateFormat
 
         if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
             self.indexedAt = indexedAtDate
         } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "\(dateFormat) is an invalid date format for '\(indexedAtString).'"))
         }
     }
 }

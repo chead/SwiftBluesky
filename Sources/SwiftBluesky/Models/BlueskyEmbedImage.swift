@@ -66,8 +66,27 @@ public struct BlueskyEmbedImagesView: Decodable {
     }
 }
 
+public enum BlueskyEmbedImagesImageType: Decodable {
+    case atProtoBlob(ATProtoBlob)
+    case atProtoImageBlob(ATProtoImageBlob)
+
+    public init(from decoder: Decoder) throws {
+        let singleValueContainer = try decoder.singleValueContainer()
+
+        if let atProtoBlob = try? singleValueContainer.decode(ATProtoBlob.self) {
+            self = .atProtoBlob(atProtoBlob)
+        } 
+        else if let atProtoImageBlob = try? singleValueContainer.decode(ATProtoImageBlob.self) {
+            self = .atProtoImageBlob(atProtoImageBlob)
+        } 
+        else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "No blob found."))
+        }
+    }
+}
+
 public struct BlueskyEmbedImagesImage: Decodable {
-    public let image: ATProtoBlob
+    public let image: BlueskyEmbedImagesImageType
     public let alt: String
     public let aspectRatio: BlueskyEmbedImagesAspectRatio?
 }

@@ -38,14 +38,24 @@ public struct BlueskyFeedPost: Decodable {
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
         
-        let dateFormatter = DateFormatter()
-        
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        
-        if let createdAtDate = dateFormatter.date(from: createdAtString) {
-            self.createdAt = createdAtDate
+        let dateFormatterLong = DateFormatter()
+
+        let dateFormatLong = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+
+        dateFormatterLong.dateFormat = dateFormatLong
+
+        let dateFormatterShort = DateFormatter()
+
+        let dateFormatShort = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+
+        dateFormatterShort.dateFormat = dateFormatShort
+
+        if let createdAtDateLong = dateFormatterLong.date(from: createdAtString) {
+            self.createdAt = createdAtDateLong
+        } else if let createdAtDateShort = dateFormatterShort.date(from: createdAtString) {
+            self.createdAt = createdAtDateShort
         } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format for '\(createdAtString).'"))
         }
     }
 }
