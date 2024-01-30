@@ -10,10 +10,60 @@ import SwiftATProto
 
 fileprivate let maxFeedGeneratorViewDisplayNameLength = 3000
 
+enum BlueskyFeedThreadgateItemType: String, Decodable {
+    private enum FieldType: String, Decodable {
+        case mentionRule = "app.bsky.feed.threadgate#mentionRule"
+        case followingRule = "app.bsky.feed.threadgate#followingRule"
+        case listRule = "app.bsky.feed.threadgate#listRule"
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
+    }
+
+    case mentionRule
+    case followingRule
+    case listRule
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let fieldType = try container.decode(FieldType.self, forKey: .type)
+
+        switch fieldType {
+        case .mentionRule:
+            self = .mentionRule
+
+        case .followingRule:
+            self = .followingRule
+
+        case .listRule:
+            self = .listRule
+        }
+    }
+}
+
+public struct BlueskyFeedThreadgate: Decodable {
+    private enum CodingKeys: CodingKey {
+        case post
+        case allow
+    }
+
+    let post: String
+    let allow: [BlueskyFeedThreadgateItemType]?
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.post = try container.decode(String.self, forKey: .post)
+        self.allow = try container.decodeIfPresent([BlueskyFeedThreadgateItemType].self, forKey: .allow)
+    }
+}
+
 public struct BlueskyFeedThreadgateView: Decodable {
     public let uri: String?
     public let cid: String?
-    public let record: BlueskyFeedPost
+    public let record: BlueskyFeedThreadgate
     public let lists: [BlueskyGraphListViewBasic]?
 }
 
@@ -248,7 +298,7 @@ public struct BlueskyFeedPostView: Decodable {
     public let indexedAt: Date
     public let viewer: BlueskyFeedViewerState?
     public let labels: [ATProtoLabel]?
-    public let threadgate: BlueskyFeedThreadgateView?
+//    public let threadgate: BlueskyFeedThreadgateView?
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -275,7 +325,7 @@ public struct BlueskyFeedPostView: Decodable {
 
         self.viewer = try container.decodeIfPresent(BlueskyFeedViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([ATProtoLabel].self, forKey: .labels)
-        self.threadgate = try container.decodeIfPresent(BlueskyFeedThreadgateView.self, forKey: .threadgate)
+//        self.threadgate = try container.decodeIfPresent(BlueskyFeedThreadgateView.self, forKey: .threadgate)
     }
 }
 
