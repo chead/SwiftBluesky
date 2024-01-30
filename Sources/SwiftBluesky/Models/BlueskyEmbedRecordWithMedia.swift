@@ -12,6 +12,7 @@ public enum BlueskyEmbedRecordWithMediaViewMediaType: Decodable {
         case blueskyEmbedImages = "app.bsky.embed.images"
         case blueskyEmbedImagesView = "app.bsky.embed.images#view"
         case blueskyEmbedExternal = "app.bsky.embed.external"
+        case blueskyEmbedExternalView = "app.bsky.embed.external#view"
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -21,6 +22,7 @@ public enum BlueskyEmbedRecordWithMediaViewMediaType: Decodable {
     case blueskyEmbedImages(BlueskyEmbedImages)
     case blueskyEmbedImagesView(BlueskyEmbedImagesView)
     case blueskyEmbedExternal(BlueskyEmbedExternal)
+    case blueskyEmbedExternalView(BlueskyEmbedExternalView)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -38,6 +40,9 @@ public enum BlueskyEmbedRecordWithMediaViewMediaType: Decodable {
 
         case .blueskyEmbedExternal:
             try self = .blueskyEmbedExternal(singleValueContainer.decode(BlueskyEmbedExternal.self))
+
+        case .blueskyEmbedExternalView:
+            try self = .blueskyEmbedExternalView(singleValueContainer.decode(BlueskyEmbedExternalView.self))
         }
     }
 }
@@ -78,6 +83,6 @@ public enum BlueskyEmbedRecordWithMediaType: Decodable {
 }
 
 public struct BlueskyEmbedRecordWithMedia: Decodable {
-    public let record: BlueskyEmbedRecord
     public let media: BlueskyEmbedRecordWithMediaType
+    public let record: BlueskyEmbedRecord
 }
