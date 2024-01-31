@@ -21,7 +21,7 @@ public enum BlueskyGraphListPurpose: String, Decodable {
 }
 
 public struct BlueskyGraphListItemView: Decodable {
-    public let uri: URL
+    public let uri: String
     public let subject: BlueskyActorProfileView
 }
 
@@ -39,7 +39,7 @@ public struct BlueskyGraphListView: Decodable {
         case indexedAt
     }
 
-    public let uri: URL
+    public let uri: String
     public let cid: String
     public let creator: BlueskyActorProfileView
     public let name: String
@@ -53,7 +53,7 @@ public struct BlueskyGraphListView: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.uri = try container.decode(URL.self, forKey: .uri)
+        self.uri = try container.decode(String.self, forKey: .uri)
         self.cid = try container.decode(String.self, forKey: .cid)
         self.creator = try container.decode(BlueskyActorProfileView.self, forKey: .creator)
         self.name = try container.decode(String.self, forKey: .name)
@@ -98,7 +98,7 @@ public struct BlueskyGraphListViewBasic: Decodable {
         case indexedAt
     }
 
-    public let uri: URL
+    public let uri: String
     public let cid: String
     public let creator: BlueskyActorProfileView
     public let name: String
@@ -110,7 +110,7 @@ public struct BlueskyGraphListViewBasic: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.uri = try container.decode(URL.self, forKey: .uri)
+        self.uri = try container.decode(String.self, forKey: .uri)
         self.cid = try container.decode(String.self, forKey: .cid)
         self.creator = try container.decode(BlueskyActorProfileView.self, forKey: .creator)
         self.name = try container.decode(String.self, forKey: .name)
