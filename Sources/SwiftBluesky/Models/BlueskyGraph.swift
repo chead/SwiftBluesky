@@ -11,8 +11,8 @@ fileprivate let maxGraphListViewNameLength = 64
 fileprivate let maxGraphListViewDesriptionLength = 3000
 
 public struct BlueskyGraphListViewerState: Decodable {
-    public let muted: Bool
-    public let blocked: URL
+    public let muted: Bool?
+    public let blocked: String?
 }
 
 public enum BlueskyGraphListPurpose: String, Decodable {
