@@ -366,8 +366,8 @@ public indirect enum BlueskyFeedThreadViewPostPostType: Decodable {
 
 public struct BlueskyFeedThreadViewPost: Decodable {
     public let post: BlueskyFeedPostView
-    public let parent: BlueskyFeedThreadViewPostPostType
-    public let replies: [BlueskyFeedThreadViewPostPostType]
+    public let parent: BlueskyFeedThreadViewPostPostType?
+    public let replies: [BlueskyFeedThreadViewPostPostType]?
 }
 
 public struct BlueskyFeedReasonRepost: Decodable {

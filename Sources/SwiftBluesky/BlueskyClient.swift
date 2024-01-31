@@ -104,7 +104,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<BlueskyGetProfilesResponseBody, BlueskyClientError> {
+    public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<BlueskyActorGetProfilesResponseBody, BlueskyClientError> {
         let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
         
         let getProfilesJSONData = try Data(contentsOf: getProfilesJSONURL)
@@ -121,7 +121,7 @@ public class BlueskyClient {
                                                                 token: accessToken, 
                                                                 requestable: query)
 
-                let getProfilesResponse: Result<BlueskyGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
+                let getProfilesResponse: Result<BlueskyActorGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
 
                 switch getProfilesResponse {
                 case .success(let getProfilesResponseBody):
@@ -155,7 +155,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String?, actor: String, limit: Int, cursor: String) async throws -> Result<BlueskyGetAuthorFeedResponseBody, BlueskyClientError> {
+    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String?, actor: String, limit: Int, cursor: String) async throws -> Result<BlueskyFeedGetAuthorFeedResponseBody, BlueskyClientError> {
         let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
         
         let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
@@ -174,7 +174,7 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getAuthorFeedResponse: Result<BlueskyGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
+                let getAuthorFeedResponse: Result<BlueskyFeedGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
 
                 switch getAuthorFeedResponse {
                 case .success(let getAuthorFeedResponseBody):
@@ -208,7 +208,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getTimeline(host: URL, accessToken: String, refreshToken: String?, algorithm: String, limit: Int, cursor: String) async throws -> Result<BlueskyGetTimelineResponseBody, BlueskyClientError> {
+    public func getTimeline(host: URL, accessToken: String, refreshToken: String?, algorithm: String, limit: Int, cursor: String) async throws -> Result<BlueskyFeedGetTimelineResponseBody, BlueskyClientError> {
         let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getTimeline", withExtension: "json")!
 
         let getTimelineJSONData = try Data(contentsOf: getTimelineJSONURL)
@@ -227,7 +227,7 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getTimelineResponse: Result<BlueskyGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
+                let getTimelineResponse: Result<BlueskyFeedGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
 
                 switch getTimelineResponse {
                 case .success(let getTimelineResponseBody):
@@ -259,5 +259,58 @@ public class BlueskyClient {
         }
 
         return .failure(.unknown)
+    }
+
+    public func getPostThread(host: URL, accessToken: String, refreshToken: String?, uri: String, depth: Int = 6, parentHeight: Int = 80) async throws -> Result<BlueskyFeedGetPostThreadResponseBody, BlueskyClientError> {
+        let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPostThread", withExtension: "json")!
+
+        let getPostThreadJSONData = try Data(contentsOf: getTimelineJSONURL)
+
+        let getPostThreadLexicon = try JSONDecoder().decode(Lexicon.self, from: getPostThreadJSONData)
+
+        if let mainDef = getPostThreadLexicon.defs["main"] {
+            switch mainDef {
+            case .query(let query):
+                let getPostThreadRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: getPostThreadLexicon.id,
+                                                                  parameters: ["uri" : uri,
+                                                                               "depth" : depth,
+                                                                               "parentHeight" : parentHeight],
+                                                                  body: nil,
+                                                                  token: accessToken,
+                                                                  requestable: query)
+
+                let getPostThreadResponse: Result<BlueskyFeedGetPostThreadResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostThreadRequest)
+
+                switch getPostThreadResponse {
+                case .success(let getPostThreadResponseBody):
+                    return .success(getPostThreadResponseBody)
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if let refreshToken = refreshToken {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponseBody):
+                                return try await self.getPostThread(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, uri: uri, depth: depth, parentHeight: parentHeight)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+        } else {
+            return .failure(.unknown)
+        }
     }
 }
