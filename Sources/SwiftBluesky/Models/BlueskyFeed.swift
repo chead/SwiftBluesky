@@ -316,6 +316,7 @@ public struct BlueskyFeedPostView: Decodable {
         let dateFormatter = DateFormatter()
 
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
         if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
             self.indexedAt = indexedAtDate
