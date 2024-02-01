@@ -309,6 +309,59 @@ public class BlueskyClient {
             default:
                 return .failure(.invalidRequest)
             }
+
+        } else {
+            return .failure(.unknown)
+        }
+    }
+
+    public func getPosts(host: URL, accessToken: String, refreshToken: String?, uris: [String]) async throws -> Result<BlueskyFeedGetPostsResponseBody, BlueskyClientError> {
+        let getPostsJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPosts", withExtension: "json")!
+
+        let getPostsJSONData = try Data(contentsOf: getPostsJSONURL)
+
+        let getPostsLexicon = try JSONDecoder().decode(Lexicon.self, from: getPostsJSONData)
+
+        if let mainDef = getPostsLexicon.defs["main"] {
+            switch mainDef {
+            case .query(let query):
+                let getPostsRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: getPostsLexicon.id,
+                                                                  parameters: ["uris" : uris],
+                                                                  body: nil,
+                                                                  token: accessToken,
+                                                                  requestable: query)
+
+                let getPostsResponse: Result<BlueskyFeedGetPostsResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
+
+                switch getPostsResponse {
+                case .success(let getPostsResponseBody):
+                    return .success(getPostsResponseBody)
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if let refreshToken = refreshToken {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponseBody):
+                                return try await self.getPosts(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, uris: uris)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+
         } else {
             return .failure(.unknown)
         }
