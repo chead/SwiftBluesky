@@ -188,13 +188,9 @@ public struct BlueskyFeedNotFoundPost: Decodable {
 
 public enum BlueskyFeedPostViewEmbedType: Decodable {
     private enum FieldType: String, Decodable {
-//        case blueskyEmbedImages = "app.bsky.embed.images"
         case blueskyEmbedImagesView = "app.bsky.embed.images#view"
-//        case blueskyEmbedExternal = "app.bsky.embed.external"
         case blueskyEmbedExternalView = "app.bsky.embed.external#view"
-//        case blueskyEmbedRecord = "app.bsky.embed.record"
         case blueskyEmbedRecordView = "app.bsky.embed.record#view"
-//        case blueskyEmbedRecordWithMedia = "app.bsky.embed.recordWithMedia"
         case blueskyEmbedRecordWithMediaView = "app.bsky.embed.recordWithMedia#view"
     }
 
