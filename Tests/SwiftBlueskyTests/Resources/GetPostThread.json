@@ -1,0 +1,86 @@
+{
+    "thread": {
+        "$type": "app.bsky.feed.defs#threadViewPost",
+        "post": {
+            "uri": "at://did:plc:ilzjudboqn57bkibpf6aq32x/app.bsky.feed.post/3kka6jahums2y",
+            "cid": "bafyreiej52c2lzgypkgoevzezykuqzwnjtiawnofwnfhtpxrwlnaocbvlq",
+            "author": {
+                "did": "did:plc:ilzjudboqn57bkibpf6aq32x",
+                "handle": "hannah.not-ok.computer",
+                "displayName": " 🏳️‍⚧️ Hannah K (brain tumor arc)",
+                "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:ilzjudboqn57bkibpf6aq32x/bafkreiguk6l4dkj3uplvvlaqf2ox4tuffjpaazeyitrju6e75detztcki4@jpeg",
+                "viewer": {
+                    "muted": false,
+                    "blockedBy": false,
+                    "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3kairqh5nnf2r"
+                },
+                "labels": []
+            },
+            "record": {
+                "$type": "app.bsky.feed.post",
+                "createdAt": "2024-01-30T22:16:50.248Z",
+                "facets": [{
+                    "$type": "app.bsky.richtext.facet",
+                    "features": [{
+                        "$type": "app.bsky.richtext.facet#mention",
+                        "did": "did:plc:muslnzxqartd66kckkqem6qs"
+                    }],
+                    "index": {
+                        "byteEnd": 296,
+                        "byteStart": 274
+                    }
+                }],
+                "langs": ["en"],
+                "text": "A definite point of tumor-frustration is that I got ~1/4 into \"The City We Became\" w/ difficulty before realizing that I couldn't read anything longer than a short essay, no focus.\n\nIt's gotten worse, but I'm going to try to read \"How Long 'Til Black Future Month?\" again.\n\n@nkjemisin.bsky.social 💜"
+            },
+            "replyCount": 1,
+            "repostCount": 1,
+            "likeCount": 17,
+            "indexedAt": "2024-01-30T22:16:50.050Z",
+            "viewer": {},
+            "labels": []
+        },
+        "replies": [{
+            "$type": "app.bsky.feed.defs#threadViewPost",
+            "post": {
+                "uri": "at://did:plc:ilzjudboqn57bkibpf6aq32x/app.bsky.feed.post/3kka6s6b43k2u",
+                "cid": "bafyreifjgegjbdu7ji553cm2y7wblioyevm2doaayu2lzwmw33o53dziuq",
+                "author": {
+                    "did": "did:plc:ilzjudboqn57bkibpf6aq32x",
+                    "handle": "hannah.not-ok.computer",
+                    "displayName": " 🏳️‍⚧️ Hannah K (brain tumor arc)",
+                    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:ilzjudboqn57bkibpf6aq32x/bafkreiguk6l4dkj3uplvvlaqf2ox4tuffjpaazeyitrju6e75detztcki4@jpeg",
+                    "viewer": {
+                        "muted": false,
+                        "blockedBy": false,
+                        "following": "at://did:plc:etdcb47v54mwv2wdufhi4tu6/app.bsky.graph.follow/3kairqh5nnf2r"
+                    },
+                    "labels": []
+                },
+                "record": {
+                    "$type": "app.bsky.feed.post",
+                    "createdAt": "2024-01-30T22:21:49.879Z",
+                    "langs": ["en"],
+                    "reply": {
+                        "parent": {
+                            "cid": "bafyreiej52c2lzgypkgoevzezykuqzwnjtiawnofwnfhtpxrwlnaocbvlq",
+                            "uri": "at://did:plc:ilzjudboqn57bkibpf6aq32x/app.bsky.feed.post/3kka6jahums2y"
+                        },
+                        "root": {
+                            "cid": "bafyreiej52c2lzgypkgoevzezykuqzwnjtiawnofwnfhtpxrwlnaocbvlq",
+                            "uri": "at://did:plc:ilzjudboqn57bkibpf6aq32x/app.bsky.feed.post/3kka6jahums2y"
+                        }
+                    },
+                    "text": "Even my ideal paths from here forward do not renew my ability to read. Surgery can stop focus getting worse, but not renew it. Even at its best possible outcome it will severely damage my ability to process language, written or spoken. Memory issues will likely get worse as well."
+                },
+                "replyCount": 0,
+                "repostCount": 0,
+                "likeCount": 12,
+                "indexedAt": "2024-01-30T22:21:49.551Z",
+                "viewer": {},
+                "labels": []
+            },
+            "replies": []
+        }]
+    }
+}

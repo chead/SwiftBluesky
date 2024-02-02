@@ -22,6 +22,10 @@ let package = Package(
         ),
         .testTarget(
             name: "SwiftBlueskyTests",
-            dependencies: ["SwiftBluesky"]),
+            dependencies: ["SwiftBluesky"],
+            resources: [
+                .process("Resources")
+            ]
+        ),
     ]
 )

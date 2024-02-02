@@ -333,7 +333,7 @@ public class BlueskyClient {
                                                                   requestable: query)
 
                 let getPostsResponse: Result<BlueskyFeedGetPostsResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
-
+  
                 switch getPostsResponse {
                 case .success(let getPostsResponseBody):
                     return .success(getPostsResponseBody)
