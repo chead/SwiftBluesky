@@ -8,7 +8,7 @@
 import Foundation
 import SwiftATProto
 
-public struct BlueskyFeedPostRepyRef: Decodable {
+public struct BlueskyFeedPostReplyRef: Decodable {
     public let root: ATProtoRepoStrongRef
     public let parent: ATProtoRepoStrongRef
 }
@@ -24,7 +24,7 @@ public struct BlueskyFeedPost: Decodable {
 
     public let text: String
     public let facets: [BlueskyRichtextFacet]?
-    public let reply: BlueskyFeedPostRepyRef?
+    public let reply: BlueskyFeedPostReplyRef?
     public let embed: BlueskyEmbedType?
     public let createdAt: Date
     
@@ -33,7 +33,7 @@ public struct BlueskyFeedPost: Decodable {
 
         self.text = try container.decode(String.self, forKey: .text)
         self.facets = try container.decodeIfPresent([BlueskyRichtextFacet].self, forKey: .faces)
-        self.reply = try container.decodeIfPresent(BlueskyFeedPostRepyRef.self, forKey: .reply)
+        self.reply = try container.decodeIfPresent(BlueskyFeedPostReplyRef.self, forKey: .reply)
         self.embed = try container.decodeIfPresent(BlueskyEmbedType.self, forKey: .embed)
         
         let createdAtString = try container.decode(String.self, forKey: .createdAt)
