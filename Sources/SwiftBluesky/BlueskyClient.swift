@@ -104,7 +104,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getProfiles(host: URL, accessToken: String, refreshToken: String?, actors: [String]) async throws -> Result<BlueskyActorGetProfilesResponseBody, BlueskyClientError> {
+    public func getProfiles(host: URL, accessToken: String, refreshToken: String, actors: [String], retry: Bool = true) async throws -> Result<(body: BlueskyActorGetProfilesResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
         
         let getProfilesJSONData = try Data(contentsOf: getProfilesJSONURL)
@@ -125,15 +125,21 @@ public class BlueskyClient {
 
                 switch getProfilesResponse {
                 case .success(let getProfilesResponseBody):
-                    return .success(getProfilesResponseBody)
+                    return .success((body: getProfilesResponseBody,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
                     case .badRequest:
-                        if let refreshToken = refreshToken {
+                        if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponseBody):
-                                return try await self.getProfiles(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, actors: actors)
+                                return try await self.getProfiles(host: host,
+                                                                  accessToken: refreshSessionResponseBody.accessJwt,
+                                                                  refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                  actors: actors,
+                                                                  retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
@@ -155,7 +161,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String?, actor: String, limit: Int, cursor: String) async throws -> Result<BlueskyFeedGetAuthorFeedResponseBody, BlueskyClientError> {
+    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: String, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
         
         let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
@@ -178,15 +184,23 @@ public class BlueskyClient {
 
                 switch getAuthorFeedResponse {
                 case .success(let getAuthorFeedResponseBody):
-                    return .success(getAuthorFeedResponseBody)
+                    return .success((body: getAuthorFeedResponseBody,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
                     case .badRequest:
-                        if let refreshToken = refreshToken {
+                        if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponseBody):
-                                return try await self.getAuthorFeed(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, actor: actor, limit: limit, cursor: cursor)
+                                return try await self.getAuthorFeed(host: host,
+                                                                    accessToken: refreshSessionResponseBody.accessJwt,
+                                                                    refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                    actor: actor,
+                                                                    limit: limit,
+                                                                    cursor: cursor,
+                                                                    retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
@@ -208,7 +222,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getTimeline(host: URL, accessToken: String, refreshToken: String?, algorithm: String, limit: Int, cursor: String) async throws -> Result<BlueskyFeedGetTimelineResponseBody, BlueskyClientError> {
+    public func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: String, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getTimeline", withExtension: "json")!
 
         let getTimelineJSONData = try Data(contentsOf: getTimelineJSONURL)
@@ -231,15 +245,24 @@ public class BlueskyClient {
 
                 switch getTimelineResponse {
                 case .success(let getTimelineResponseBody):
-                    return .success(getTimelineResponseBody)
+
+                    return .success((body: getTimelineResponseBody,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                      refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
                     case .badRequest:
-                        if let refreshToken = refreshToken {
+                        if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponseBody):
-                                return try await self.getTimeline(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, algorithm: algorithm, limit: limit, cursor: cursor)
+                                return try await self.getTimeline(host: host,
+                                                                  accessToken: refreshSessionResponseBody.accessJwt,
+                                                                  refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                  algorithm: algorithm,
+                                                                  limit: limit,
+                                                                  cursor: cursor,
+                                                                  retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
@@ -261,7 +284,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getPostThread(host: URL, accessToken: String, refreshToken: String?, uri: String, depth: Int = 6, parentHeight: Int = 80) async throws -> Result<BlueskyFeedGetPostThreadResponseBody, BlueskyClientError> {
+    public func getPostThread(host: URL, accessToken: String, refreshToken: String, uri: String, depth: Int = 6, parentHeight: Int = 80, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostThreadResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPostThread", withExtension: "json")!
 
         let getPostThreadJSONData = try Data(contentsOf: getTimelineJSONURL)
@@ -284,15 +307,23 @@ public class BlueskyClient {
 
                 switch getPostThreadResponse {
                 case .success(let getPostThreadResponseBody):
-                    return .success(getPostThreadResponseBody)
+                    return .success((body: getPostThreadResponseBody,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                      refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
                     case .badRequest:
-                        if let refreshToken = refreshToken {
+                        if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponseBody):
-                                return try await self.getPostThread(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, uri: uri, depth: depth, parentHeight: parentHeight)
+                                return try await self.getPostThread(host: host,
+                                                                    accessToken: refreshSessionResponseBody.accessJwt,
+                                                                    refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                    uri: uri,
+                                                                    depth: depth,
+                                                                    parentHeight: parentHeight,
+                                                                    retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
@@ -315,7 +346,7 @@ public class BlueskyClient {
         }
     }
 
-    public func getPosts(host: URL, accessToken: String, refreshToken: String?, uris: [String]) async throws -> Result<BlueskyFeedGetPostsResponseBody, BlueskyClientError> {
+    public func getPosts(host: URL, accessToken: String, refreshToken: String, uris: [String], retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostsResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getPostsJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPosts", withExtension: "json")!
 
         let getPostsJSONData = try Data(contentsOf: getPostsJSONURL)
@@ -336,15 +367,21 @@ public class BlueskyClient {
   
                 switch getPostsResponse {
                 case .success(let getPostsResponseBody):
-                    return .success(getPostsResponseBody)
+                    return .success((body: getPostsResponseBody,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
                     case .badRequest:
-                        if let refreshToken = refreshToken {
+                        if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponseBody):
-                                return try await self.getPosts(host: host, accessToken: refreshSessionResponseBody.accessJwt, refreshToken: nil, uris: uris)
+                                return try await self.getPosts(host: host,
+                                                               accessToken: refreshSessionResponseBody.accessJwt,
+                                                               refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                               uris: uris,
+                                                               retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
