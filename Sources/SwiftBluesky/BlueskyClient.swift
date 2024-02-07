@@ -161,7 +161,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: String, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+    public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
         
         let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
@@ -175,7 +175,7 @@ public class BlueskyClient {
                                                                   nsid: getAuthorFeedLexicon.id,
                                                                   parameters: ["actor" : actor, 
                                                                                "limit" : limit,
-                                                                               "cursor" : cursor],
+                                                                               "cursor" : ISO8601DateFormatter().string(from: cursor)],
                                                                   body: nil,
                                                                   token: accessToken,
                                                                   requestable: query)
@@ -222,7 +222,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: String, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+    public func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getTimeline", withExtension: "json")!
 
         let getTimelineJSONData = try Data(contentsOf: getTimelineJSONURL)
@@ -236,7 +236,7 @@ public class BlueskyClient {
                                                                   nsid: getTimelineLexicon.id,
                                                                   parameters: ["algorithm" : algorithm,
                                                                                "limit" : limit,
-                                                                               "cursor" : cursor],
+                                                                               "cursor" : ISO8601DateFormatter().string(from: cursor)],
                                                                   body: nil,
                                                                   token: accessToken,
                                                                   requestable: query)
