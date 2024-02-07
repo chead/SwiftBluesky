@@ -78,11 +78,7 @@ public struct BlueskyGraphListView: Decodable {
 
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-        if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
-            self.indexedAt = indexedAtDate
-        } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
-        }
+        self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
     }
 }
 
@@ -124,11 +120,7 @@ public struct BlueskyGraphListViewBasic: Decodable {
 
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-            if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
-                self.indexedAt = indexedAtDate
-            } else {
-                throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
-            }
+            self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
         } else {
             self.indexedAt = nil
         }

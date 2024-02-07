@@ -132,11 +132,7 @@ public struct BlueskyFeedGeneratorView: Decodable {
 
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-        if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
-            self.indexedAt = indexedAtDate
-        } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
-        }
+        self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
     }
 }
 
@@ -298,11 +294,7 @@ public struct BlueskyFeedPostView: Decodable {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-        if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
-            self.indexedAt = indexedAtDate
-        } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
-        }
+        self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
 
         self.viewer = try container.decodeIfPresent(BlueskyFeedViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([ATProtoLabel].self, forKey: .labels)
@@ -370,11 +362,7 @@ public struct BlueskyFeedReasonRepost: Decodable {
 
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-        if let indexedAtDate = dateFormatter.date(from: indexedAtString) {
-            self.indexedAt = indexedAtDate
-        } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Invalid date format."))
-        }
+        self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
     }
 }
 
