@@ -37,21 +37,24 @@ public enum BlueskyClientError: Error {
 public class BlueskyClient {
     public init() {}
 
-    public func createSession(host: URL, identifier: String, password: String) async throws -> Result<ATProtoCreateSessionResponseBody, BlueskyClientError> {
-        let createSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.createSession", withExtension: "json")!
-        
-        let createSessionJSONData = try Data(contentsOf: createSessionJSONURL)
-        
-        let createSessionLexicon = try JSONDecoder().decode(Lexicon.self, from: createSessionJSONData)
+    public func createSession(host: URL, identifier: String, password: String) async throws -> Result<ATProtoServerCreateSessionResponseBody, BlueskyClientError> {
+        let createSessionLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.createSession",
+                                                                                                         withExtension: "json")!))
 
         if let mainDef = createSessionLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let createSessionRequestBody = ATProtoCreateSessionRequestBody(identifier: identifier, password: password)
+                let createSessionRequestBody = ATProtoServerCreateSessionRequestBody(identifier: identifier, password: password)
 
-                let createSessionRequest = try ATProtoHTTPRequest(host: host, nsid: createSessionLexicon.id, parameters: [:], body: createSessionRequestBody, token: nil, requestable: procedure)
-                
-                let createSessionResponse: Result<ATProtoCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
+                let createSessionRequest = try ATProtoHTTPRequest(host: host, 
+                                                                  nsid: createSessionLexicon.id,
+                                                                  parameters: [:],
+                                                                  body: createSessionRequestBody,
+                                                                  token: nil,
+                                                                  requestable: procedure)
+
+                let createSessionResponse: Result<ATProtoServerCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
 
                 switch createSessionResponse {
                 case .success(let createSessionResponseBody):
@@ -69,12 +72,10 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoRefreshSessionResponseBody, BlueskyClientError> {
-        let refreshSessionJSONURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json")!
-
-        let refreshSessionJSONData = try Data(contentsOf: refreshSessionJSONURL)
-
-        let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self, from: refreshSessionJSONData)
+    public func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoServerRefreshSessionResponseBody, BlueskyClientError> {
+        let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                             from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.refreshSession",
+                                                                                                          withExtension: "json")!))
 
         if let mainDef = refreshSessionLexicon.defs["main"] {
             switch mainDef {
@@ -86,7 +87,7 @@ public class BlueskyClient {
                                                                    token: refreshToken,
                                                                    requestable: procedure)
 
-                let refreshSessionResponse: Result<ATProtoRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+                let refreshSessionResponse: Result<ATProtoServerRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
 
                 switch refreshSessionResponse {
                 case .success(let refreshSessionResponseBody):
@@ -105,12 +106,10 @@ public class BlueskyClient {
     }
 
     public func getProfiles(host: URL, accessToken: String, refreshToken: String, actors: [String], retry: Bool = true) async throws -> Result<(body: BlueskyActorGetProfilesResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getProfilesJSONURL = Bundle.module.url(forResource: "app.bsky.actor.getProfiles", withExtension: "json")!
-        
-        let getProfilesJSONData = try Data(contentsOf: getProfilesJSONURL)
-        
-        let getProfilesLexicon = try JSONDecoder().decode(Lexicon.self, from: getProfilesJSONData)
-        
+        let getProfilesLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                          from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.actor.getProfiles",
+                                                                                                       withExtension: "json")!))
+
         if let mainDef = getProfilesLexicon.defs["main"] {
             switch mainDef {
             case .query(let query):
@@ -162,12 +161,10 @@ public class BlueskyClient {
     }
 
     public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getAuthorFeedJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed", withExtension: "json")!
-        
-        let getAuthorFeedJSONData = try Data(contentsOf: getAuthorFeedJSONURL)
-        
-        let getAuthorFeedLexicon = try JSONDecoder().decode(Lexicon.self, from: getAuthorFeedJSONData)
-        
+        let getAuthorFeedLexicon = try JSONDecoder().decode(Lexicon.self, from:
+                                                                try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.feed.getAuthorFeed",
+                                                                                                       withExtension: "json")!))
+
         if let mainDef = getAuthorFeedLexicon.defs["main"] {
             switch mainDef {
             case .query(let query):
@@ -223,11 +220,9 @@ public class BlueskyClient {
     }
 
     public func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getTimeline", withExtension: "json")!
-
-        let getTimelineJSONData = try Data(contentsOf: getTimelineJSONURL)
-
-        let getTimelineLexicon = try JSONDecoder().decode(Lexicon.self, from: getTimelineJSONData)
+        let getTimelineLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                          from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.feed.getTimeline",
+                                                                                                       withExtension: "json")!))
 
         if let mainDef = getTimelineLexicon.defs["main"] {
             switch mainDef {
@@ -285,11 +280,9 @@ public class BlueskyClient {
     }
 
     public func getPostThread(host: URL, accessToken: String, refreshToken: String, uri: String, depth: Int = 6, parentHeight: Int = 80, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostThreadResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getTimelineJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPostThread", withExtension: "json")!
-
-        let getPostThreadJSONData = try Data(contentsOf: getTimelineJSONURL)
-
-        let getPostThreadLexicon = try JSONDecoder().decode(Lexicon.self, from: getPostThreadJSONData)
+        let getPostThreadLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.feed.getPostThread",
+                                                                                                         withExtension: "json")!))
 
         if let mainDef = getPostThreadLexicon.defs["main"] {
             switch mainDef {
@@ -347,11 +340,9 @@ public class BlueskyClient {
     }
 
     public func getPosts(host: URL, accessToken: String, refreshToken: String, uris: [String], retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostsResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getPostsJSONURL = Bundle.module.url(forResource: "app.bsky.feed.getPosts", withExtension: "json")!
-
-        let getPostsJSONData = try Data(contentsOf: getPostsJSONURL)
-
-        let getPostsLexicon = try JSONDecoder().decode(Lexicon.self, from: getPostsJSONData)
+        let getPostsLexicon = try JSONDecoder().decode(Lexicon.self, 
+                                                       from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.feed.getPosts",
+                                                                                                    withExtension: "json")!))
 
         if let mainDef = getPostsLexicon.defs["main"] {
             switch mainDef {
@@ -402,5 +393,70 @@ public class BlueskyClient {
         } else {
             return .failure(.unknown)
         }
+    }
+
+    public func createLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<ATProtoRepoCreateRecordResponseBody, BlueskyClientError> {
+
+
+
+        let createRecordLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.createRecord",
+                                                                                                         withExtension: "json")!))
+
+        if let mainDef = createRecordLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let like = BlueskyFeedLike(subject: ATProtoRepoStrongRef(uri: uri, cid: cid),
+                                           createdAt: Date())
+
+                let createRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
+                                                                             collection: "app.bsky.feed.like",
+                                                                             record: like)
+
+                let createRecordRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: createRecordLexicon.id,
+                                                                  parameters: [:],
+                                                                  body: createRecordRequestBody,
+                                                                  token: accessToken,
+                                                                  requestable: procedure)
+
+                let createRecordResponse: Result<ATProtoRepoCreateRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+
+                switch createRecordResponse {
+                case .success(let createRecordResponse):
+                    return .success(createRecordResponse)
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if retry == true {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponseBody):
+                                return try await self.createLike(host: host, 
+                                                                 accessToken: accessToken,
+                                                                 refreshToken: refreshToken,
+                                                                 repo: repo,
+                                                                 uri: uri,
+                                                                 cid: cid,
+                                                                 retry: false)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+        }
+
+        return .failure(.unknown)
     }
 }
