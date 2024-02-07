@@ -19,11 +19,16 @@ public enum BlueskyEmbedRecordWithMediaViewMediaType: Decodable {
 
     case blueskyEmbedImagesView(BlueskyEmbedImagesView)
     case blueskyEmbedExternalView(BlueskyEmbedExternalView)
+    case unknown
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        let fieldType = try container.decode(FieldType.self, forKey: .type)
+        guard let fieldType = try? container.decode(FieldType.self, forKey: .type) else {
+            self = .unknown
+
+            return
+        }
 
         let singleValueContainer = try decoder.singleValueContainer()
 
