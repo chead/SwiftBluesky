@@ -395,7 +395,7 @@ public class BlueskyClient {
         }
     }
 
-    public func createLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<ATProtoRepoCreateRecordResponseBody, BlueskyClientError> {
+    public func createLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
 
 
 
@@ -424,7 +424,9 @@ public class BlueskyClient {
 
                 switch createRecordResponse {
                 case .success(let createRecordResponse):
-                    return .success(createRecordResponse)
+                    return .success((body: createRecordResponse,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
