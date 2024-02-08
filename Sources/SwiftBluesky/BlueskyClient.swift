@@ -54,11 +54,11 @@ public class BlueskyClient {
                                                                   token: nil,
                                                                   requestable: procedure)
 
-                let createSessionResponse: Result<ATProtoServerCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
+                let createSessionResult: Result<ATProtoServerCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
 
-                switch createSessionResponse {
-                case .success(let createSessionResponseBody):
-                    return .success(createSessionResponseBody)
+                switch createSessionResult {
+                case .success(let createSessionResponse):
+                    return .success(createSessionResponse)
                 
                 case .failure(let error):
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
@@ -87,11 +87,11 @@ public class BlueskyClient {
                                                                    token: refreshToken,
                                                                    requestable: procedure)
 
-                let refreshSessionResponse: Result<ATProtoServerRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+                let refreshSessionResult: Result<ATProtoServerRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
 
-                switch refreshSessionResponse {
-                case .success(let refreshSessionResponseBody):
-                    return .success(refreshSessionResponseBody)
+                switch refreshSessionResult {
+                case .success(let refreshSessionResponse):
+                    return .success(refreshSessionResponse)
 
                 case .failure(let error):
                     return .failure(BlueskyClientError(atProtoHTTPClientError: error))
@@ -120,11 +120,11 @@ public class BlueskyClient {
                                                                 token: accessToken, 
                                                                 requestable: query)
 
-                let getProfilesResponse: Result<BlueskyActorGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
+                let getProfilesResult: Result<BlueskyActorGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
 
-                switch getProfilesResponse {
-                case .success(let getProfilesResponseBody):
-                    return .success((body: getProfilesResponseBody,
+                switch getProfilesResult {
+                case .success(let getProfilesResponse):
+                    return .success((body: getProfilesResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
 
@@ -133,10 +133,10 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.getProfiles(host: host,
-                                                                  accessToken: refreshSessionResponseBody.accessJwt,
-                                                                  refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                  accessToken: refreshSessionResponse.accessJwt,
+                                                                  refreshToken: refreshSessionResponse.refreshJwt,
                                                                   actors: actors,
                                                                   retry: false)
 
@@ -177,11 +177,11 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getAuthorFeedResponse: Result<BlueskyFeedGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
+                let getAuthorFeedResult: Result<BlueskyFeedGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
 
-                switch getAuthorFeedResponse {
-                case .success(let getAuthorFeedResponseBody):
-                    return .success((body: getAuthorFeedResponseBody,
+                switch getAuthorFeedResult {
+                case .success(let getAuthorFeedResponse):
+                    return .success((body: getAuthorFeedResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
 
@@ -190,10 +190,10 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.getAuthorFeed(host: host,
-                                                                    accessToken: refreshSessionResponseBody.accessJwt,
-                                                                    refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                    accessToken: refreshSessionResponse.accessJwt,
+                                                                    refreshToken: refreshSessionResponse.refreshJwt,
                                                                     actor: actor,
                                                                     limit: limit,
                                                                     cursor: cursor,
@@ -236,12 +236,11 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getTimelineResponse: Result<BlueskyFeedGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
+                let getTimelineResult: Result<BlueskyFeedGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
 
-                switch getTimelineResponse {
-                case .success(let getTimelineResponseBody):
-
-                    return .success((body: getTimelineResponseBody,
+                switch getTimelineResult {
+                case .success(let getTimelineResponse):
+                    return .success((body: getTimelineResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                       refreshToken: refreshToken) : nil))
 
@@ -250,10 +249,10 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.getTimeline(host: host,
-                                                                  accessToken: refreshSessionResponseBody.accessJwt,
-                                                                  refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                  accessToken: refreshSessionResponse.accessJwt,
+                                                                  refreshToken: refreshSessionResponse.refreshJwt,
                                                                   algorithm: algorithm,
                                                                   limit: limit,
                                                                   cursor: cursor,
@@ -296,11 +295,11 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getPostThreadResponse: Result<BlueskyFeedGetPostThreadResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostThreadRequest)
+                let getPostThreadResult: Result<BlueskyFeedGetPostThreadResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostThreadRequest)
 
-                switch getPostThreadResponse {
-                case .success(let getPostThreadResponseBody):
-                    return .success((body: getPostThreadResponseBody,
+                switch getPostThreadResult {
+                case .success(let getPostThreadResponse):
+                    return .success((body: getPostThreadResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                       refreshToken: refreshToken) : nil))
 
@@ -309,10 +308,10 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.getPostThread(host: host,
-                                                                    accessToken: refreshSessionResponseBody.accessJwt,
-                                                                    refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                                    accessToken: refreshSessionResponse.accessJwt,
+                                                                    refreshToken: refreshSessionResponse.refreshJwt,
                                                                     uri: uri,
                                                                     depth: depth,
                                                                     parentHeight: parentHeight,
@@ -354,11 +353,11 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getPostsResponse: Result<BlueskyFeedGetPostsResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
+                let getPostsResult: Result<BlueskyFeedGetPostsResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
   
-                switch getPostsResponse {
-                case .success(let getPostsResponseBody):
-                    return .success((body: getPostsResponseBody,
+                switch getPostsResult {
+                case .success(let getPostsResponse):
+                    return .success((body: getPostsResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
 
@@ -367,10 +366,10 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.getPosts(host: host,
-                                                               accessToken: refreshSessionResponseBody.accessJwt,
-                                                               refreshToken: refreshSessionResponseBody.refreshJwt,
+                                                               accessToken: refreshSessionResponse.accessJwt,
+                                                               refreshToken: refreshSessionResponse.refreshJwt,
                                                                uris: uris,
                                                                retry: false)
 
@@ -400,18 +399,19 @@ public class BlueskyClient {
 
 
         let createRecordLexicon = try JSONDecoder().decode(Lexicon.self,
-                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.createRecord",
-                                                                                                         withExtension: "json")!))
+                                                           from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.createRecord",
+                                                                                                        withExtension: "json")!))
 
         if let mainDef = createRecordLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let like = BlueskyFeedLike(subject: ATProtoRepoStrongRef(uri: uri, cid: cid),
+                let like = BlueskyFeedLike(subject: ATProtoRepoStrongRef(uri: uri, 
+                                                                         cid: cid),
                                            createdAt: Date())
 
                 let createRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
-                                                                             collection: "app.bsky.feed.like",
-                                                                             record: like)
+                                                                                 collection: "app.bsky.feed.like",
+                                                                                 record: like)
 
                 let createRecordRequest = try ATProtoHTTPRequest(host: host,
                                                                   nsid: createRecordLexicon.id,
@@ -420,9 +420,9 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: procedure)
 
-                let createRecordResponse: Result<ATProtoRepoCreateRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+                let createRecordResult: Result<ATProtoRepoCreateRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
 
-                switch createRecordResponse {
+                switch createRecordResult {
                 case .success(let createRecordResponse):
                     return .success((body: createRecordResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
@@ -433,13 +433,76 @@ public class BlueskyClient {
                     case .badRequest:
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponseBody):
+                            case .success(let refreshSessionResponse):
                                 return try await self.createLike(host: host, 
-                                                                 accessToken: accessToken,
-                                                                 refreshToken: refreshToken,
+                                                                 accessToken: refreshSessionResponse.accessJwt,
+                                                                 refreshToken: refreshSessionResponse.refreshJwt,
                                                                  repo: repo,
                                                                  uri: uri,
                                                                  cid: cid,
+                                                                 retry: false)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+        }
+
+        return .failure(.unknown)
+    }
+
+    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoDeleteRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+
+
+
+        let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                           from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
+                                                                                                         withExtension: "json")!))
+
+        if let mainDef = deleteRecordLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
+                                                                                 collection: "app.bsky.feed.like",
+                                                                                 rkey: rkey)
+
+                let createRecordRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: deleteRecordLexicon.id,
+                                                                  parameters: [:],
+                                                                  body: deleteRecordRequestBody,
+                                                                  token: accessToken,
+                                                                  requestable: procedure)
+
+                let deleteRecordResult: Result<ATProtoRepoDeleteRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+
+                switch deleteRecordResult {
+                case .success(let deleteRecordResponse):
+                    return .success((body: deleteRecordResponse,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if retry == true {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponse):
+                                return try await self.deleteLike(host: host,
+                                                                 accessToken: refreshSessionResponse.accessJwt,
+                                                                 refreshToken: refreshSessionResponse.refreshJwt,
+                                                                 repo: repo,
+                                                                 rkey: rkey,
                                                                  retry: false)
 
                             case .failure(let error):
