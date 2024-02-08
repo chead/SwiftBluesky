@@ -54,10 +54,12 @@ public class BlueskyClient {
                                                                   token: nil,
                                                                   requestable: procedure)
 
-                let createSessionResult: Result<ATProtoServerCreateSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
+                let createSessionResult: Result<ATProtoServerCreateSessionResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createSessionRequest)
 
                 switch createSessionResult {
                 case .success(let createSessionResponse):
+                    guard let createSessionResponse = createSessionResponse else { return .failure(.invalidResponse) }
+
                     return .success(createSessionResponse)
                 
                 case .failure(let error):
@@ -87,10 +89,12 @@ public class BlueskyClient {
                                                                    token: refreshToken,
                                                                    requestable: procedure)
 
-                let refreshSessionResult: Result<ATProtoServerRefreshSessionResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
+                let refreshSessionResult: Result<ATProtoServerRefreshSessionResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: refreshSessionRequest)
 
                 switch refreshSessionResult {
                 case .success(let refreshSessionResponse):
+                    guard let refreshSessionResponse = refreshSessionResponse else { return .failure(.invalidResponse) }
+
                     return .success(refreshSessionResponse)
 
                 case .failure(let error):
@@ -120,10 +124,12 @@ public class BlueskyClient {
                                                                 token: accessToken, 
                                                                 requestable: query)
 
-                let getProfilesResult: Result<BlueskyActorGetProfilesResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
+                let getProfilesResult: Result<BlueskyActorGetProfilesResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
 
                 switch getProfilesResult {
                 case .success(let getProfilesResponse):
+                    guard let getProfilesResponse = getProfilesResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: getProfilesResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
@@ -177,10 +183,12 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getAuthorFeedResult: Result<BlueskyFeedGetAuthorFeedResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
+                let getAuthorFeedResult: Result<BlueskyFeedGetAuthorFeedResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getAuthorFeedRequest)
 
                 switch getAuthorFeedResult {
                 case .success(let getAuthorFeedResponse):
+                    guard let getAuthorFeedResponse = getAuthorFeedResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: getAuthorFeedResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
@@ -236,10 +244,12 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getTimelineResult: Result<BlueskyFeedGetTimelineResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
+                let getTimelineResult: Result<BlueskyFeedGetTimelineResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getTimelineRequest)
 
                 switch getTimelineResult {
                 case .success(let getTimelineResponse):
+                    guard let getTimelineResponse = getTimelineResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: getTimelineResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                       refreshToken: refreshToken) : nil))
@@ -295,10 +305,12 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getPostThreadResult: Result<BlueskyFeedGetPostThreadResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostThreadRequest)
+                let getPostThreadResult: Result<BlueskyFeedGetPostThreadResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostThreadRequest)
 
                 switch getPostThreadResult {
                 case .success(let getPostThreadResponse):
+                    guard let getPostThreadResponse = getPostThreadResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: getPostThreadResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                       refreshToken: refreshToken) : nil))
@@ -353,10 +365,12 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: query)
 
-                let getPostsResult: Result<BlueskyFeedGetPostsResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
-  
+                let getPostsResult: Result<BlueskyFeedGetPostsResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getPostsRequest)
+
                 switch getPostsResult {
                 case .success(let getPostsResponse):
+                    guard let getPostsResponse = getPostsResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: getPostsResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
@@ -420,10 +434,12 @@ public class BlueskyClient {
                                                                   token: accessToken,
                                                                   requestable: procedure)
 
-                let createRecordResult: Result<ATProtoRepoCreateRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+                let createRecordResult: Result<ATProtoRepoCreateRecordResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
 
                 switch createRecordResult {
                 case .success(let createRecordResponse):
+                    guard let createRecordResponse = createRecordResponse else { return .failure(.invalidResponse) }
+
                     return .success((body: createRecordResponse,
                                      credentials: retry == false ? (accessToken: accessToken,
                                                                     refreshToken: refreshToken) : nil))
@@ -462,7 +478,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoDeleteRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
 
 
 
@@ -477,20 +493,18 @@ public class BlueskyClient {
                                                                                  collection: "app.bsky.feed.like",
                                                                                  rkey: rkey)
 
-                let createRecordRequest = try ATProtoHTTPRequest(host: host,
-                                                                  nsid: deleteRecordLexicon.id,
-                                                                  parameters: [:],
-                                                                  body: deleteRecordRequestBody,
-                                                                  token: accessToken,
-                                                                  requestable: procedure)
+                let deleteRecordRequest = try ATProtoHTTPRequest(host: host,
+                                                                 nsid: deleteRecordLexicon.id,
+                                                                 parameters: [:],
+                                                                 body: deleteRecordRequestBody,
+                                                                 token: accessToken,
+                                                                 requestable: procedure)
 
-                let deleteRecordResult: Result<ATProtoRepoDeleteRecordResponseBody, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+                let deleteRecordResult: Result<ATProtoEmptyResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: deleteRecordRequest)
 
                 switch deleteRecordResult {
-                case .success(let deleteRecordResponse):
-                    return .success((body: deleteRecordResponse,
-                                     credentials: retry == false ? (accessToken: accessToken,
-                                                                    refreshToken: refreshToken) : nil))
+                case .success(_):
+                    return nil
 
                 case .failure(let error):
                     switch(error) {
@@ -506,22 +520,22 @@ public class BlueskyClient {
                                                                  retry: false)
 
                             case .failure(let error):
-                                return .failure(error)
+                                return error
                             }
                         } else {
-                            return .failure(.unauthorized)
+                            return .unauthorized
                         }
 
                     default:
-                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                        return BlueskyClientError(atProtoHTTPClientError: error)
                     }
                 }
 
             default:
-                return .failure(.invalidRequest)
+                return .invalidRequest
             }
         }
 
-        return .failure(.unknown)
+        return .unknown
     }
 }
