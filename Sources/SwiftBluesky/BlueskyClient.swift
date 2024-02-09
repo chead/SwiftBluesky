@@ -478,7 +478,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
         let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
                                                                                                          withExtension: "json")!))
@@ -486,11 +486,9 @@ public class BlueskyClient {
         if let mainDef = deleteRecordLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let rkey = uri.split(separator: ":").last?.split(separator: "/").last ?? ""
-
                 let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
                                                                                  collection: "app.bsky.feed.like",
-                                                                                 rkey: String(rkey))
+                                                                                 rkey: rkey)
 
                 let deleteRecordRequest = try ATProtoHTTPRequest(host: host,
                                                                  nsid: deleteRecordLexicon.id,
@@ -515,7 +513,7 @@ public class BlueskyClient {
                                                                  accessToken: refreshSessionResponse.accessJwt,
                                                                  refreshToken: refreshSessionResponse.refreshJwt,
                                                                  repo: repo,
-                                                                 uri: uri,
+                                                                 rkey: rkey,
                                                                  retry: false)
 
                             case .failure(let error):
@@ -608,7 +606,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
         let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
                                                                                                          withExtension: "json")!))
@@ -616,11 +614,9 @@ public class BlueskyClient {
         if let mainDef = deleteRecordLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
-                let rkey = uri.split(separator: ":").last?.split(separator: "/").last ?? ""
-
                 let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
                                                                                  collection: "app.bsky.feed.repost",
-                                                                                 rkey: String(rkey))
+                                                                                 rkey: rkey)
 
                 let deleteRecordRequest = try ATProtoHTTPRequest(host: host,
                                                                  nsid: deleteRecordLexicon.id,
@@ -645,7 +641,7 @@ public class BlueskyClient {
                                                                  accessToken: refreshSessionResponse.accessJwt,
                                                                  refreshToken: refreshSessionResponse.refreshJwt,
                                                                  repo: repo,
-                                                                 uri: uri,
+                                                                 rkey: rkey,
                                                                  retry: false)
 
                             case .failure(let error):
