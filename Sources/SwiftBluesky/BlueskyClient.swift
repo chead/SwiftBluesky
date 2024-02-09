@@ -478,10 +478,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
-
-
-
+    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, retry: Bool = true) async throws -> BlueskyClientError? {
         let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
                                                                                                          withExtension: "json")!))
@@ -489,9 +486,11 @@ public class BlueskyClient {
         if let mainDef = deleteRecordLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
+                let rkey = uri.split(separator: ":").last?.split(separator: "/").last ?? ""
+
                 let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
                                                                                  collection: "app.bsky.feed.like",
-                                                                                 rkey: rkey)
+                                                                                 rkey: String(rkey))
 
                 let deleteRecordRequest = try ATProtoHTTPRequest(host: host,
                                                                  nsid: deleteRecordLexicon.id,
@@ -516,7 +515,137 @@ public class BlueskyClient {
                                                                  accessToken: refreshSessionResponse.accessJwt,
                                                                  refreshToken: refreshSessionResponse.refreshJwt,
                                                                  repo: repo,
-                                                                 rkey: rkey,
+                                                                 uri: uri,
+                                                                 retry: false)
+
+                            case .failure(let error):
+                                return error
+                            }
+                        } else {
+                            return .unauthorized
+                        }
+
+                    default:
+                        return BlueskyClientError(atProtoHTTPClientError: error)
+                    }
+                }
+
+            default:
+                return .invalidRequest
+            }
+        }
+
+        return .unknown
+    }
+
+    public func createRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+
+
+
+        let createRecordLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                           from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.createRecord",
+                                                                                                        withExtension: "json")!))
+
+        if let mainDef = createRecordLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let repost = BlueskyFeedRepost(subject: ATProtoRepoStrongRef(uri: uri,
+                                                                         cid: cid),
+                                           createdAt: Date())
+
+                let createRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
+                                                                                 collection: "app.bsky.feed.repost",
+                                                                                 record: repost)
+
+                let createRecordRequest = try ATProtoHTTPRequest(host: host,
+                                                                  nsid: createRecordLexicon.id,
+                                                                  parameters: [:],
+                                                                  body: createRecordRequestBody,
+                                                                  token: accessToken,
+                                                                  requestable: procedure)
+
+                let createRecordResult: Result<ATProtoRepoCreateRecordResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: createRecordRequest)
+
+                switch createRecordResult {
+                case .success(let createRecordResponse):
+                    guard let createRecordResponse = createRecordResponse else { return .failure(.invalidResponse) }
+
+                    return .success((body: createRecordResponse,
+                                     credentials: retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if retry == true {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponse):
+                                return try await self.createLike(host: host,
+                                                                 accessToken: refreshSessionResponse.accessJwt,
+                                                                 refreshToken: refreshSessionResponse.refreshJwt,
+                                                                 repo: repo,
+                                                                 uri: uri,
+                                                                 cid: cid,
+                                                                 retry: false)
+
+                            case .failure(let error):
+                                return .failure(error)
+                            }
+                        } else {
+                            return .failure(.unauthorized)
+                        }
+
+                    default:
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+                    }
+                }
+
+            default:
+                return .failure(.invalidRequest)
+            }
+        }
+
+        return .failure(.unknown)
+    }
+
+    public func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, retry: Bool = true) async throws -> BlueskyClientError? {
+        let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                           from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
+                                                                                                         withExtension: "json")!))
+
+        if let mainDef = deleteRecordLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let rkey = uri.split(separator: ":").last?.split(separator: "/").last ?? ""
+
+                let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
+                                                                                 collection: "app.bsky.feed.repost",
+                                                                                 rkey: String(rkey))
+
+                let deleteRecordRequest = try ATProtoHTTPRequest(host: host,
+                                                                 nsid: deleteRecordLexicon.id,
+                                                                 parameters: [:],
+                                                                 body: deleteRecordRequestBody,
+                                                                 token: accessToken,
+                                                                 requestable: procedure)
+
+                let deleteRecordResult: Result<ATProtoEmptyResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: deleteRecordRequest)
+
+                switch deleteRecordResult {
+                case .success(_):
+                    return nil
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if retry == true {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponse):
+                                return try await self.deleteLike(host: host,
+                                                                 accessToken: refreshSessionResponse.accessJwt,
+                                                                 refreshToken: refreshSessionResponse.refreshJwt,
+                                                                 repo: repo,
+                                                                 uri: uri,
                                                                  retry: false)
 
                             case .failure(let error):
