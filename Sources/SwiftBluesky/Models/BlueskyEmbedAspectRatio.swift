@@ -8,5 +8,6 @@
 import Foundation
 
 public struct BlueskyEmbedAspectRatio: Decodable {
-
+    let width: Int
+    let height: Int
 }
