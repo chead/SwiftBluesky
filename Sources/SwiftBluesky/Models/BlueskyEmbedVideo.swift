@@ -9,21 +9,21 @@ import Foundation
 import SwiftATProto
 
 public struct BlueskyEmbedVideoView: Decodable {
-    let cid: String
-    let playlist: String
-    let thumbnail: String?
-    let alt: String?
-    let aspectRatio: BlueskyEmbedAspectRatio?
+    public let cid: String
+    public let playlist: String
+    public let thumbnail: String?
+    public let alt: String?
+    public let aspectRatio: BlueskyEmbedAspectRatio?
 }
 
 public struct BlueskyEmbedVideoCaption: Decodable {
-    let lang: String
-    let file: ATProtoBlob
+    public let lang: String
+    public let file: ATProtoBlob
 }
 
 public struct BlueskyEmbedVideo: Decodable {
-    let video: ATProtoBlob
-    let captions: [BlueskyEmbedVideoCaption]?
-    let alt: String?
-    let aspectRatio: BlueskyEmbedAspectRatio?
+    public let video: ATProtoBlob
+    public let captions: [BlueskyEmbedVideoCaption]?
+    public let alt: String?
+    public let aspectRatio: BlueskyEmbedAspectRatio?
 }
