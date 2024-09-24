@@ -13,6 +13,7 @@ public indirect enum BlueskyEmbedType: Decodable {
         case blueskyEmbedExternal = "app.bsky.embed.external"
         case blueskyEmbedRecord = "app.bsky.embed.record"
         case blueskyEmbedRecordWithMedia = "app.bsky.embed.recordWithMedia"
+        case blueskyEmbedVideo = "app.bsky.embed.video"
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -23,6 +24,7 @@ public indirect enum BlueskyEmbedType: Decodable {
     case blueskyEmbedExternal(BlueskyEmbedExternal)
     case blueskyEmbedRecord(BlueskyEmbedRecord)
     case blueskyEmbedRecordWithMedia(BlueskyEmbedRecordWithMedia)
+    case blueskyEmbedVideo(BlueskyEmbedVideo)
     case unknown
 
     public init(from decoder: Decoder) throws {
@@ -48,6 +50,9 @@ public indirect enum BlueskyEmbedType: Decodable {
 
         case .blueskyEmbedRecordWithMedia:
             try self = .blueskyEmbedRecordWithMedia(singleValueContainer.decode(BlueskyEmbedRecordWithMedia.self))
+
+        case .blueskyEmbedVideo:
+            try self = .blueskyEmbedVideo(singleValueContainer.decode(BlueskyEmbedVideo.self))
         }
     }
 }
