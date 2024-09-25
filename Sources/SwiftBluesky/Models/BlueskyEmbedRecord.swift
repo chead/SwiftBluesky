@@ -96,6 +96,7 @@ public enum BlueskyEmbedRecordViewRecordEmbedType: Decodable {
         case blueskyEmbedExternalView = "app.bsky.embed.external#view"
         case blueskyEmbedRecordView = "app.bsky.embed.record#view"
         case blueskyEmbedRecordWithMediaView = "app.bsky.embed.recordWithMedia#view"
+        case blueskyEmbedVideoView = "app.bsky.embed.video#view"
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -106,6 +107,7 @@ public enum BlueskyEmbedRecordViewRecordEmbedType: Decodable {
     case blueskyEmbedExternalView(BlueskyEmbedExternalView)
     case blueskyEmbedRecordView(BlueskyEmbedRecordView)
     case blueskyEmbedRecordWithMediaView(BlueskyEmbedRecordWithMediaView)
+    case blueskyEmbedVideoView(BlueskyEmbedVideoView)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -126,6 +128,9 @@ public enum BlueskyEmbedRecordViewRecordEmbedType: Decodable {
 
         case .blueskyEmbedRecordWithMediaView:
             try self = .blueskyEmbedRecordWithMediaView(singleValueContainer.decode(BlueskyEmbedRecordWithMediaView.self))
+
+        case .blueskyEmbedVideoView:
+            try self = .blueskyEmbedVideoView(singleValueContainer.decode(BlueskyEmbedVideoView.self))
         }
     }
 }
