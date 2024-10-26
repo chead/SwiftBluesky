@@ -716,4 +716,57 @@ public class BlueskyClient {
 
         return .unknown
     }
+
+    public func unmuteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> BlueskyClientError? {
+        let unmuteThreadLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                         from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.graph.unmuteThread",
+                                                                                                      withExtension: "json")!))
+
+        if let mainDef = unmuteThreadLexicon.defs["main"] {
+            switch mainDef {
+            case .procedure(let procedure):
+                let unmuteThreadRequest = try ATProtoHTTPRequest(host: host,
+                                                               nsid: unmuteThreadLexicon.id,
+                                                               parameters: ["root" : root],
+                                                               body: nil,
+                                                               token: accessToken,
+                                                               requestable: procedure)
+
+                let unmuteThreadResult: Result<ATProtoEmptyResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: unmuteThreadRequest)
+
+                switch unmuteThreadResult {
+                case .success(_):
+                    return nil
+
+                case .failure(let error):
+                    switch(error) {
+                    case .badRequest:
+                        if retry == true {
+                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
+                            case .success(let refreshSessionResponse):
+                                return try await self.muteThread(host: host,
+                                                                 accessToken: refreshSessionResponse.accessJwt,
+                                                                 refreshToken: refreshSessionResponse.refreshJwt,
+                                                                 root: root,
+                                                                 retry: false)
+
+                            case .failure(let error):
+                                return error
+                            }
+                        } else {
+                            return .unauthorized
+                        }
+
+                    default:
+                        return BlueskyClientError(atProtoHTTPClientError: error)
+                    }
+                }
+
+            default:
+                return .invalidRequest
+            }
+        }
+
+        return .unknown
+    }
 }
