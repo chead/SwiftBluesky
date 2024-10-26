@@ -674,10 +674,12 @@ public class BlueskyClient {
         if let mainDef = muteThreadLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
+                let muteThreadRequestBody = BlueskyGraphMuteThreadRequestBody(root: root)
+
                 let muteThreadRequest = try ATProtoHTTPRequest(host: host,
                                                                nsid: muteThreadLexicon.id,
-                                                               parameters: ["root" : root],
-                                                               body: nil,
+                                                               parameters: [:],
+                                                               body: muteThreadRequestBody,
                                                                token: accessToken,
                                                                requestable: procedure)
 
@@ -728,12 +730,14 @@ public class BlueskyClient {
         if let mainDef = unmuteThreadLexicon.defs["main"] {
             switch mainDef {
             case .procedure(let procedure):
+                let muteThreadRequestBody = BlueskyGraphMuteThreadRequestBody(root: root)
+
                 let unmuteThreadRequest = try ATProtoHTTPRequest(host: host,
-                                                               nsid: unmuteThreadLexicon.id,
-                                                               parameters: ["root" : root],
-                                                               body: nil,
-                                                               token: accessToken,
-                                                               requestable: procedure)
+                                                                 nsid: unmuteThreadLexicon.id,
+                                                                 parameters: [:],
+                                                                 body: muteThreadRequestBody,
+                                                                 token: accessToken,
+                                                                 requestable: procedure)
 
                 let unmuteThreadResult: Result<ATProtoEmptyResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: unmuteThreadRequest)
 
