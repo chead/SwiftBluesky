@@ -139,7 +139,10 @@ public struct BlueskyFeedGeneratorView: Decodable {
 public struct BlueskyFeedViewerState: Decodable {
     public let repost: String?
     public let like: String?
+    public let threadMuted: Bool?
     public let replyDisabled: Bool?
+    public let embeddedDisabled: Bool?
+    public let pinned: Bool?
 }
 
 public struct BlueskyFeedBlockedAuthor: Decodable {
