@@ -478,7 +478,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(accessToken: String, refreshToken: String)?, BlueskyClientError> {
         let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
                                                                                                          withExtension: "json")!))
@@ -501,7 +501,8 @@ public class BlueskyClient {
 
                 switch deleteRecordResult {
                 case .success(_):
-                    return nil
+                    return .success((retry == false ? (accessToken: accessToken,
+                                                                    refreshToken: refreshToken) : nil))
 
                 case .failure(let error):
                     switch(error) {
@@ -517,23 +518,23 @@ public class BlueskyClient {
                                                                  retry: false)
 
                             case .failure(let error):
-                                return error
+                                return .failure(error)
                             }
                         } else {
-                            return .unauthorized
+                            return .failure(.unauthorized)
                         }
 
                     default:
-                        return BlueskyClientError(atProtoHTTPClientError: error)
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                     }
                 }
 
             default:
-                return .invalidRequest
+                return .failure(.invalidRequest)
             }
         }
 
-        return .unknown
+        return .failure(.unknown)
     }
 
     public func createRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
@@ -578,13 +579,13 @@ public class BlueskyClient {
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponse):
-                                return try await self.createLike(host: host,
-                                                                 accessToken: refreshSessionResponse.accessJwt,
-                                                                 refreshToken: refreshSessionResponse.refreshJwt,
-                                                                 repo: repo,
-                                                                 uri: uri,
-                                                                 cid: cid,
-                                                                 retry: false)
+                                return try await self.createRepost(host: host,
+                                                                   accessToken: refreshSessionResponse.accessJwt,
+                                                                   refreshToken: refreshSessionResponse.refreshJwt,
+                                                                   repo: repo,
+                                                                   uri: uri,
+                                                                   cid: cid,
+                                                                   retry: false)
 
                             case .failure(let error):
                                 return .failure(error)
@@ -606,7 +607,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    public func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(accessToken: String, refreshToken: String)?, BlueskyClientError> {
         let deleteRecordLexicon = try JSONDecoder().decode(Lexicon.self,
                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.repo.deleteRecord",
                                                                                                          withExtension: "json")!))
@@ -629,7 +630,8 @@ public class BlueskyClient {
 
                 switch deleteRecordResult {
                 case .success(_):
-                    return nil
+                    return .success(retry == false ? (accessToken: accessToken,
+                                                      refreshToken: refreshToken) : nil)
 
                 case .failure(let error):
                     switch(error) {
@@ -637,34 +639,34 @@ public class BlueskyClient {
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponse):
-                                return try await self.deleteLike(host: host,
-                                                                 accessToken: refreshSessionResponse.accessJwt,
-                                                                 refreshToken: refreshSessionResponse.refreshJwt,
-                                                                 repo: repo,
-                                                                 rkey: rkey,
-                                                                 retry: false)
+                                return try await self.deleteRepost(host: host,
+                                                                   accessToken: refreshSessionResponse.accessJwt,
+                                                                   refreshToken: refreshSessionResponse.refreshJwt,
+                                                                   repo: repo,
+                                                                   rkey: rkey,
+                                                                   retry: false)
 
                             case .failure(let error):
-                                return error
+                                return .failure(error)
                             }
                         } else {
-                            return .unauthorized
+                            return .failure(.unauthorized)
                         }
 
                     default:
-                        return BlueskyClientError(atProtoHTTPClientError: error)
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                     }
                 }
 
             default:
-                return .invalidRequest
+                return .failure(.invalidRequest)
             }
         }
 
-        return .unknown
+        return .failure(.unknown)
     }
 
-    public func muteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func muteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> Result<(accessToken: String, refreshToken: String)?, BlueskyClientError> {
         let muteThreadLexicon = try JSONDecoder().decode(Lexicon.self,
                                                          from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.graph.muteThread",
                                                                                                       withExtension: "json")!))
@@ -683,7 +685,8 @@ public class BlueskyClient {
 
                 switch muteThreadResult {
                 case .success(_):
-                    return nil
+                    return .success(retry == false ? (accessToken: accessToken,
+                                                      refreshToken: refreshToken) : nil)
 
                 case .failure(let error):
                     switch(error) {
@@ -698,26 +701,26 @@ public class BlueskyClient {
                                                                  retry: false)
 
                             case .failure(let error):
-                                return error
+                                return .failure(error)
                             }
                         } else {
-                            return .unauthorized
+                            return .failure(.unauthorized)
                         }
 
                     default:
-                        return BlueskyClientError(atProtoHTTPClientError: error)
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                     }
                 }
 
             default:
-                return .invalidRequest
+                return .failure(.invalidRequest)
             }
         }
 
-        return .unknown
+        return .failure(.unknown)
     }
 
-    public func unmuteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> BlueskyClientError? {
+    public func unmuteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> Result<(accessToken: String, refreshToken: String)?, BlueskyClientError> {
         let unmuteThreadLexicon = try JSONDecoder().decode(Lexicon.self,
                                                          from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.graph.unmuteThread",
                                                                                                       withExtension: "json")!))
@@ -736,7 +739,8 @@ public class BlueskyClient {
 
                 switch unmuteThreadResult {
                 case .success(_):
-                    return nil
+                    return .success(retry == false ? (accessToken: accessToken,
+                                                      refreshToken: refreshToken) : nil)
 
                 case .failure(let error):
                     switch(error) {
@@ -744,29 +748,29 @@ public class BlueskyClient {
                         if retry == true {
                             switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
                             case .success(let refreshSessionResponse):
-                                return try await self.muteThread(host: host,
-                                                                 accessToken: refreshSessionResponse.accessJwt,
-                                                                 refreshToken: refreshSessionResponse.refreshJwt,
-                                                                 root: root,
-                                                                 retry: false)
+                                return try await self.unmuteThread(host: host,
+                                                                   accessToken: refreshSessionResponse.accessJwt,
+                                                                   refreshToken: refreshSessionResponse.refreshJwt,
+                                                                   root: root,
+                                                                   retry: false)
 
                             case .failure(let error):
-                                return error
+                                return .failure(error)
                             }
                         } else {
-                            return .unauthorized
+                            return .failure(.unauthorized)
                         }
 
                     default:
-                        return BlueskyClientError(atProtoHTTPClientError: error)
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                     }
                 }
 
             default:
-                return .invalidRequest
+                return .failure(.invalidRequest)
             }
         }
 
-        return .unknown
+        return .failure(.unknown)
     }
 }
