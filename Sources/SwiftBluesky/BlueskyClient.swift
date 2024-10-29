@@ -14,6 +14,7 @@ public enum BlueskyClientError: Error {
     case invalidResponse
     case unauthorized
     case unavailable
+    case invalidLexicon
     case unknown
 
     init(atProtoHTTPClientError: ATProtoHTTPClientError) {
@@ -35,7 +36,74 @@ public enum BlueskyClientError: Error {
 
 @available(iOS 16.0, *)
 public class BlueskyClient {
-    public init() {}
+    private func makeRequest<RequestBody: Codable, ResponseBody: Decodable>(lexicon: String, host: URL, credentials: (accessToken: String, refreshToken: String), body: RequestBody?, parameters: [String : any Codable], retry: Bool = true) async throws -> Result<(body: ResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        let requestLexicon = try JSONDecoder().decode(Lexicon.self,
+                                                      from: try Data(contentsOf: Bundle.module.url(forResource: lexicon,
+                                                                                                   withExtension: "json")!))
+
+        var requestable: (any LexiconHTTPRequestable)?
+
+        if let mainDef = requestLexicon.defs["main"] {
+            switch mainDef {
+            case .query(let lexiconQuery):
+                requestable = lexiconQuery
+
+            case .procedure(let lexiconProcedure):
+                requestable = lexiconProcedure
+                
+            default:
+                return .failure(.invalidRequest)
+            }
+        } else {
+            return .failure(.invalidLexicon)
+        }
+
+        guard let requestable = requestable else {
+            return .failure(.invalidRequest)
+        }
+
+        let request = try ATProtoHTTPRequest(host: host,
+                                             nsid: requestLexicon.id,
+                                             parameters: parameters,
+                                             body: body,
+                                             token: credentials.accessToken,
+                                             requestable: requestable)
+
+        let requestResult: Result<ResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: request)
+
+        switch requestResult {
+        case .success(let getProfilesResponse):
+            guard let getProfilesResponse = getProfilesResponse else { return .failure(.invalidResponse) }
+
+            return .success((body: getProfilesResponse,
+                             credentials: retry == false ? credentials : nil))
+
+        case .failure(let error):
+            switch(error) {
+            case .badRequest:
+                if retry == true {
+                    switch(try await self.refreshSession(host: host, refreshToken: credentials.refreshToken)) {
+                    case .success(let refreshSessionResponse):
+                        return try await makeRequest(lexicon: lexicon,
+                                                     host: host,
+                                                     credentials: (refreshSessionResponse.accessJwt,
+                                                                   refreshSessionResponse.refreshJwt),
+                                                     body: body,
+                                                     parameters: parameters,
+                                                     retry: false)
+
+                    case .failure(let error):
+                        return .failure(error)
+                    }
+                } else {
+                    return .failure(.unauthorized)
+                }
+
+            default:
+                return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+            }
+        }
+    }
 
     public func createSession(host: URL, identifier: String, password: String) async throws -> Result<ATProtoServerCreateSessionResponseBody, BlueskyClientError> {
         let createSessionLexicon = try JSONDecoder().decode(Lexicon.self,
@@ -110,60 +178,11 @@ public class BlueskyClient {
     }
 
     public func getProfiles(host: URL, accessToken: String, refreshToken: String, actors: [String], retry: Bool = true) async throws -> Result<(body: BlueskyActorGetProfilesResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-        let getProfilesLexicon = try JSONDecoder().decode(Lexicon.self,
-                                                          from: try Data(contentsOf: Bundle.module.url(forResource: "app.bsky.actor.getProfiles",
-                                                                                                       withExtension: "json")!))
-
-        if let mainDef = getProfilesLexicon.defs["main"] {
-            switch mainDef {
-            case .query(let query):
-                let getProfilesRequest = try ATProtoHTTPRequest(host: host, 
-                                                                nsid: getProfilesLexicon.id,
-                                                                parameters: ["actors" : actors],
-                                                                body: nil,
-                                                                token: accessToken, 
-                                                                requestable: query)
-
-                let getProfilesResult: Result<BlueskyActorGetProfilesResponseBody?, ATProtoHTTPClientError> = await ATProtoHTTPClient().make(request: getProfilesRequest)
-
-                switch getProfilesResult {
-                case .success(let getProfilesResponse):
-                    guard let getProfilesResponse = getProfilesResponse else { return .failure(.invalidResponse) }
-
-                    return .success((body: getProfilesResponse,
-                                     credentials: retry == false ? (accessToken: accessToken,
-                                                                    refreshToken: refreshToken) : nil))
-
-                case .failure(let error):
-                    switch(error) {
-                    case .badRequest:
-                        if retry == true {
-                            switch(try await self.refreshSession(host: host, refreshToken: refreshToken)) {
-                            case .success(let refreshSessionResponse):
-                                return try await self.getProfiles(host: host,
-                                                                  accessToken: refreshSessionResponse.accessJwt,
-                                                                  refreshToken: refreshSessionResponse.refreshJwt,
-                                                                  actors: actors,
-                                                                  retry: false)
-
-                            case .failure(let error):
-                                return .failure(error)
-                            }
-                        } else {
-                            return .failure(.unauthorized)
-                        }
-
-                    default:
-                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
-                    }
-                }
-
-            default:
-                return .failure(.invalidRequest)
-            }
-        }
-
-        return .failure(.unknown)
+        return try await makeRequest(lexicon: "app.bsky.actor.getProfiles",
+                                     host: host,
+                                     credentials: (accessToken, refreshToken),
+                                     body: nil as String?,
+                                     parameters: ["actors" : actors])
     }
 
     public func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
