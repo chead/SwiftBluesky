@@ -307,7 +307,7 @@ public class BlueskyClient {
                                   body: nil as String?,
                                   parameters: ["actor" : actor,
                                                "limit" : limit,
-                                               "cursor" : ISO8601DateFormatter().string(from: cursor)])
+                                               "cursor" : DateFormatter().string(from: cursor)])
         }
     }
 }
