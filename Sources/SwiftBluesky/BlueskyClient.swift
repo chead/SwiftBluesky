@@ -142,7 +142,7 @@ public class BlueskyClient {
         return .failure(.unknown)
     }
 
-    private static func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoServerRefreshSessionResponseBody, BlueskyClientError> {
+    public static func refreshSession(host: URL, refreshToken: String) async throws -> Result<ATProtoServerRefreshSessionResponseBody, BlueskyClientError> {
         let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self,
                                                              from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.refreshSession",
                                                                                                           withExtension: "json")!))
