@@ -298,4 +298,16 @@ public class BlueskyClient {
                                      body: unmuteThreadRequestBody,
                                      parameters: [:])
     }
+
+    struct Feed {
+        public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            try await makeRequest(lexicon: "app.bsky.feed.getActorLikes",
+                                  host: host,
+                                  credentials: (accessToken, refreshToken),
+                                  body: nil as String?,
+                                  parameters: ["actor" : actor,
+                                               "limit" : limit,
+                                               "cursor" : ISO8601DateFormatter().string(from: cursor)])
+        }
+    }
 }
