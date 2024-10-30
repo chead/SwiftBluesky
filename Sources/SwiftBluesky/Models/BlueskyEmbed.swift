@@ -25,13 +25,13 @@ public indirect enum BlueskyEmbedType: Decodable {
     case blueskyEmbedRecord(BlueskyEmbedRecord)
     case blueskyEmbedRecordWithMedia(BlueskyEmbedRecordWithMedia)
     case blueskyEmbedVideo(BlueskyEmbedVideo)
-    case unknown
+    case unsupported
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         guard let fieldType = try? container.decode(FieldType.self, forKey: .type) else {
-            self = .unknown
+            self = .unsupported
 
             return
         }

@@ -48,7 +48,6 @@ public enum BlueskyEmbedRecordViewRecordType: Decodable {
         case blueskyEmbedRecordViewBlocked = "app.bsky.embed.record#viewBlocked"
         case blueskyFeedGeneratorView = "app.bsky.feed.defs#generatorView"
         case blueskyGraphListView = "app.bsky.graph.defs#listView"
-        case blueskyEmbedStarterPackView = "app.bsky.graph.defs#starterPackViewBasic"
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -65,7 +64,11 @@ public enum BlueskyEmbedRecordViewRecordType: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        let fieldType = try container.decode(FieldType.self, forKey: .type)
+        guard let fieldType = try? container.decode(FieldType.self, forKey: .type) else {
+            self = .unsupported
+
+            return
+        }
 
         let singleValueContainer = try decoder.singleValueContainer()
 
@@ -84,9 +87,6 @@ public enum BlueskyEmbedRecordViewRecordType: Decodable {
 
         case .blueskyGraphListView:
             try self = .blueskyGraphListView(singleValueContainer.decode(BlueskyGraphListView.self))
-
-        default:
-            self = .unsupported
         }
     }
 }
