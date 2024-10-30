@@ -299,7 +299,7 @@ public class BlueskyClient {
                                      parameters: [:])
     }
 
-    struct Feed {
+    public struct Feed {
         public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getActorLikes",
                                   host: host,
