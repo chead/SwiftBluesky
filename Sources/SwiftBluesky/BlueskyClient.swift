@@ -82,7 +82,7 @@ public class BlueskyClient {
             switch(error) {
             case .badRequest:
                 if retry == true {
-                    switch(try await refreshSession(host: host, refreshToken: credentials.refreshToken)) {
+                    switch(try await Server.refreshSession(host: host, refreshToken: credentials.refreshToken)) {
                     case .success(let refreshSessionResponse):
                         return try await makeRequest(lexicon: lexicon,
                                                      host: host,
