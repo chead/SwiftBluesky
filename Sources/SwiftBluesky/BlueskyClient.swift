@@ -185,12 +185,20 @@ public class BlueskyClient {
                               parameters: ["actors" : actors])
     }
 
-    public static func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+    public enum AuthorFeedFilter: String {
+        case postsWithReplies = "posts_with_replies"
+        case postsNoReplies = "posts_no_replies"
+        case postsWithMedia = "posts_with_media"
+        case postsAndAuthorThreads = "posts_and_author_threads"
+    }
+
+    public static func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, filter: AuthorFeedFilter = .postsWithReplies, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
         try await makeRequest(lexicon: "app.bsky.feed.getAuthorFeed",
                               host: host,
                               credentials: (accessToken, refreshToken),
                               body: nil as String?,
                               parameters: ["actor" : actor,
+                                           "filter" : filter.rawValue,
                                            "limit" : limit,
                                            "cursor" : ISO8601DateFormatter().string(from: cursor)])
     }
