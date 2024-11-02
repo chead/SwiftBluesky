@@ -251,16 +251,7 @@ public class BlueskyClient {
                                             rkey: "self")
         }
 
-        public static func putProfile(host: URL, accessToken: String, refreshToken: String, repo: String,       displayName: String?, description: String?, avatar: ATProtoBlob?, banner: ATProtoBlob?) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-            let profile = BlueskyActorProfile(displayName: displayName,
-                                              description: description,
-                                              avatar: avatar,
-                                              banner: banner,
-                                              labels: nil,
-                                              joinedViaStarterPack: nil,
-                                              pinnedPost: nil,
-                                              createdAt: nil)
-
+        public static func putProfile(host: URL, accessToken: String, refreshToken: String, repo: String, profile: BlueskyActorProfile) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             return try await Repo.putRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.actor.profile", rkey: "self", record: profile)
         }
     }
