@@ -17,16 +17,28 @@ public struct BlueskyActorViewerState: Decodable {
 }
 
 public struct BlueskyActorProfile: Codable {
+    private enum CodingKeys: CodingKey {
+        case displayName
+        case description
+        case avatar
+        case banner
+        case labels
+        case joinedViaStarterPack
+        case pinnedPost
+        case followersCount
+        case createdAt
+    }
+
     public let displayName: String?
     public let description: String?
-    public let avatar: String?
-    public let banner: String?
+    public let avatar: ATProtoBlob?
+    public let banner: ATProtoBlob?
     public let labels: ATProtoSelfLabels?
     public let joinedViaStarterPack: ATProtoRepoStrongRef?
     public let pinnedPost: ATProtoRepoStrongRef?
     public let createdAt: Date?
 
-    public init(displayName: String?, description: String?, avatar: String?, banner: String?, labels: ATProtoSelfLabels?, joinedViaStarterPack: ATProtoRepoStrongRef?, pinnedPost: ATProtoRepoStrongRef?, createdAt: Date?) {
+    public init(displayName: String?, description: String?, avatar: ATProtoBlob?, banner: ATProtoBlob?, labels: ATProtoSelfLabels?, joinedViaStarterPack: ATProtoRepoStrongRef?, pinnedPost: ATProtoRepoStrongRef?, createdAt: Date?) {
         self.displayName = displayName
         self.description = description
         self.avatar = avatar
@@ -35,6 +47,46 @@ public struct BlueskyActorProfile: Codable {
         self.joinedViaStarterPack = joinedViaStarterPack
         self.pinnedPost = pinnedPost
         self.createdAt = createdAt
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.avatar = try container.decodeIfPresent(ATProtoBlob.self, forKey: .avatar)
+        self.banner = try container.decodeIfPresent(ATProtoBlob.self, forKey: .banner)
+        self.labels = try container.decodeIfPresent(ATProtoSelfLabels.self, forKey: .labels)
+        self.joinedViaStarterPack = try container.decodeIfPresent(ATProtoRepoStrongRef.self, forKey: .joinedViaStarterPack)
+        self.pinnedPost = try container.decodeIfPresent(ATProtoRepoStrongRef.self, forKey: .pinnedPost)
+
+        if let createdAtString = try container.decodeIfPresent(String.self, forKey: .createdAt) {
+            let dateFormatter = ISO8601DateFormatter()
+
+            self.createdAt = dateFormatter.date(from: createdAtString)
+        } else {
+            self.createdAt = nil
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(displayName, forKey: .displayName)
+        try container.encode(description, forKey: .description)
+        try container.encode(avatar, forKey: .avatar)
+        try container.encode(banner, forKey: .banner)
+        try container.encode(labels, forKey: .labels)
+        try container.encode(joinedViaStarterPack, forKey: .joinedViaStarterPack)
+        try container.encode(pinnedPost, forKey: .pinnedPost)
+
+        if let createdAt = createdAt {
+            let dateFormatter = ISO8601DateFormatter()
+            
+            dateFormatter.formatOptions = [.withInternetDateTime]
+            
+            try container.encode(dateFormatter.string(from: createdAt), forKey: .createdAt)
+        }
     }
 }
 
@@ -195,7 +247,7 @@ public struct BlueskyActorProfileViewDetailed: Decodable {
             
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
             
-            self.indexedAt = dateFormatter.date(from: indexedAtString) ?? Date.distantPast
+            self.indexedAt = dateFormatter.date(from: indexedAtString)
         } else {
             self.indexedAt = nil
         }
