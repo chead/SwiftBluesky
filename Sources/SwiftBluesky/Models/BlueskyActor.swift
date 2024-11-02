@@ -25,6 +25,17 @@ public struct BlueskyActorProfile: Codable {
     public let joinedViaStarterPack: ATProtoRepoStrongRef?
     public let pinnedPost: ATProtoRepoStrongRef?
     public let createdAt: Date?
+
+    init(displayName: String?, description: String?, avatar: String?, banner: String?, labels: ATProtoSelfLabels?, joinedViaStarterPack: ATProtoRepoStrongRef?, pinnedPost: ATProtoRepoStrongRef?, createdAt: Date?) {
+        self.displayName = displayName
+        self.description = description
+        self.avatar = avatar
+        self.banner = banner
+        self.labels = labels
+        self.joinedViaStarterPack = joinedViaStarterPack
+        self.pinnedPost = pinnedPost
+        self.createdAt = createdAt
+    }
 }
 
 public struct BlueskyActorProfileViewBasic: Decodable {
