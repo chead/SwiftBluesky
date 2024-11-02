@@ -179,8 +179,8 @@ public class BlueskyClient {
         }
     }
 
-    public struct Repo {
-        public static func createRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, record: Record) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+    private struct Repo {
+        static func createRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, record: Record) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let createRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
                                                                              collection: collection,
                                                                              record: record)
@@ -192,7 +192,7 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        public static func putRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, validate: Bool?, record: Record, swapRecord: String?, swapCommit: String?) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        static func putRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, validate: Bool?, record: Record, swapRecord: String?, swapCommit: String?) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let putRecordRequestBody = ATProtoRepoPutRecordRequestBody(repo: repo,
                                                                        collection: collection,
                                                                        rkey: rkey,
@@ -208,7 +208,7 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        public static func getRecord<Record: Decodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, cid: String?) async throws -> Result<(body: ATProtoRepoGetRecordResponseBody<Record>, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        static func getRecord<Record: Decodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, cid: String?) async throws -> Result<(body: ATProtoRepoGetRecordResponseBody<Record>, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let getRecordRequestBody = ATProtoRepoGetRecordRequestBody(repo: repo, collection: collection, rkey: rkey, cid: cid)
 
             return try await makeRequest(lexicon: "com.atproto.repo.getRecord",
@@ -218,7 +218,7 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        public static func deleteRecord(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String) async throws -> Result<(body: ATProtoEmptyResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        static func deleteRecord(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String) async throws -> Result<(body: ATProtoEmptyResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
                                                                              collection: collection,
                                                                              rkey: rkey)
