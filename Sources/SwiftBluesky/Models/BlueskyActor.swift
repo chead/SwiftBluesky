@@ -26,7 +26,7 @@ public struct BlueskyActorProfile: Codable {
     public let pinnedPost: ATProtoRepoStrongRef?
     public let createdAt: Date?
 
-    init(displayName: String?, description: String?, avatar: String?, banner: String?, labels: ATProtoSelfLabels?, joinedViaStarterPack: ATProtoRepoStrongRef?, pinnedPost: ATProtoRepoStrongRef?, createdAt: Date?) {
+    public init(displayName: String?, description: String?, avatar: String?, banner: String?, labels: ATProtoSelfLabels?, joinedViaStarterPack: ATProtoRepoStrongRef?, pinnedPost: ATProtoRepoStrongRef?, createdAt: Date?) {
         self.displayName = displayName
         self.description = description
         self.avatar = avatar
