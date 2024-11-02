@@ -16,6 +16,17 @@ public struct BlueskyActorViewerState: Decodable {
     public let blockedBy: Bool
 }
 
+public struct BlueskyActorProfile: Codable {
+    public let displayName: String?
+    public let description: String?
+    public let avatar: String?
+    public let banner: String?
+    public let labels: ATProtoSelfLabels?
+    public let joinedViaStarterPack: ATProtoRepoStrongRef?
+    public let pinnedPost: ATProtoRepoStrongRef?
+    public let createdAt: Date?
+}
+
 public struct BlueskyActorProfileViewBasic: Decodable {
     private enum CodingKeys: CodingKey {
         case did

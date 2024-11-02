@@ -179,8 +179,50 @@ public class BlueskyClient {
         }
     }
 
+    public struct Repo {
+        public static func createRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, record: Record) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            let createRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
+                                                                             collection: collection,
+                                                                             record: record)
+
+            return try await makeRequest(lexicon: "com.atproto.repo.createRecord",
+                                         host: host,
+                                         credentials: (accessToken, refreshToken),
+                                         body: createRecordRequestBody,
+                                         parameters: [:])
+        }
+
+        public static func putRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, validate: Bool?, record: Record, swapRecord: String?, swapCommit: String?) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            let putRecordRequestBody = ATProtoRepoPutRecordRequestBody(repo: repo,
+                                                                       collection: collection,
+                                                                       rkey: rkey,
+                                                                       validate: validate,
+                                                                       record: record,
+                                                                       swapRecord: swapRecord,
+                                                                       swapCommit: swapCommit)
+
+            return try await makeRequest(lexicon: "com.atproto.repo.putRecord",
+                                         host: host,
+                                         credentials: (accessToken, refreshToken),
+                                         body: putRecordRequestBody,
+                                         parameters: [:])
+        }
+
+        public static func deleteRecord(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
+                                                                             collection: collection,
+                                                                             rkey: rkey)
+
+            return try await makeRequest(lexicon: "com.atproto.repo.deleteRecord",
+                                         host: host,
+                                         credentials: (accessToken, refreshToken),
+                                         body: deleteRecordRequestBody,
+                                         parameters: [:])
+        }
+    }
+
     public struct Actor {
-        public static func getProfiles(host: URL, accessToken: String, refreshToken: String, actors: [String], retry: Bool = true) async throws -> Result<(body: BlueskyActorGetProfilesResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getProfiles(host: URL, accessToken: String, refreshToken: String, actors: [String]) async throws -> Result<(body: BlueskyActorGetProfilesResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.actor.getProfiles",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
@@ -190,7 +232,7 @@ public class BlueskyClient {
     }
 
     public struct Graph {
-        public static func muteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func muteThread(host: URL, accessToken: String, refreshToken: String, root: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let muteThreadRequestBody = BlueskyGraphMuteThreadRequestBody(root: root)
 
             return try await makeRequest(lexicon: "app.bsky.graph.muteThread",
@@ -200,7 +242,7 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        public static func unmuteThread(host: URL, accessToken: String, refreshToken: String, root: String, retry: Bool = true) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func unmuteThread(host: URL, accessToken: String, refreshToken: String, root: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let unmuteThreadRequestBody = BlueskyGraphMuteThreadRequestBody(root: root)
 
             return try await makeRequest(lexicon: "app.bsky.graph.unmuteThread",
@@ -219,7 +261,7 @@ public class BlueskyClient {
             case postsAndAuthorThreads = "posts_and_author_threads"
         }
 
-        public static func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, filter: AuthorFeedFilter = .postsWithReplies, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getAuthorFeed(host: URL, accessToken: String, refreshToken: String, actor: String, filter: AuthorFeedFilter = .postsWithReplies, limit: Int, cursor: Date) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getAuthorFeed",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
@@ -230,7 +272,7 @@ public class BlueskyClient {
                                                "cursor" : ISO8601DateFormatter().string(from: cursor)])
         }
 
-        public static func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getTimeline(host: URL, accessToken: String, refreshToken: String, algorithm: String, limit: Int, cursor: Date) async throws -> Result<(body: BlueskyFeedGetTimelineResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getTimeline",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
@@ -240,7 +282,7 @@ public class BlueskyClient {
                                                "cursor" : ISO8601DateFormatter().string(from: cursor)])
         }
 
-        public static func getPostThread(host: URL, accessToken: String, refreshToken: String, uri: String, depth: Int = 6, parentHeight: Int = 80, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostThreadResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getPostThread(host: URL, accessToken: String, refreshToken: String, uri: String, depth: Int = 6, parentHeight: Int = 80) async throws -> Result<(body: BlueskyFeedGetPostThreadResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getPostThread",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
@@ -250,7 +292,7 @@ public class BlueskyClient {
                                                "parentHeight" : parentHeight])
         }
 
-        public static func getPosts(host: URL, accessToken: String, refreshToken: String, uris: [String], retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetPostsResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getPosts(host: URL, accessToken: String, refreshToken: String, uris: [String]) async throws -> Result<(body: BlueskyFeedGetPostsResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getPosts",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
@@ -258,63 +300,31 @@ public class BlueskyClient {
                                   parameters: ["uris" : uris])
         }
 
-        public static func createLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func createLike(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let like = BlueskyFeedLike(subject: ATProtoRepoStrongRef(uri: uri,
                                                                      cid: cid),
                                        createdAt: Date())
 
-            let createLikeRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
-                                                                                 collection: "app.bsky.feed.like",
-                                                                                 record: like)
-
-            return try await makeRequest(lexicon: "com.atproto.repo.createRecord",
-                                         host: host,
-                                         credentials: (accessToken, refreshToken),
-                                         body: createLikeRecordRequestBody,
-                                         parameters: [:])
+            return try await BlueskyClient.Repo.createRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.like", record: like)
         }
 
-        public static func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-            let deleteLikeRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
-                                                                                 collection: "app.bsky.feed.like",
-                                                                                 rkey: rkey)
-
-            return try await makeRequest(lexicon: "com.atproto.repo.deleteRecord",
-                                         host: host,
-                                         credentials: (accessToken, refreshToken),
-                                         body: deleteLikeRecordRequestBody,
-                                         parameters: [:])
+        public static func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            return try await BlueskyClient.Repo.deleteRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.like", rkey: rkey)
         }
 
-        public static func createRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String, retry: Bool = true) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func createRepost(host: URL, accessToken: String, refreshToken: String, repo: String, uri: String, cid: String) async throws -> Result<(body: ATProtoRepoCreateRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let repost = BlueskyFeedRepost(subject: ATProtoRepoStrongRef(uri: uri,
                                                                      cid: cid),
                                            createdAt: Date())
 
-            let createRepostRecordRequestBody = ATProtoRepoCreateRecordRequestBody(repo: repo,
-                                                                                   collection: "app.bsky.feed.repost",
-                                                                                   record: repost)
-
-            return try await makeRequest(lexicon: "com.atproto.repo.createRecord",
-                                         host: host,
-                                         credentials: (accessToken, refreshToken),
-                                         body: createRepostRecordRequestBody,
-                                         parameters: [:])
+            return try await BlueskyClient.Repo.createRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.repost", record: repost)
         }
 
-        public static func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String, retry: Bool = true) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
-            let deleteRepostRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
-                                                                                   collection: "app.bsky.feed.deleteRecord",
-                                                                                   rkey: rkey)
-
-            return try await makeRequest(lexicon: "com.atproto.repo.deleteRecord",
-                                         host: host,
-                                         credentials: (accessToken, refreshToken),
-                                         body: deleteRepostRecordRequestBody,
-                                         parameters: [:])
+        public static func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            return try await BlueskyClient.Repo.deleteRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.repost", rkey: rkey)
         }
 
-        public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date, retry: Bool = true) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int, cursor: Date) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             try await makeRequest(lexicon: "app.bsky.feed.getActorLikes",
                                   host: host,
                                   credentials: (accessToken, refreshToken),
