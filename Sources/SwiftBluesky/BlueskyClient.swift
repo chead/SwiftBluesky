@@ -54,6 +54,7 @@ public class BlueskyClient {
             default:
                 return .failure(.invalidRequest)
             }
+
         } else {
             return .failure(.invalidLexicon)
         }
@@ -192,7 +193,7 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        static func putRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, validate: Bool?, record: Record, swapRecord: String? = nil, swapCommit: String? = nil) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        static func putRecord<Record: Encodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, validate: Bool? = nil, record: Record, swapRecord: String? = nil, swapCommit: String? = nil) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let putRecordRequestBody = ATProtoRepoPutRecordRequestBody(repo: repo,
                                                                        collection: collection,
                                                                        rkey: rkey,
@@ -239,6 +240,19 @@ public class BlueskyClient {
                                   credentials: (accessToken, refreshToken),
                                   body: nil as String?,
                                   parameters: ["actors" : actors])
+        }
+
+        public static func putProfile(host: URL, accessToken: String, refreshToken: String, repo: String,       displayName: String?, description: String?, avatar: String?, banner: String?) async throws -> Result<(body: ATProtoRepoPutRecordResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            let profile = BlueskyActorProfile(displayName: displayName,
+                                              description: description,
+                                              avatar: avatar,
+                                              banner: banner,
+                                              labels: nil,
+                                              joinedViaStarterPack: nil,
+                                              pinnedPost: nil,
+                                              createdAt: nil)
+
+            return try await Repo.putRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.actor.profile", rkey: "self", record: profile)
         }
     }
 
