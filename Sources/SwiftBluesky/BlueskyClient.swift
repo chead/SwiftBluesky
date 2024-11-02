@@ -208,7 +208,17 @@ public class BlueskyClient {
                                          parameters: [:])
         }
 
-        public static func deleteRecord(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func getRecord<Record: Decodable>(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String, cid: String?) async throws -> Result<(body: ATProtoRepoGetRecordResponseBody<Record>, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            let getRecordRequestBody = ATProtoRepoGetRecordRequestBody(repo: repo, collection: collection, rkey: rkey, cid: cid)
+
+            return try await makeRequest(lexicon: "com.atproto.repo.getRecord",
+                                         host: host,
+                                         credentials: (accessToken, refreshToken),
+                                         body: getRecordRequestBody,
+                                         parameters: [:])
+        }
+
+        public static func deleteRecord(host: URL, accessToken: String, refreshToken: String, repo: String, collection: String, rkey: String) async throws -> Result<(body: ATProtoEmptyResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             let deleteRecordRequestBody = ATProtoRepoDeleteRecordRequestBody(repo: repo,
                                                                              collection: collection,
                                                                              rkey: rkey)
@@ -308,7 +318,7 @@ public class BlueskyClient {
             return try await BlueskyClient.Repo.createRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.like", record: like)
         }
 
-        public static func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func deleteLike(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: ATProtoEmptyResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             return try await BlueskyClient.Repo.deleteRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.like", rkey: rkey)
         }
 
@@ -320,7 +330,7 @@ public class BlueskyClient {
             return try await BlueskyClient.Repo.createRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.repost", record: repost)
         }
 
-        public static func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: BlueskyEmptyReponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+        public static func deleteRepost(host: URL, accessToken: String, refreshToken: String, repo: String, rkey: String) async throws -> Result<(body: ATProtoEmptyResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
             return try await BlueskyClient.Repo.deleteRecord(host: host, accessToken: accessToken, refreshToken: refreshToken, repo: repo, collection: "app.bsky.feed.repost", rkey: rkey)
         }
 
