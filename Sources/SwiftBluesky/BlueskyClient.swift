@@ -231,6 +231,14 @@ public class BlueskyClient {
                                          body: deleteRecordRequestBody,
                                          parameters: [:])
         }
+
+        static func uploadBlob(host: URL, accessToken: String, refreshToken: String, blob: Data) async throws -> Result<(body: ATProtoRepoUploadBlobResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError> {
+            return try await makeRequest(lexicon: "com.atproto.repo.uploadBlob",
+                                         host: host,
+                                         credentials: (accessToken, refreshToken),
+                                         body: blob,
+                                         parameters: [:])
+        }
     }
 
     public struct Actor {
