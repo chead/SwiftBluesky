@@ -120,7 +120,7 @@ public class BlueskyClient {
                 switch(requestError.error) {
                 case .request(let blueskyRequestError):
                     switch(blueskyRequestError) {
-                    case .invalidToken:
+                    case .expiredToken:
                         if retry, let credentials = credentials {
                             switch(try await Server.refreshSession(host: host,
                                                                    refreshToken: credentials.refreshToken)) {
