@@ -17,7 +17,8 @@ public struct BlueskyActorViewerState: Decodable {
 }
 
 public struct BlueskyActorProfile: Codable {
-    private enum CodingKeys: CodingKey {
+    private enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case displayName
         case description
         case avatar
@@ -72,13 +73,14 @@ public struct BlueskyActorProfile: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(displayName, forKey: .displayName)
-        try container.encode(description, forKey: .description)
-        try container.encode(avatar, forKey: .avatar)
-        try container.encode(banner, forKey: .banner)
-        try container.encode(labels, forKey: .labels)
-        try container.encode(joinedViaStarterPack, forKey: .joinedViaStarterPack)
-        try container.encode(pinnedPost, forKey: .pinnedPost)
+        try container.encode("app.bsky.actor.profile", forKey: .type)
+        try container.encodeIfPresent(displayName, forKey: .displayName)
+        try container.encodeIfPresent(description, forKey: .description)
+        try container.encodeIfPresent(avatar, forKey: .avatar)
+        try container.encodeIfPresent(banner, forKey: .banner)
+        try container.encodeIfPresent(labels, forKey: .labels)
+        try container.encodeIfPresent(joinedViaStarterPack, forKey: .joinedViaStarterPack)
+        try container.encodeIfPresent(pinnedPost, forKey: .pinnedPost)
 
         if let createdAt = createdAt {
             let dateFormatter = ISO8601DateFormatter()

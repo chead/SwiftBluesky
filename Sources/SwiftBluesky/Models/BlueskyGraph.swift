@@ -18,6 +18,7 @@ public struct BlueskyGraphListViewerState: Decodable {
 public enum BlueskyGraphListPurpose: String, Decodable {
     case modList = "app.bsky.graph.defs#modlist"
     case curateList = "app.bsky.graph.defs#curatelist"
+    case referenceList = "app.bsky.graph.defs#referencelist"
 }
 
 public struct BlueskyGraphListItemView: Decodable {
