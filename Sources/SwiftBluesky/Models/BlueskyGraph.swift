@@ -36,6 +36,7 @@ public struct BlueskyGraphListView: Decodable {
         case description
         case descriptionFacets
         case avatar
+        case listItemCount
         case viewer
         case indexedAt
     }
@@ -48,6 +49,7 @@ public struct BlueskyGraphListView: Decodable {
     public let description: String?
     public let descriptionFacets: [BlueskyRichtextFacet]?
     public let avatar: String?
+    public let listItemCount: Int?
     public let viewer: BlueskyGraphListViewerState?
     public let indexedAt: Date
 
@@ -72,6 +74,7 @@ public struct BlueskyGraphListView: Decodable {
 
         self.descriptionFacets = try container.decodeIfPresent([BlueskyRichtextFacet].self, forKey: .descriptionFacets)
         self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
+        self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
         self.viewer = try container.decodeIfPresent(BlueskyGraphListViewerState.self, forKey: .viewer)
 
         let indexedAtString = try container.decode(String.self, forKey: .indexedAt)
@@ -91,6 +94,7 @@ public struct BlueskyGraphListViewBasic: Decodable {
         case name
         case purpose
         case avatar
+        case listItemCount
         case viewer
         case indexedAt
     }
@@ -101,6 +105,7 @@ public struct BlueskyGraphListViewBasic: Decodable {
     public let name: String
     public let purpose: BlueskyGraphListPurpose
     public let avatar: String?
+    public let listItemCount: Int?
     public let viewer: BlueskyGraphListViewerState?
     public let indexedAt: Date?
 
@@ -112,8 +117,8 @@ public struct BlueskyGraphListViewBasic: Decodable {
         self.creator = try container.decode(BlueskyActorProfileView.self, forKey: .creator)
         self.name = try container.decode(String.self, forKey: .name)
         self.purpose = try container.decode(BlueskyGraphListPurpose.self, forKey: .purpose)
-
         self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
+        self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
         self.viewer = try container.decodeIfPresent(BlueskyGraphListViewerState.self, forKey: .viewer)
 
         if let indexedAtString = try container.decodeIfPresent(String.self, forKey: .indexedAt) {
