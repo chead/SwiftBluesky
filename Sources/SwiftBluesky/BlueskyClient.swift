@@ -516,12 +516,12 @@ public class BlueskyClient {
                                                              rkey: rkey)
         }
 
-        public enum BlueskyFeedGetActorLikesError: String, Decodable, Error {
+        public enum BlueskyGetActorLikesError: String, Decodable, Error {
             case blockedActor = "BlockedActor"
             case blockedByActor = "BlockedByActor"
         }
 
-        public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int?, cursor: Date?) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError<BlueskyFeedGetActorLikesError>> {
+        public static func getActorLikes(host: URL, accessToken: String, refreshToken: String, actor: String, limit: Int?, cursor: Date?) async throws -> Result<(body: BlueskyFeedGetAuthorFeedResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError<BlueskyGetActorLikesError>> {
             var properties: [String : Encodable] = ["actor" : actor]
 
             if let limit = limit {
