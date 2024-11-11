@@ -27,7 +27,8 @@ public extension Bsky.Feed {
     async throws -> Result<(body: GetActorLikesResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           BlueskyClientError<GetActorLikesError>> {
+                           BlueskyClientError<GetActorLikesError>>
+    {
         var properties: [String : Encodable] = ["actor" : actor]
 
         if let limit = limit {

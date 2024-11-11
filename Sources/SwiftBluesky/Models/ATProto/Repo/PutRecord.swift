@@ -48,7 +48,8 @@ public extension ATProto.Repo {
     async throws -> Result<(body: PutRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           BlueskyClientError<PutRecordError>> {
+                           BlueskyClientError<PutRecordError>>
+    {
         let putRecordRequestBody = PutRecordRequestBody(repo: repo,
                                                         collection: collection,
                                                         rkey: rkey,

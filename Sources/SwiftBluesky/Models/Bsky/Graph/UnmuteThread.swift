@@ -28,7 +28,8 @@ public extension Bsky.Graph {
     async throws -> Result<(body: UnmuteThreadReponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           BlueskyClientError<UnmuteThreadError>> {
+                           BlueskyClientError<UnmuteThreadError>>
+    {
         let unmuteThreadRequestBody = UnmuteThreadRequestBody(root: root)
 
         return try await Client.makeRequest(lexicon: "app.bsky.graph.unmuteThread",

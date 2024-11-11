@@ -35,7 +35,8 @@ public extension Bsky.Feed {
     async throws -> Result<(body: GetAuthorFeedResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           BlueskyClientError<GetAuthorFeedError>> {
+                           BlueskyClientError<GetAuthorFeedError>>
+    {
         var properties: [String : Encodable] = ["actor" : actor]
 
         if let filter = filter {

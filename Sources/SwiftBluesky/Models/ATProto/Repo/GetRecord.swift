@@ -29,7 +29,8 @@ public extension ATProto.Repo {
     async throws -> Result<(body: GetRecordResponseBody<Record>,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           BlueskyClientError<GetRecordError>> {
+                           BlueskyClientError<GetRecordError>>
+    {
         return try await Client.makeRequest(lexicon: "com.atproto.repo.getRecord",
                                             host: host,
                                             credentials: (accessToken, refreshToken),
