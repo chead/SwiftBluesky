@@ -21,8 +21,8 @@ public extension Bsky.Feed {
                               accessToken: String,
                               refreshToken: String,
                               uri: String,
-                              depth: Int?,
-                              parentHeight: Int?)
+                              depth: Int? = nil,
+                              parentHeight: Int? = nil)
     async throws -> Result<(body: GetPostThreadResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
