@@ -121,7 +121,7 @@ internal final class Client {
                     switch(blueskyRequestError) {
                     case .expiredToken:
                         if retry, let credentials = credentials {
-                            switch(try await Com.ATProto.Server.refreshSession(host: host,
+                            switch(try await ATProto.Server.refreshSession(host: host,
                                                                    refreshToken: credentials.refreshToken)) {
                             case .success(let refreshSessionResponse):
                                 return try await makeRequest(lexicon: lexicon,
