@@ -13,6 +13,7 @@ public extension Bsky.BskyActor {
     }
 
     struct GetProfilesError: Decodable, Error {
+
     }
 
     @available(iOS 16.0, *)

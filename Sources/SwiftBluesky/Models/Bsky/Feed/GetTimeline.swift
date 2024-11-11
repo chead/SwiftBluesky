@@ -9,8 +9,8 @@ import Foundation
 
 public extension Bsky.Feed {
     struct GetTimelineResponseBody: Decodable {
-        let cursor: String
-        let feed: [FeedViewPost]
+        public let cursor: String
+        public let feed: [FeedViewPost]
     }
 
     struct GetTimelineError: Decodable, Error {

@@ -9,7 +9,7 @@ import Foundation
 
 public extension Bsky.Feed {
     struct GetPostsResponseBody: Decodable {
-        let posts: [PostView]
+        public let posts: [PostView]
     }
 
     struct GetPostsError: Decodable, Error {

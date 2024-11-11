@@ -9,9 +9,9 @@ import Foundation
 
 public extension ATProto.Repo {
     struct GetRecordResponseBody<Record: Decodable>: Decodable {
-        let uri: String
-        let cid: String?
-        let value: Record
+        public let uri: String
+        public let cid: String?
+        public let value: Record
     }
 
     enum GetRecordError: String, Decodable, Error {
