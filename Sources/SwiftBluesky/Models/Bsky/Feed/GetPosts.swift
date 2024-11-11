@@ -24,7 +24,7 @@ public extension Bsky.Feed {
     async throws -> Result<(body: GetPostsResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                            ClientError<GetPostsError>> {
+                            BlueskyClientError<GetPostsError>> {
         try await Client.makeRequest(lexicon: "app.bsky.feed.getPosts",
                               host: host,
                               credentials: (accessToken, refreshToken),

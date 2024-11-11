@@ -16,7 +16,7 @@ public extension Bsky.BskyActor {
                            profile: Profile)
     async throws -> Result<(body: ATProto.Repo.PutRecordResponseBody,
                             credentials: (accessToken: String, refreshToken: String)?),
-                           ClientError<ATProto.Repo.PutRecordError>> {
+                           BlueskyClientError<ATProto.Repo.PutRecordError>> {
         return try await ATProto.Repo.putRecord(host: host,
                                                     accessToken: accessToken,
                                                     refreshToken: refreshToken,

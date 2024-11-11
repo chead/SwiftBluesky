@@ -19,7 +19,7 @@ public extension Bsky.Feed {
     async throws -> Result<(body: ATProto.Repo.CreateRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<ATProto.Repo.CreateRecordError>> {
+                           BlueskyClientError<ATProto.Repo.CreateRecordError>> {
         let like = Like(subject: ATProtoRepoStrongRef(uri: uri,
                                                       cid: cid),
                         createdAt: Date())

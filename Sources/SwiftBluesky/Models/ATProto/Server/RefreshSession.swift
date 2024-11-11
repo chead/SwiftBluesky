@@ -22,7 +22,7 @@ public extension ATProto.Server {
     }
 
     @available(iOS 16.0, *)
-    static func refreshSession(host: URL, refreshToken: String) async throws -> Result<RefreshSessionResponseBody, ClientError<RefreshSessionError>> {
+    static func refreshSession(host: URL, refreshToken: String) async throws -> Result<RefreshSessionResponseBody, BlueskyClientError<RefreshSessionError>> {
         let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self,
                                                              from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.refreshSession",
                                                                                                           withExtension: "json")!))
@@ -43,7 +43,7 @@ public extension ATProto.Server {
                 return .success(refreshSessionResponse)
 
             case .failure(let error):
-                return .failure(ClientError(atProtoHTTPClientError: error))
+                return .failure(BlueskyClientError(atProtoHTTPClientError: error))
             }
 
         default:

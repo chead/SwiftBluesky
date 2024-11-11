@@ -26,7 +26,7 @@ public extension ATProto.Repo {
     async throws -> Result<(body: UploadBlobResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<UploadBlobError>> {
+                           BlueskyClientError<UploadBlobError>> {
         return try await Client.makeRequest(lexicon: "com.atproto.repo.uploadBlob",
                                             host: host,
                                             credentials: (accessToken, refreshToken),

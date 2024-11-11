@@ -9,10 +9,10 @@ import Foundation
 
 public extension Bsky.BskyActor {
     @available(iOS 16.0.0, *)
-    static func getProfile(host: URL, accessToken: String, refreshToken: String, actor: String) async throws -> Result<(body: Profile, credentials: (accessToken: String, refreshToken: String)?), ClientError<ATProto.Repo.GetRecordError>> {
+    static func getProfile(host: URL, accessToken: String, refreshToken: String, actor: String) async throws -> Result<(body: Profile, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError<ATProto.Repo.GetRecordError>> {
         let result: Result<(body: ATProto.Repo.GetRecordResponseBody<Profile>,
                             credentials: (accessToken: String, refreshToken: String)?),
-                            ClientError<ATProto.Repo.GetRecordError>> =
+                            BlueskyClientError<ATProto.Repo.GetRecordError>> =
         try await ATProto.Repo.getRecord(host: host,
                                              accessToken: accessToken,
                                              refreshToken: refreshToken,

@@ -24,7 +24,7 @@ public extension Bsky.BskyActor {
     async throws -> Result<(body: GetProfilesResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<GetProfilesError>> {
+                           BlueskyClientError<GetProfilesError>> {
         try await Client.makeRequest(lexicon: "app.bsky.actor.getProfiles",
                               host: host,
                               credentials: (accessToken, refreshToken),

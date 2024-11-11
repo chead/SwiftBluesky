@@ -26,7 +26,7 @@ public extension Bsky.Graph {
     async throws -> Result<(body: GetListsResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<GetListsError>> {
+                           BlueskyClientError<GetListsError>> {
         var parameters: [String : Encodable] = ["actor" : actor]
 
         if let limit = limit {

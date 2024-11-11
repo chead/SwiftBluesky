@@ -32,7 +32,7 @@ public extension ATProto.Repo {
     async throws -> Result<(body: DeleteRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<DeleteRecordError>> {
+                           BlueskyClientError<DeleteRecordError>> {
         let deleteRecordRequestBody = DeleteRecordRequestBody(repo: repo,
                                                               collection: collection,
                                                               rkey: rkey)

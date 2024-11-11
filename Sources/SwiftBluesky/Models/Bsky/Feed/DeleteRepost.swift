@@ -18,7 +18,7 @@ public extension Bsky.Feed {
     async throws -> Result<(body: ATProto.Repo.DeleteRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<ATProto.Repo.DeleteRecordError>> {
+                           BlueskyClientError<ATProto.Repo.DeleteRecordError>> {
         return try await ATProto.Repo.deleteRecord(host: host,
                                                        accessToken: accessToken,
                                                        refreshToken: refreshToken,

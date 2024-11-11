@@ -27,7 +27,7 @@ public extension Bsky.Feed {
     async throws -> Result<(body: GetTimelineResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
-                           ClientError<GetTimelineError>> {
+                           BlueskyClientError<GetTimelineError>> {
         try await Client.makeRequest(lexicon: "app.bsky.feed.getTimeline",
                                      host: host,
                                      credentials: (accessToken, refreshToken),

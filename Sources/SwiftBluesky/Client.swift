@@ -9,7 +9,7 @@ import Foundation
 import SwiftLexicon
 import SwiftATProto
 
-public enum ClientError<MethodError: Decodable>: Error {
+public enum BlueskyClientError<MethodError: Decodable>: Error {
     case badRequest(error: ATProtoHTTPClientBadRequestType<MethodError>, message: String)
     case badResponse(error: Error)
     case noResponse
@@ -73,7 +73,7 @@ public enum ClientError<MethodError: Decodable>: Error {
 
 internal final class Client {
     @available(iOS 16.0, *)
-    internal static func makeRequest<RequestBody: Encodable, ResponseBody: Decodable, MethodError: Decodable>(lexicon: String, host: URL, credentials: (accessToken: String, refreshToken: String)? = nil, body: RequestBody?, parameters: [String : any Encodable], encoding: String? = nil, retry: Bool = true) async throws -> Result<(body: ResponseBody, credentials: (accessToken: String, refreshToken: String)?), ClientError<MethodError>> {
+    internal static func makeRequest<RequestBody: Encodable, ResponseBody: Decodable, MethodError: Decodable>(lexicon: String, host: URL, credentials: (accessToken: String, refreshToken: String)? = nil, body: RequestBody?, parameters: [String : any Encodable], encoding: String? = nil, retry: Bool = true) async throws -> Result<(body: ResponseBody, credentials: (accessToken: String, refreshToken: String)?), BlueskyClientError<MethodError>> {
         let requestLexicon = try JSONDecoder().decode(Lexicon.self, from: try Data(contentsOf: Bundle.module.url(forResource: lexicon, withExtension: "json")!))
 
         var requestable: (any LexiconHTTPRequestable)?
@@ -137,18 +137,18 @@ internal final class Client {
                             }
                         }
 
-                        return .failure(ClientError(atProtoHTTPClientError: error))
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
 
                     default:
-                        return .failure(ClientError(atProtoHTTPClientError: error))
+                        return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                     }
 
                 default:
-                    return .failure(ClientError(atProtoHTTPClientError: error))
+                    return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
 
             default:
-                return .failure(ClientError(atProtoHTTPClientError: error))
+                return .failure(BlueskyClientError(atProtoHTTPClientError: error))
             }
         }
     }

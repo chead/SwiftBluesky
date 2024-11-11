@@ -33,7 +33,7 @@ public extension ATProto.Server {
     }
 
     @available(iOS 16.0, *)
-    static func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, ClientError<CreateSessionError>> {
+    static func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, BlueskyClientError<CreateSessionError>> {
         let createSessionLexicon = try JSONDecoder().decode(Lexicon.self,
                                                             from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.createSession",
                                                                                                          withExtension: "json")!))
@@ -61,7 +61,7 @@ public extension ATProto.Server {
                     return .success(createSessionResponse)
 
                 case .failure(let error):
-                    return .failure(ClientError(atProtoHTTPClientError: error))
+                    return .failure(BlueskyClientError(atProtoHTTPClientError: error))
                 }
 
             default:
