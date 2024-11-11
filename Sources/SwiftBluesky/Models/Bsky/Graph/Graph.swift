@@ -205,14 +205,10 @@ public extension Bsky {
             }
         }
 
-        public class ListPurpose: Decodable {
-            public enum ListPurposeType: String, Decodable {
-                case bskyGraphModList = "app.bsky.graph.defs#modlist"
-                case bskyGraphCurateList = "app.bsky.graph.defs#curatelist"
-                case bskyGraphReferenceList = "app.bsky.graph.defs#referencelist"
-            }
-
-            public let type: ListPurposeType
+        public enum ListPurpose: String, Decodable {
+            case bskyGraphModList = "app.bsky.graph.defs#modlist"
+            case bskyGraphCurateList = "app.bsky.graph.defs#curatelist"
+            case bskyGraphReferenceList = "app.bsky.graph.defs#referencelist"
         }
 
         public class ModList: Decodable {
@@ -228,8 +224,8 @@ public extension Bsky {
         }
 
         public class ListViewerState: Decodable {
-            public let muted: Bool
-            public let blocked: String
+            public let muted: Bool?
+            public let blocked: String?
         }
 
         public class NotFoundActor: Decodable {
