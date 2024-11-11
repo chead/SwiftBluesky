@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftATProto
-import AnyCodable
 
 public extension Bsky {
     class Feed {
@@ -27,24 +26,16 @@ public extension Bsky {
                 case threadgate
             }
 
-            public enum EmbedType: Decodable {
+            public enum RecordType: Decodable {
                 private enum FieldType: String, Decodable {
-                    case blueskyEmbedImagesView = "app.bsky.embed.images#view"
-                    case blueskyEmbedExternalView = "app.bsky.embed.external#view"
-                    case blueskyEmbedRecordView = "app.bsky.embed.record#view"
-                    case blueskyEmbedRecordWithMediaView = "app.bsky.embed.recordWithMedia#view"
-                    case blueskyEmbedVideoView = "app.bsky.embed.video#view"
+                    case post = "app.bsky.feed.post"
                 }
 
                 private enum CodingKeys: String, CodingKey {
                     case type = "$type"
                 }
 
-                case blueskyEmbedImagesView(Embed.Images.View)
-                case blueskyEmbedExternalView(Embed.External.View)
-                case blueskyEmbedRecordView(Embed.Record.View)
-                case blueskyEmbedRecordWithMediaView(Embed.RecordWithMedia.View)
-                case blueskyEmbedVideoView(Embed.Video.View)
+                case post(Bsky.Feed.Post)
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -52,20 +43,51 @@ public extension Bsky {
                     let singleValueContainer = try decoder.singleValueContainer()
 
                     switch fieldType {
-                    case .blueskyEmbedImagesView:
-                        try self = .blueskyEmbedImagesView(singleValueContainer.decode(Embed.Images.View.self))
+                    case .post:
+                        try self = .post(singleValueContainer.decode(Bsky.Feed.Post.self))
+                    }
+                }
+            }
 
-                    case .blueskyEmbedExternalView:
-                        try self = .blueskyEmbedExternalView(singleValueContainer.decode(Embed.External.View.self))
+            public enum EmbedType: Decodable {
+                private enum FieldType: String, Decodable {
+                    case imagesView = "app.bsky.embed.images#view"
+                    case externalView = "app.bsky.embed.external#view"
+                    case recordView = "app.bsky.embed.record#view"
+                    case recordWithMediaView = "app.bsky.embed.recordWithMedia#view"
+                    case videoView = "app.bsky.embed.video#view"
+                }
 
-                    case .blueskyEmbedRecordView:
-                        try self = .blueskyEmbedRecordView(singleValueContainer.decode(Embed.Record.View.self))
+                private enum CodingKeys: String, CodingKey {
+                    case type = "$type"
+                }
 
-                    case .blueskyEmbedRecordWithMediaView:
-                        try self = .blueskyEmbedRecordWithMediaView(singleValueContainer.decode(Embed.RecordWithMedia.View.self))
+                case imagesView(Embed.Images.View)
+                case externalView(Embed.External.View)
+                case recordView(Embed.Record.View)
+                case recordWithMediaView(Embed.RecordWithMedia.View)
+                case videoView(Embed.Video.View)
 
-                    case .blueskyEmbedVideoView:
-                        try self = .blueskyEmbedVideoView(singleValueContainer.decode(Embed.Video.View.self))
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let fieldType = try container.decode(FieldType.self, forKey: .type)
+                    let singleValueContainer = try decoder.singleValueContainer()
+
+                    switch fieldType {
+                    case .imagesView:
+                        try self = .imagesView(singleValueContainer.decode(Embed.Images.View.self))
+
+                    case .externalView:
+                        try self = .externalView(singleValueContainer.decode(Embed.External.View.self))
+
+                    case .recordView:
+                        try self = .recordView(singleValueContainer.decode(Embed.Record.View.self))
+
+                    case .recordWithMediaView:
+                        try self = .recordWithMediaView(singleValueContainer.decode(Embed.RecordWithMedia.View.self))
+
+                    case .videoView:
+                        try self = .videoView(singleValueContainer.decode(Embed.Video.View.self))
                     }
                 }
             }
@@ -73,7 +95,7 @@ public extension Bsky {
             public let uri: String
             public let cid: String
             public let author: BskyActor.ProfileViewBasic
-            public let record: AnyDecodable
+            public let record: RecordType
             public let embed: EmbedType?
             public let replyCount: Int?
             public let repostCount: Int?
@@ -89,7 +111,7 @@ public extension Bsky {
                 self.uri = try container.decode(String.self, forKey: .uri)
                 self.cid = try container.decode(String.self, forKey: .cid)
                 self.author = try container.decode(BskyActor.ProfileViewBasic.self, forKey: .author)
-                self.record = try container.decode(AnyDecodable.self, forKey: .record)
+                self.record = try container.decode(RecordType.self, forKey: .record)
                 self.embed = try container.decodeIfPresent(EmbedType.self, forKey: .embed)
                 self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
                 self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
@@ -150,18 +172,18 @@ public extension Bsky {
         public class ReplyRef: Decodable {
             public enum PostType: Decodable {
                 private enum FieldType: String, Decodable {
-                    case blueskyFeedPostView = "app.bsky.feed.defs#postView"
-                    case blueskyFeedNotFoundPost = "app.bsky.feed.defs#notFoundPost"
-                    case blueskyFeedBlockedPost = "app.bsky.feed.defs#blockedPost"
+                    case postView = "app.bsky.feed.defs#postView"
+                    case notFoundPost = "app.bsky.feed.defs#notFoundPost"
+                    case blockedPost = "app.bsky.feed.defs#blockedPost"
                 }
 
                 private enum CodingKeys: String, CodingKey {
                     case type = "$type"
                 }
 
-                case blueskyFeedPostView(PostView)
-                case blueskyFeedNotFoundPost(NotFoundPost)
-                case blueskyFeedBlockedPost(BlockedPost)
+                case postView(PostView)
+                case notFoundPost(NotFoundPost)
+                case blockedPost(BlockedPost)
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -169,14 +191,14 @@ public extension Bsky {
                     let singleValueContainer = try decoder.singleValueContainer()
 
                     switch fieldType {
-                    case .blueskyFeedPostView:
-                        try self = .blueskyFeedPostView(singleValueContainer.decode(PostView.self))
+                    case .postView:
+                        try self = .postView(singleValueContainer.decode(PostView.self))
 
-                    case .blueskyFeedNotFoundPost:
-                        try self = .blueskyFeedNotFoundPost(singleValueContainer.decode(NotFoundPost.self))
+                    case .notFoundPost:
+                        try self = .notFoundPost(singleValueContainer.decode(NotFoundPost.self))
 
-                    case .blueskyFeedBlockedPost:
-                        try self = .blueskyFeedBlockedPost(singleValueContainer.decode(BlockedPost.self))
+                    case .blockedPost:
+                        try self = .blockedPost(singleValueContainer.decode(BlockedPost.self))
                     }
                 }
             }
@@ -215,18 +237,18 @@ public extension Bsky {
         public class ThreadViewPost: Decodable {
             public indirect enum PostType: Decodable {
                 private enum FieldType: String, Decodable {
-                    case blueskyFeedThreadViewPost = "app.bsky.feed.defs#threadViewPost"
-                    case blueskyFeedNotFoundPost = "app.bsky.feed.defs#notFoundPost"
-                    case blueskyFeedBlockedPost = "app.bsky.feed.defs#blockedPost"
+                    case threadViewPost = "app.bsky.feed.defs#threadViewPost"
+                    case notFoundPost = "app.bsky.feed.defs#notFoundPost"
+                    case blockedPost = "app.bsky.feed.defs#blockedPost"
                 }
 
                 private enum CodingKeys: String, CodingKey {
                     case type = "$type"
                 }
 
-                case blueskyFeedThreadViewPost(ThreadViewPost)
-                case blueskyFeedNotFoundPost(NotFoundPost)
-                case blueskyFeedBlockedPost(BlockedPost)
+                case threadViewPost(ThreadViewPost)
+                case notFoundPost(NotFoundPost)
+                case blockedPost(BlockedPost)
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -234,14 +256,14 @@ public extension Bsky {
                     let singleValueContainer = try decoder.singleValueContainer()
 
                     switch fieldType {
-                    case .blueskyFeedThreadViewPost:
-                        try self = .blueskyFeedThreadViewPost(singleValueContainer.decode(ThreadViewPost.self))
+                    case .threadViewPost:
+                        try self = .threadViewPost(singleValueContainer.decode(ThreadViewPost.self))
 
-                    case .blueskyFeedNotFoundPost:
-                        try self = .blueskyFeedNotFoundPost(singleValueContainer.decode(NotFoundPost.self))
+                    case .notFoundPost:
+                        try self = .notFoundPost(singleValueContainer.decode(NotFoundPost.self))
 
-                    case .blueskyFeedBlockedPost:
-                        try self = .blueskyFeedBlockedPost(singleValueContainer.decode(BlockedPost.self))
+                    case .blockedPost:
+                        try self = .blockedPost(singleValueContainer.decode(BlockedPost.self))
                     }
                 }
             }
@@ -348,9 +370,32 @@ public extension Bsky {
         }
 
         public class ThreadgateView: Decodable {
+            public enum RecordType: Decodable {
+                private enum FieldType: String, Decodable {
+                    case post = "app.bsky.feed.post"
+                }
+
+                private enum CodingKeys: String, CodingKey {
+                    case type = "$type"
+                }
+
+                case post(Bsky.Feed.Post)
+
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let fieldType = try container.decode(FieldType.self, forKey: .type)
+                    let singleValueContainer = try decoder.singleValueContainer()
+
+                    switch fieldType {
+                    case .post:
+                        try self = .post(singleValueContainer.decode(Bsky.Feed.Post.self))
+                    }
+                }
+            }
+
             public let uri: String?
             public let cid: String?
-            public let record: AnyDecodable // FIXME: "record": { "type": "unknown" }
+            public let record: RecordType
             public let lists: [Graph.ListViewBasic]
         }
 
