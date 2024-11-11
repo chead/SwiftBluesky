@@ -73,6 +73,9 @@ public extension Bsky.Embed {
                     }
                 }
             }
+
+            public let record: Record
+            public let media: MediaType
         }
 
         public let record: Record
