@@ -103,7 +103,7 @@ public extension Bsky {
             public let indexedAt: Date
             public let viewer: ViewerState?
             public let labels: [ATProtoLabel]?
-            public let threadgate: ThreadgateView?
+//            public let threadgate: ThreadgateView?
 
             required public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -127,7 +127,7 @@ public extension Bsky {
 
                 self.viewer = try container.decodeIfPresent(ViewerState.self, forKey: .viewer)
                 self.labels = try container.decodeIfPresent([ATProtoLabel].self, forKey: .labels)
-                self.threadgate = try container.decodeIfPresent(ThreadgateView.self, forKey: .threadgate)
+//                self.threadgate = try container.decodeIfPresent(ThreadgateView.self, forKey: .threadgate)
             }
         }
 
