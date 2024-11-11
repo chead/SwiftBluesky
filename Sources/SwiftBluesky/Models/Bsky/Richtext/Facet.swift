@@ -6,25 +6,25 @@
 //
 
 public extension Bsky.Richtext {
-    class Facet: Decodable {
-        public struct Mention: Decodable {
+    class Facet: Codable {
+        public struct Mention: Codable {
             let did: String
         }
 
-        public struct Link: Decodable {
+        public struct Link: Codable {
             let uri: String
         }
 
-        public struct Tag: Decodable {
+        public struct Tag: Codable {
             let tag: String
         }
 
-        public struct ByteSlice: Decodable {
+        public struct ByteSlice: Codable {
             let byteStart: Int
             let byteEnd: Int
         }
 
-        public enum FeaturesType: Decodable {
+        public enum FeaturesType: Codable {
             private enum FieldType: String, Decodable {
                 case mention = "#mention"
                 case link = "#link"
@@ -55,9 +55,31 @@ public extension Bsky.Richtext {
                     try self = .tag(singleValueContainer.decode(Tag.self))
                 }
             }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch(self) {
+                case .mention(let mention):
+                    try container.encode(mention)
+
+                case .link(let link):
+                    try container.encode(link)
+
+                case .tag(let tag):
+                    try container.encode(tag)
+                }
+            }
         }
 
         public let index: ByteSlice
         public let features: [FeaturesType]
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(index, forKey: .index)
+            try container.encode(features, forKey: .index)
+        }
     }
 }

@@ -165,11 +165,11 @@ public extension Bsky {
             }
 
             public let post: PostView
-            public let reply: ReplyRef?
+            public let reply: FeedReplyRef?
             public let reason: ReasonType?
         }
 
-        public class ReplyRef: Decodable {
+        public class FeedReplyRef: Decodable {
             public enum PostType: Decodable {
                 private enum FieldType: String, Decodable {
                     case postView = "app.bsky.feed.defs#postView"
