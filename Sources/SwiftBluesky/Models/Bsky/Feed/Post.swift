@@ -69,7 +69,7 @@ public extension Bsky.Feed {
         public let reply: PostReplyRef?
         public let embed: EmbedType?
         public let langs: [String]?
-        public let labels: [ATProtoSelfLabel]?
+        public let labels: ATProtoSelfLabels?
         public let tags: [String]?
         public let createdAt: Date
 
@@ -80,8 +80,8 @@ public extension Bsky.Feed {
             self.facets = try container.decodeIfPresent([Bsky.Richtext.Facet].self, forKey: .facets)
             self.reply = try container.decodeIfPresent(PostReplyRef.self, forKey: .reply)
             self.langs = try container.decodeIfPresent([String].self, forKey: .langs)
-            self.labels = try container.decodeIfPresent([ATProtoSelfLabel].self, forKey: .labels)
-            self.tags = try container.decodeIfPresent([String].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(ATProtoSelfLabels.self, forKey: .labels)
+            self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
             self.embed = try container.decodeIfPresent(EmbedType.self, forKey: .embed)
 
             let createdAtString = try container.decode(String.self, forKey: .createdAt)
