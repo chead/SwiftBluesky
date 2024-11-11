@@ -17,8 +17,11 @@ public extension Bsky.Embed {
                     case recordViewRecord = "app.bsky.embed.record#viewRecord"
                     case recordViewNotFound = "app.bsky.embed.record#viewNotFound"
                     case recordViewBlocked = "app.bsky.embed.record#viewBlocked"
+                    case recordViewDetached = "app.bsky.embed.record#viewDetached"
                     case feedGeneratorView = "app.bsky.feed.defs#generatorView"
                     case graphListView = "app.bsky.graph.defs#listView"
+                    case labelerView = "app.bsky.labeler.defs#labelerView"
+                    case starterPackViewBasic = "app.bsky.graph.defs#starterPackViewBasic"
                 }
 
                 private enum CodingKeys: String, CodingKey {
@@ -28,8 +31,11 @@ public extension Bsky.Embed {
                 case recordViewRecord(ViewRecord)
                 case recordViewNotFound(ViewNotFound)
                 case recordViewBlocked(ViewBlocked)
+                case recordViewDetached(ViewDetached)
                 case feedGeneratorView(Bsky.Feed.GeneratorView)
                 case graphListView(Bsky.Graph.ListView)
+                case labelerView(Bsky.Labeler.LabelerView)
+                case starterPackViewBasic(Bsky.Graph.StarterPackViewBasic)
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -46,11 +52,20 @@ public extension Bsky.Embed {
                     case .recordViewBlocked:
                         try self = .recordViewBlocked(singleValueContainer.decode(ViewBlocked.self))
 
+                    case .recordViewDetached:
+                        try self = .recordViewDetached(singleValueContainer.decode(ViewDetached.self))
+
                     case .feedGeneratorView:
                         try self = .feedGeneratorView(singleValueContainer.decode(Bsky.Feed.GeneratorView.self))
 
                     case .graphListView:
                         try self = .graphListView(singleValueContainer.decode(Bsky.Graph.ListView.self))
+
+                    case .labelerView:
+                        try self = .labelerView(singleValueContainer.decode(Bsky.Labeler.LabelerView.self))
+
+                    case .starterPackViewBasic:
+                        try self = .starterPackViewBasic(singleValueContainer.decode(Bsky.Graph.StarterPackViewBasic.self))
                     }
                 }
             }
@@ -170,6 +185,23 @@ public extension Bsky.Embed {
 
                 self.uri = try container.decode(String.self, forKey: .uri)
                 self.author = try container.decode(Bsky.Feed.BlockedAuthor.self, forKey: .author)
+            }
+        }
+
+        public class ViewDetached: Decodable {
+            enum CodingKeys: CodingKey {
+                case uri
+                case detatched
+            }
+
+            public let uri: String
+            public let detatched: Bool
+
+            public required init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.uri = try container.decode(String.self, forKey: .uri)
+                self.detatched = true
             }
         }
 
