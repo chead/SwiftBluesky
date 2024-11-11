@@ -26,9 +26,9 @@ public extension Bsky.Richtext {
 
         public enum FeaturesType: Codable {
             private enum FieldType: String, Decodable {
-                case mention = "#mention"
-                case link = "#link"
-                case tag = "#tag"
+                case mention = "app.bsky.richtext.facet#mention"
+                case link = "app.bsky.richtext.facet#link"
+                case tag = "app.bsky.richtext.facet#tag"
             }
 
             private enum CodingKeys: String, CodingKey {
