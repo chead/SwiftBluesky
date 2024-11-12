@@ -130,7 +130,7 @@ public extension Bsky.Embed {
             public let uri: String
             public let cid: String
             public let author: Bsky.BskyActor.ProfileViewBasic
-            public let value: AnyDecodable
+            public let value: Bsky.Feed.Post
             public let labels: [ATProtoLabel]?
             public let embeds: [EmbedType]?
             public let indexedAt: Date
@@ -141,7 +141,7 @@ public extension Bsky.Embed {
                 self.uri = try container.decode(String.self, forKey: .uri)
                 self.cid = try container.decode(String.self, forKey: .cid)
                 self.author = try container.decode(Bsky.BskyActor.ProfileViewBasic.self, forKey: .author)
-                self.value = try container.decode(AnyDecodable.self, forKey: .value)
+                self.value = try container.decode(Bsky.Feed.Post.self, forKey: .value)
                 self.labels = try container.decodeIfPresent([ATProtoLabel].self, forKey: .labels)
                 self.embeds = try container.decodeIfPresent([EmbedType].self, forKey: .embeds)
 
