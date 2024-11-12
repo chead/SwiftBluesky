@@ -45,10 +45,10 @@ public extension ATProto.Repo {
                                              record: Record,
                                              swapRecord: String? = nil,
                                              swapCommit: String? = nil)
-    async throws -> Result<(body: PutRecordResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<PutRecordError>>
+    async -> Result<(body: PutRecordResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<PutRecordError>>
     {
         let putRecordRequestBody = PutRecordRequestBody(repo: repo,
                                                         collection: collection,
@@ -58,10 +58,10 @@ public extension ATProto.Repo {
                                                         swapRecord: swapRecord,
                                                         swapCommit: swapCommit)
 
-        return try await Client.makeRequest(lexicon: "com.atproto.repo.putRecord",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: putRecordRequestBody,
-                                            parameters: [:])
+        return await Client.makeRequest(lexicon: "com.atproto.repo.putRecord",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: putRecordRequestBody,
+                                        parameters: [:])
     }
 }

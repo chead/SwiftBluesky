@@ -15,15 +15,15 @@ public extension Bsky.Feed {
                              refreshToken: String,
                              repo: String,
                              rkey: String)
-    async throws -> Result<(body: ATProto.Repo.DeleteRecordResponseBody,
+    async -> Result<(body: ATProto.Repo.DeleteRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
                            BlueskyClientError<ATProto.Repo.DeleteRecordError>> {
-        return try await ATProto.Repo.deleteRecord(host: host,
-                                                       accessToken: accessToken,
-                                                       refreshToken: refreshToken,
-                                                       repo: repo,
-                                                       collection: "app.bsky.feed.repost",
-                                                       rkey: rkey)
+        return await ATProto.Repo.deleteRecord(host: host,
+                                               accessToken: accessToken,
+                                               refreshToken: refreshToken,
+                                               repo: repo,
+                                               collection: "app.bsky.feed.repost",
+                                               rkey: rkey)
     }
 }

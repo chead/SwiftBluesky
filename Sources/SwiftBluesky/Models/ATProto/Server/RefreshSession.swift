@@ -22,28 +22,33 @@ public extension ATProto.Server {
     }
 
     @available(iOS 16.0, *)
-    static func refreshSession(host: URL, refreshToken: String) async throws -> Result<RefreshSessionResponseBody, BlueskyClientError<RefreshSessionError>> {
-        let refreshSessionLexicon = try JSONDecoder().decode(Lexicon.self,
-                                                             from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.refreshSession",
-                                                                                                          withExtension: "json")!))
+    static func refreshSession(host: URL, refreshToken: String) async -> Result<RefreshSessionResponseBody, BlueskyClientError<RefreshSessionError>> {
+        guard let lexiconURL = Bundle.module.url(forResource: "com.atproto.server.refreshSession", withExtension: "json"),
+              let lexiconData = try? Data(contentsOf: lexiconURL),
+              let refreshSessionLexicon = try? JSONDecoder().decode(Lexicon.self, from: lexiconData) else {
+            return .failure(.invalidLexicon)
+        }
 
         switch refreshSessionLexicon.defs["main"] {
         case .procedure(let procedure):
-            let refreshSessionRequest = try ATProtoHTTPRequest(host: host,
-                                                               nsid: refreshSessionLexicon.id,
-                                                               parameters: [:],
-                                                               body: nil,
-                                                               token: refreshToken,
-                                                               requestable: procedure)
+            guard let refreshSessionRequest = try? ATProtoHTTPRequest(host: host,
+                                                                      nsid: refreshSessionLexicon.id,
+                                                                      parameters: [:],
+                                                                      body: nil,
+                                                                      token: refreshToken,
+                                                                      requestable: procedure)
+            else {
+                return .failure(.invalidRequest)
+            }
 
-            let refreshSessionResult: Result<RefreshSessionResponseBody, ATProtoHTTPClientError<RefreshSessionError>> = await ATProtoHTTPClient.make(request: refreshSessionRequest)
+            let refreshSessionResponse: Result<RefreshSessionResponseBody, ATProtoHTTPClientError<RefreshSessionError>> = await ATProtoHTTPClient.make(request: refreshSessionRequest)
 
-            switch refreshSessionResult {
-            case .success(let refreshSessionResponse):
-                return .success(refreshSessionResponse)
+            switch refreshSessionResponse {
+            case .success(let refreshSessionResult):
+                return .success(refreshSessionResult)
 
-            case .failure(let error):
-                return .failure(BlueskyClientError(atProtoHTTPClientError: error))
+            case .failure(let refreshSessionError):
+                return .failure(.atProtoClient(error: refreshSessionError))
             }
 
         default:

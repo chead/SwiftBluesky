@@ -24,7 +24,7 @@ public extension Bsky.Feed {
                               actor: String,
                               limit: Int?,
                               cursor: Date?)
-    async throws -> Result<(body: GetActorLikesResponseBody,
+    async -> Result<(body: GetActorLikesResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
                            BlueskyClientError<GetActorLikesError>>
@@ -39,10 +39,10 @@ public extension Bsky.Feed {
             properties["cursor"] = cursor
         }
 
-        return try await Client.makeRequest(lexicon: "app.bsky.feed.getActorLikes",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: nil as String?,
-                                            parameters: properties)
+        return await Client.makeRequest(lexicon: "app.bsky.feed.getActorLikes",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: nil as String?,
+                                        parameters: properties)
     }
 }

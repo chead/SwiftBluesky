@@ -33,42 +33,44 @@ public extension ATProto.Server {
     }
 
     @available(iOS 16.0, *)
-    static func createSession(host: URL, identifier: String, password: String) async throws -> Result<CreateSessionResponseBody, BlueskyClientError<CreateSessionError>> {
-        let createSessionLexicon = try JSONDecoder().decode(Lexicon.self,
-                                                            from: try Data(contentsOf: Bundle.module.url(forResource: "com.atproto.server.createSession",
-                                                                                                         withExtension: "json")!))
-
-        if let mainDef = createSessionLexicon.defs["main"] {
-            switch mainDef {
-            case .procedure(let procedure):
-                let createSessionRequestBody = CreateSessionRequestBody(identifier: identifier, password: password)
-
-                let createSessionRequest = try ATProtoHTTPRequest(host: host,
-                                                                  nsid: createSessionLexicon.id,
-                                                                  parameters: [:],
-                                                                  body: createSessionRequestBody,
-                                                                  token: nil,
-                                                                  requestable: procedure)
-
-                let createSessionResult: Result<CreateSessionResponseBody?, ATProtoHTTPClientError<CreateSessionError>> = await ATProtoHTTPClient.make(request: createSessionRequest)
-
-                switch createSessionResult {
-                case .success(let createSessionResponse):
-                    guard let createSessionResponse = createSessionResponse else {
-                        return .failure(.invalidResponse)
-                    }
-
-                    return .success(createSessionResponse)
-
-                case .failure(let error):
-                    return .failure(BlueskyClientError(atProtoHTTPClientError: error))
-                }
-
-            default:
-                return .failure(.invalidRequest)
-            }
+    static func createSession(host: URL, identifier: String, password: String) async -> Result<CreateSessionResponseBody, BlueskyClientError<CreateSessionError>> {
+        guard let lexiconURL = Bundle.module.url(forResource: "com.atproto.server.createSession", withExtension: "json"),
+              let lexiconData = try? Data(contentsOf: lexiconURL),
+              let createSessionLexicon = try? JSONDecoder().decode(Lexicon.self, from: lexiconData) else {
+            return .failure(.invalidLexicon)
         }
 
-        return .failure(.invalidLexicon)
+        switch createSessionLexicon.defs["main"] {
+        case .procedure(let procedure):
+            let createSessionRequestBody = CreateSessionRequestBody(identifier: identifier,
+                                                                    password: password)
+
+            guard let createSessionRequest = try? ATProtoHTTPRequest(host: host,
+                                                                     nsid: createSessionLexicon.id,
+                                                                     parameters: [:],
+                                                                     body: createSessionRequestBody,
+                                                                     token: nil,
+                                                                     requestable: procedure)
+            else {
+                return .failure(.invalidLexicon)
+            }
+
+            let createSessionResult: Result<CreateSessionResponseBody?, ATProtoHTTPClientError<CreateSessionError>> = await ATProtoHTTPClient.make(request: createSessionRequest)
+
+            switch createSessionResult {
+            case .success(let createSessionResponse):
+                guard let createSessionResponse = createSessionResponse else {
+                    return .failure(.invalidResponse)
+                }
+
+                return .success(createSessionResponse)
+
+            case .failure(let createSessionError):
+                return .failure(.atProtoClient(error: createSessionError))
+            }
+
+        default:
+            return .failure(.invalidRequest)
+        }
     }
 }

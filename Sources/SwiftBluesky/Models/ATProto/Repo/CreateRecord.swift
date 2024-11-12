@@ -30,7 +30,7 @@ public extension ATProto.Repo {
                                                 repo: String,
                                                 collection: String,
                                                 record: Record)
-    async throws -> Result<(body: CreateRecordResponseBody,
+    async -> Result<(body: CreateRecordResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
                            BlueskyClientError<CreateRecordError>> {
@@ -38,10 +38,10 @@ public extension ATProto.Repo {
                                                               collection: collection,
                                                               record: record)
 
-        return try await Client.makeRequest(lexicon: "com.atproto.repo.createRecord",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: createRecordRequestBody,
-                                            parameters: [:])
+        return await Client.makeRequest(lexicon: "com.atproto.repo.createRecord",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: createRecordRequestBody,
+                                        parameters: [:])
     }
 }

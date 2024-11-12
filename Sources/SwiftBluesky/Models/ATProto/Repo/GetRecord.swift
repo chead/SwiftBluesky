@@ -26,18 +26,18 @@ public extension ATProto.Repo {
                                              collection: String,
                                              rkey: String,
                                              cid: String? = nil)
-    async throws -> Result<(body: GetRecordResponseBody<Record>,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<GetRecordError>>
+    async -> Result<(body: GetRecordResponseBody<Record>,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<GetRecordError>>
     {
-        return try await Client.makeRequest(lexicon: "com.atproto.repo.getRecord",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: nil as String?,
-                                            parameters: ["repo" : repo,
-                                                         "collection" : collection,
-                                                         "rkey" : rkey,
-                                                         "cid" : cid])
+        return await Client.makeRequest(lexicon: "com.atproto.repo.getRecord",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: nil as String?,
+                                        parameters: ["repo" : repo,
+                                                     "collection" : collection,
+                                                     "rkey" : rkey,
+                                                     "cid" : cid])
     }
 }

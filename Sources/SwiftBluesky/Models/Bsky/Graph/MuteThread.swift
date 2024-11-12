@@ -25,17 +25,17 @@ public extension Bsky.Graph {
                            accessToken: String,
                            refreshToken: String,
                            root: String)
-    async throws -> Result<(body: MuteThreadResponseBody,
+    async -> Result<(body: MuteThreadResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
                            BlueskyClientError<MuteThreadError>>
     {
         let muteThreadRequestBody = MuteThreadRequestBody(root: root)
 
-        return try await Client.makeRequest(lexicon: "app.bsky.graph.muteThread",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: muteThreadRequestBody,
-                                            parameters: [:])
+        return await Client.makeRequest(lexicon: "app.bsky.graph.muteThread",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: muteThreadRequestBody,
+                                        parameters: [:])
     }
 }

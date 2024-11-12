@@ -14,16 +14,16 @@ public extension Bsky.BskyActor {
                            refreshToken: String,
                            repo: String,
                            profile: Profile)
-    async throws -> Result<(body: ATProto.Repo.PutRecordResponseBody,
+    async -> Result<(body: ATProto.Repo.PutRecordResponseBody,
                             credentials: (accessToken: String, refreshToken: String)?),
                            BlueskyClientError<ATProto.Repo.PutRecordError>>
     {
-        return try await ATProto.Repo.putRecord(host: host,
-                                                accessToken: accessToken,
-                                                refreshToken: refreshToken,
-                                                repo: repo,
-                                                collection: "app.bsky.actor.profile",
-                                                rkey: "self",
-                                                record: profile)
+        return await ATProto.Repo.putRecord(host: host,
+                                            accessToken: accessToken,
+                                            refreshToken: refreshToken,
+                                            repo: repo,
+                                            collection: "app.bsky.actor.profile",
+                                            rkey: "self",
+                                            record: profile)
     }
 }

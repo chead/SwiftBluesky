@@ -17,15 +17,15 @@ public extension Bsky.BskyActor {
                             accessToken: String,
                             refreshToken: String,
                             actor: String)
-    async throws -> Result<(body: ProfileViewDetailed,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<GetProfileError>>
+    async -> Result<(body: ProfileViewDetailed,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<GetProfileError>>
     {
-        try await Client.makeRequest(lexicon: "app.bsky.actor.getProfile",
-                                     host: host,
-                                     credentials: (accessToken, refreshToken),
-                                     body: nil as String?,
-                                     parameters: ["actor" : actor])
+        await Client.makeRequest(lexicon: "app.bsky.actor.getProfile",
+                                 host: host,
+                                 credentials: (accessToken, refreshToken),
+                                 body: nil as String?,
+                                 parameters: ["actor" : actor])
     }
 }

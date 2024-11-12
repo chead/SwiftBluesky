@@ -23,10 +23,10 @@ public extension Bsky.Feed {
                               uri: String,
                               depth: Int? = nil,
                               parentHeight: Int? = nil)
-    async throws -> Result<(body: GetPostThreadResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<GetPostThreadError>>
+    async -> Result<(body: GetPostThreadResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<GetPostThreadError>>
     {
         var properties: [String : Encodable] = ["uri" :  uri]
 
@@ -38,10 +38,10 @@ public extension Bsky.Feed {
             properties["parentHeight"] = parentHeight
         }
 
-        return try await Client.makeRequest(lexicon: "app.bsky.feed.getPostThread",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: nil as String?,
-                                            parameters: properties)
+        return await Client.makeRequest(lexicon: "app.bsky.feed.getPostThread",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: nil as String?,
+                                        parameters: properties)
     }
 }

@@ -21,15 +21,15 @@ public extension Bsky.Feed {
                          accessToken: String,
                          refreshToken: String,
                          uris: [String])
-    async throws -> Result<(body: GetPostsResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                            BlueskyClientError<GetPostsError>>
+    async -> Result<(body: GetPostsResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<GetPostsError>>
     {
-        try await Client.makeRequest(lexicon: "app.bsky.feed.getPosts",
-                              host: host,
-                              credentials: (accessToken, refreshToken),
-                              body: nil as String?,
-                              parameters: ["uris" : uris])
+        await Client.makeRequest(lexicon: "app.bsky.feed.getPosts",
+                                 host: host,
+                                 credentials: (accessToken, refreshToken),
+                                 body: nil as String?,
+                                 parameters: ["uris" : uris])
     }
 }

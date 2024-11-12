@@ -32,10 +32,10 @@ public extension Bsky.Feed {
                               filter: GetAuthorFeedFilter? = nil,
                               limit: Int? = nil,
                               cursor: Date? = nil)
-    async throws -> Result<(body: GetAuthorFeedResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<GetAuthorFeedError>>
+    async -> Result<(body: GetAuthorFeedResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<GetAuthorFeedError>>
     {
         var properties: [String : Encodable] = ["actor" : actor]
 
@@ -47,10 +47,10 @@ public extension Bsky.Feed {
             properties["curor"] = ISO8601DateFormatter().string(from: cursor)
         }
 
-        return try await Client.makeRequest(lexicon: "app.bsky.feed.getAuthorFeed",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: nil as String?,
-                                            parameters: properties)
+        return await Client.makeRequest(lexicon: "app.bsky.feed.getAuthorFeed",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: nil as String?,
+                                        parameters: properties)
     }
 }

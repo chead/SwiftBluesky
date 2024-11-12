@@ -16,19 +16,19 @@ public extension Bsky.Feed {
                              repo: String,
                              uri: String,
                              cid: String)
-    async throws -> Result<(body: ATProto.Repo.CreateRecordResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                            BlueskyClientError<ATProto.Repo.CreateRecordError>> {
+    async -> Result<(body: ATProto.Repo.CreateRecordResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<ATProto.Repo.CreateRecordError>> {
         let repost = Repost(subject: ATProtoRepoStrongRef(uri: uri,
                                                           cid: cid),
                             createdAt: Date())
 
-        return try await ATProto.Repo.createRecord(host: host,
-                                                       accessToken: accessToken,
-                                                       refreshToken: refreshToken,
-                                                       repo: repo,
-                                                       collection: "app.bsky.feed.repost",
-                                                       record: repost)
+        return await ATProto.Repo.createRecord(host: host,
+                                               accessToken: accessToken,
+                                               refreshToken: refreshToken,
+                                               repo: repo,
+                                               collection: "app.bsky.feed.repost",
+                                               record: repost)
     }
 }

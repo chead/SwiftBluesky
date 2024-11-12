@@ -23,7 +23,7 @@ public extension Bsky.Graph {
                          actor: String,
                          limit: Int?,
                          cursor: Date?)
-    async throws -> Result<(body: GetListsResponseBody,
+    async -> Result<(body: GetListsResponseBody,
                             credentials: (accessToken: String,
                                           refreshToken: String)?),
                            BlueskyClientError<GetListsError>> {
@@ -37,10 +37,10 @@ public extension Bsky.Graph {
             parameters["cursor"] = ISO8601DateFormatter().string(from: cursor)
         }
 
-        return try await Client.makeRequest(lexicon: "app.bsky.graph.getLists",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: nil as String?,
-                                            parameters: parameters)
+        return await Client.makeRequest(lexicon: "app.bsky.graph.getLists",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: nil as String?,
+                                        parameters: parameters)
     }
 }

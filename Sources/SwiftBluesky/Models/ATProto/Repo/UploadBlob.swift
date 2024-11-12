@@ -23,16 +23,16 @@ public extension ATProto.Repo {
                            refreshToken: String,
                            blob: Data,
                            encoding: String? = nil)
-    async throws -> Result<(body: UploadBlobResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<UploadBlobError>>
+    async -> Result<(body: UploadBlobResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<UploadBlobError>>
     {
-        return try await Client.makeRequest(lexicon: "com.atproto.repo.uploadBlob",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: blob,
-                                            parameters: [:],
-                                            encoding: encoding)
+        return await Client.makeRequest(lexicon: "com.atproto.repo.uploadBlob",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: blob,
+                                        parameters: [:],
+                                        encoding: encoding)
     }
 }

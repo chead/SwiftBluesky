@@ -29,18 +29,18 @@ public extension ATProto.Repo {
                              repo: String,
                              collection: String,
                              rkey: String)
-    async throws -> Result<(body: DeleteRecordResponseBody,
-                            credentials: (accessToken: String,
-                                          refreshToken: String)?),
-                           BlueskyClientError<DeleteRecordError>> {
+    async -> Result<(body: DeleteRecordResponseBody,
+                     credentials: (accessToken: String,
+                                   refreshToken: String)?),
+                    BlueskyClientError<DeleteRecordError>> {
         let deleteRecordRequestBody = DeleteRecordRequestBody(repo: repo,
                                                               collection: collection,
                                                               rkey: rkey)
 
-        return try await Client.makeRequest(lexicon: "com.atproto.repo.deleteRecord",
-                                            host: host,
-                                            credentials: (accessToken, refreshToken),
-                                            body: deleteRecordRequestBody,
-                                            parameters: [:])
+        return await Client.makeRequest(lexicon: "com.atproto.repo.deleteRecord",
+                                        host: host,
+                                        credentials: (accessToken, refreshToken),
+                                        body: deleteRecordRequestBody,
+                                        parameters: [:])
     }
 }
