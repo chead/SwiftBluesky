@@ -5,6 +5,6 @@
 //  Created by Christopher Head on 11/9/24.
 //
 
-public class Bsky {
+final public class Bsky {
     public typealias Token = String
 }

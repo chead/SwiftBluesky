@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky {
-    class Feed {
+    final class Feed {
         public class PostView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri

@@ -10,7 +10,7 @@ import SwiftATProto
 import AnyCodable
 
 public extension Bsky {
-    class Graph {
+    final class Graph {
         public class ListViewBasic: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri

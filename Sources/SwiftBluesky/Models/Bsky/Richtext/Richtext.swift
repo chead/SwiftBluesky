@@ -6,7 +6,7 @@
 //
 
 public extension Bsky {
-    class Richtext {
+    final class Richtext {
 
     }
 }

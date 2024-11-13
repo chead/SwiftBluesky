@@ -6,7 +6,7 @@
 //
 
 public extension Bsky {
-    class Embed {
+    final class Embed {
         public class AspectRatio: Decodable {
             public let width: Int
             public let height: Int

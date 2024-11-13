@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky {
-    class Labeler {
+    final class Labeler {
         public class LabelerView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri

@@ -18,7 +18,7 @@ public enum BlueskyClientError<MethodError: Decodable>: Error {
     case atProtoClient(error: ATProtoHTTPClientError<MethodError>)
 }
 
-internal final class Client {
+internal class Client {
     @available(iOS 16.0, *)
     internal static func makeRequest<RequestBody: Encodable, ResponseBody: Decodable, MethodError: Decodable>(
         lexicon: String,

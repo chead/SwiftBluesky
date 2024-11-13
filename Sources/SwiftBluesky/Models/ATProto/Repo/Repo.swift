@@ -6,7 +6,7 @@
 //
 
 public extension ATProto {
-    class Repo {
+    final class Repo {
         public struct CommitMeta: Decodable {
             public let cid: String
             public let rev: String

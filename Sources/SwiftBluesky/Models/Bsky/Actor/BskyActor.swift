@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky {
-    class BskyActor {
+    final class BskyActor {
         public class ProfileViewBasic: Decodable {
             public let did: String
             public let handle: String

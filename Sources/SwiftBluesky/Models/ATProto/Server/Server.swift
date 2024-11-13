@@ -6,7 +6,7 @@
 //
 
 public extension ATProto {
-    class Server {
+    final class Server {
         
     }
 }
