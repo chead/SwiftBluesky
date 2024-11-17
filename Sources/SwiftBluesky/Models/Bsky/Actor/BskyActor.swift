@@ -192,8 +192,8 @@ public extension Bsky {
         }
 
         public class KnownFollowers: Decodable {
-            let count: Int
-            let followers: [ProfileViewBasic]
+            public let count: Int
+            public let followers: [ProfileViewBasic]
         }
     }
 }
