@@ -195,6 +195,17 @@ public extension Bsky {
         }
 
         public struct ViewerState: Hashable, Decodable {
+            private enum CodingKeys: String, CodingKey {
+                case muted
+                case mutedByList
+                case blockedBy
+                case blocking
+                case blockingByList
+                case following
+                case followedBy
+                case knownFollowers
+            }
+
             public let muted: Bool?
             @Indirect public var mutedByList: Graph.ListViewBasic?
             public let blockedBy: Bool?
@@ -210,7 +221,8 @@ public extension Bsky {
                 lhs.blockedBy == rhs.blockedBy &&
                 lhs.blocking == rhs.blocking &&
                 lhs.blockingByList == rhs.blockingByList &&
-                lhs.following == rhs.followedBy &&
+                lhs.following == rhs.following &&
+                lhs.followedBy == rhs.followedBy &&
                 lhs.knownFollowers == rhs.knownFollowers
             }
 
@@ -221,7 +233,21 @@ public extension Bsky {
                 hasher.combine(blocking)
                 hasher.combine(blockingByList)
                 hasher.combine(following)
+                hasher.combine(followedBy)
                 hasher.combine(knownFollowers)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.muted = try container.decodeIfPresent(Bool.self, forKey: .muted)
+                self.mutedByList = try container.decodeIfPresent(Graph.ListViewBasic.self, forKey: .mutedByList)
+                self.blockedBy = try container.decodeIfPresent(Bool.self, forKey: .blockedBy)
+                self.blocking = try container.decodeIfPresent(String.self, forKey: .blocking)
+                self.blockingByList = try container.decodeIfPresent(Graph.ListViewBasic.self, forKey: .blockingByList)
+                self.following = try container.decodeIfPresent(String.self, forKey: .following)
+                self.followedBy = try container.decodeIfPresent(String.self, forKey: .followedBy)
+                self.knownFollowers = try container.decodeIfPresent(KnownFollowers.self, forKey: .knownFollowers)
             }
         }
 
