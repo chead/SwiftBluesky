@@ -11,7 +11,7 @@ import AnyCodable
 
 public extension Bsky {
     final class Graph {
-        public struct ListViewBasic: Decodable {
+        public struct ListViewBasic: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -58,7 +58,7 @@ public extension Bsky {
             }
         }
 
-        public struct ListView: Decodable {
+        public struct ListView: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -107,12 +107,12 @@ public extension Bsky {
             }
         }
 
-        public struct ListItemView: Decodable {
+        public struct ListItemView: Hashable, Decodable {
             public let uri: String
             public let subject: BskyActor.ProfileView
         }
 
-        public struct StarterPackView: Decodable {
+        public struct StarterPackView: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -162,7 +162,7 @@ public extension Bsky {
             }
         }
 
-        public struct StarterPackViewBasic: Decodable {
+        public struct StarterPackViewBasic: Hashable, Decodable {
             enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -205,25 +205,25 @@ public extension Bsky {
             }
         }
 
-        public enum ListPurpose: String, Decodable {
+        public enum ListPurpose: String, Hashable, Decodable {
             case bskyGraphModList = "app.bsky.graph.defs#modlist"
             case bskyGraphCurateList = "app.bsky.graph.defs#curatelist"
             case bskyGraphReferenceList = "app.bsky.graph.defs#referencelist"
         }
 
-        public struct ModList: Decodable {
+        public struct ModList: Hashable, Decodable {
             public let type: Token
         }
 
-        public struct CurateList: Decodable {
+        public struct CurateList: Hashable, Decodable {
             public let type: Token
         }
 
-        public struct ReferenceList: Decodable {
+        public struct ReferenceList: Hashable, Decodable {
             public let type: Token
         }
 
-        public struct ListViewerState: Decodable {
+        public struct ListViewerState: Hashable, Decodable {
             public let muted: Bool?
             public let blocked: String?
         }

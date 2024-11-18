@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky.Feed {
-    struct Post: Codable {
+    struct Post: Hashable, Codable {
         private enum CodingKeys: CodingKey {
             case text
             case facets
@@ -21,7 +21,7 @@ public extension Bsky.Feed {
             case createdAt
         }
 
-        public indirect enum EmbedType: Decodable {
+        public indirect enum EmbedType: Hashable, Decodable {
             private enum FieldType: String, Decodable {
                 case images = "app.bsky.embed.images"
                 case external = "app.bsky.embed.external"
@@ -110,7 +110,7 @@ public extension Bsky.Feed {
         }
     }
 
-    struct PostReplyRef: Codable {
+    struct PostReplyRef: Hashable, Codable {
         public let root: ATProtoRepoStrongRef
         public let parent: ATProtoRepoStrongRef
     }

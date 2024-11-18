@@ -8,8 +8,8 @@
 import SwiftATProto
 
 public extension Bsky.Embed {
-    class Video: Decodable {
-        public struct View: Decodable {
+    struct Video: Hashable, Decodable {
+        public struct View: Hashable, Decodable {
             public let cid: String
             public let playlist: String
             public let thumbnail: String?
@@ -17,7 +17,7 @@ public extension Bsky.Embed {
             public let aspectRatio: AspectRatio?
         }
 
-        public struct Caption: Decodable {
+        public struct Caption: Hashable, Decodable {
             public let lang: String
             public let file: ATProtoBlob
         }

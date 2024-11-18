@@ -6,25 +6,25 @@
 //
 
 public extension Bsky.Richtext {
-    struct Facet: Codable {
-        public struct Mention: Codable {
+    struct Facet: Hashable, Codable {
+        public struct Mention: Hashable, Codable {
             public let did: String
         }
 
-        public struct Link: Codable {
+        public struct Link: Hashable, Codable {
             public let uri: String
         }
 
-        public struct Tag: Codable {
+        public struct Tag: Hashable, Codable {
             public let tag: String
         }
 
-        public struct ByteSlice: Codable {
+        public struct ByteSlice: Hashable, Codable {
             public let byteStart: Int
             public let byteEnd: Int
         }
 
-        public enum FeaturesType: Codable {
+        public enum FeaturesType: Hashable, Codable {
             private enum FieldType: String, Decodable {
                 case mention = "app.bsky.richtext.facet#mention"
                 case link = "app.bsky.richtext.facet#link"

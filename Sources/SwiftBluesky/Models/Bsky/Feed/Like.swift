@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky.Feed {
-    struct Like: Encodable {
+    struct Like: Hashable, Encodable {
         private enum CodingKeys: CodingKey {
             case subject
             case createdAt

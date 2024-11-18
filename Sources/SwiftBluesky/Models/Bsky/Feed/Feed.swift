@@ -10,7 +10,7 @@ import SwiftATProto
 
 public extension Bsky {
     final class Feed {
-        public struct PostView: Decodable {
+        public struct PostView: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -26,7 +26,7 @@ public extension Bsky {
                 case threadgate
             }
 
-            public enum RecordType: Decodable {
+            public enum RecordType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case post = "app.bsky.feed.post"
                 }
@@ -49,7 +49,7 @@ public extension Bsky {
                 }
             }
 
-            public enum EmbedType: Decodable {
+            public enum EmbedType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case imagesView = "app.bsky.embed.images#view"
                     case externalView = "app.bsky.embed.external#view"
@@ -131,7 +131,7 @@ public extension Bsky {
             }
         }
 
-        public struct ViewerState: Decodable {
+        public struct ViewerState: Hashable, Decodable {
             public let repost: String?
             public let like: String?
             public let threadMuted: Bool?
@@ -140,8 +140,8 @@ public extension Bsky {
             public let pinned: Bool?
         }
 
-        public struct FeedViewPost: Decodable {
-            public enum ReasonType: Decodable {
+        public struct FeedViewPost: Hashable, Decodable {
+            public enum ReasonType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case reasonRepost = "app.bsky.feed.defs#reasonRepost"
                 }
@@ -169,8 +169,8 @@ public extension Bsky {
             public let reason: ReasonType?
         }
 
-        public struct FeedReplyRef: Decodable {
-            public enum PostType: Decodable {
+        public struct FeedReplyRef: Hashable, Decodable {
+            public enum PostType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case postView = "app.bsky.feed.defs#postView"
                     case notFoundPost = "app.bsky.feed.defs#notFoundPost"
@@ -207,7 +207,7 @@ public extension Bsky {
             public let parent: PostType
         }
 
-        public struct ReasonRepost: Decodable {
+        public struct ReasonRepost: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case by
                 case indexedAt
@@ -230,12 +230,12 @@ public extension Bsky {
             }
         }
 
-        public struct ReasonPin: Decodable {
+        public struct ReasonPin: Hashable, Decodable {
 
         }
 
-        public struct ThreadViewPost: Decodable {
-            public indirect enum PostType: Decodable {
+        public struct ThreadViewPost: Hashable, Decodable {
+            public indirect enum PostType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case threadViewPost = "app.bsky.feed.defs#threadViewPost"
                     case notFoundPost = "app.bsky.feed.defs#notFoundPost"
@@ -273,7 +273,7 @@ public extension Bsky {
             public let replies: [PostType]?
         }
 
-        public struct NotFoundPost: Decodable {
+        public struct NotFoundPost: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
             }
@@ -289,7 +289,7 @@ public extension Bsky {
             }
         }
 
-        public struct BlockedPost: Decodable {
+        public struct BlockedPost: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case author
@@ -308,12 +308,12 @@ public extension Bsky {
             }
         }
 
-        public struct BlockedAuthor: Decodable {
+        public struct BlockedAuthor: Hashable, Decodable {
             public let did: String
             public let viewer: ViewerState?
         }
 
-        public struct GeneratorView: Decodable {
+        public struct GeneratorView: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -357,7 +357,7 @@ public extension Bsky {
             }
         }
 
-        public struct GeneratorViewerState: Decodable {
+        public struct GeneratorViewerState: Hashable, Decodable {
             public let like: String?
         }
 
@@ -369,8 +369,8 @@ public extension Bsky {
 
         }
 
-        public struct ThreadgateView: Decodable {
-            public enum RecordType: Decodable {
+        public struct ThreadgateView: Hashable, Decodable {
+            public enum RecordType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case post = "app.bsky.feed.post"
                 }

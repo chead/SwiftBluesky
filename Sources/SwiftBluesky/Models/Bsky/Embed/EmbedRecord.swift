@@ -10,9 +10,9 @@ import SwiftATProto
 import AnyCodable
 
 public extension Bsky.Embed {
-    struct Record: Decodable {
-        public struct View: Decodable {
-            public enum RecordType: Decodable {
+    struct Record: Hashable, Decodable {
+        public struct View: Hashable, Decodable {
+            public enum RecordType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case recordViewRecord = "app.bsky.embed.record#viewRecord"
                     case recordViewNotFound = "app.bsky.embed.record#viewNotFound"
@@ -73,7 +73,7 @@ public extension Bsky.Embed {
             public let record: RecordType
         }
 
-        public struct ViewRecord: Decodable {
+        public struct ViewRecord: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -84,7 +84,7 @@ public extension Bsky.Embed {
                 case indexedAt
             }
 
-            public enum EmbedType: Decodable {
+            public enum EmbedType: Hashable, Decodable {
                 private enum FieldType: String, Decodable {
                     case imagesView = "app.bsky.embed.images#view"
                     case externalView = "app.bsky.embed.external#view"
@@ -155,7 +155,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public struct ViewNotFound: Decodable {
+        public struct ViewNotFound: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
             }
@@ -170,7 +170,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public struct ViewBlocked: Decodable {
+        public struct ViewBlocked: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case author
@@ -188,7 +188,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public struct ViewDetached: Decodable {
+        public struct ViewDetached: Hashable, Decodable {
             enum CodingKeys: CodingKey {
                 case uri
                 case detatched

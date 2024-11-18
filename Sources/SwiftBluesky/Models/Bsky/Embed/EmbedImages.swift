@@ -8,20 +8,20 @@
 import SwiftATProto
 
 public extension Bsky.Embed {
-    struct Images: Decodable {
-        public struct ViewImage: Decodable {
+    struct Images: Hashable, Decodable {
+        public struct ViewImage: Hashable, Decodable {
             public let thumb: String
             public let fullsize: String
             public let alt: String
             public let aspectRatio: AspectRatio?
         }
 
-        public struct View: Decodable {
+        public struct View: Hashable, Decodable {
             public let images: [ViewImage]
         }
 
-        public struct Image: Decodable {
-            public enum ImageType: Decodable {
+        public struct Image: Hashable, Decodable {
+            public enum ImageType: Hashable, Decodable {
                 case atProtoBlob(ATProtoBlob)
                 case atProtoImageBlob(ATProtoImageBlob)
 

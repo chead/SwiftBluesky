@@ -24,7 +24,7 @@ public extension Bsky {
             }
         }
 
-        public struct ProfileViewBasic: Decodable {
+        public struct ProfileViewBasic: Hashable, Decodable {
             public let did: String
             public let handle: String
             public let displayName: String?
@@ -33,7 +33,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
         }
 
-        public struct ProfileView: Decodable {
+        public struct ProfileView: Hashable, Decodable {
             public let did: String
             public let handle: String
             public let displayName: String?
@@ -43,7 +43,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
         }
 
-        public struct ProfileViewDetailed: Decodable {
+        public struct ProfileViewDetailed: Hashable, Decodable {
             private enum CodingKeys: CodingKey {
                 case did
                 case handle
@@ -194,7 +194,7 @@ public extension Bsky {
             public let allowIncoming: AllowIncomingType
         }
 
-        public struct ViewerState: Decodable {
+        public struct ViewerState: Hashable, Decodable {
             public let muted: Bool?
             @Indirect public var mutedByList: Graph.ListViewBasic?
             public let blockedBy: Bool?
@@ -203,9 +203,29 @@ public extension Bsky {
             public let following: String?
             public let followedBy: String?
             public let knownFollowers: KnownFollowers?
+
+            public static func ==(lhs: ViewerState, rhs: ViewerState) -> Bool {
+                lhs.muted == rhs.muted &&
+                lhs.mutedByList == rhs.mutedByList &&
+                lhs.blockedBy == rhs.blockedBy &&
+                lhs.blocking == rhs.blocking &&
+                lhs.blockingByList == rhs.blockingByList &&
+                lhs.following == rhs.followedBy &&
+                lhs.knownFollowers == rhs.knownFollowers
+            }
+
+            public func hash(into hasher: inout Hasher) {
+                hasher.combine(muted)
+                hasher.combine(mutedByList)
+                hasher.combine(blockedBy)
+                hasher.combine(blocking)
+                hasher.combine(blockingByList)
+                hasher.combine(following)
+                hasher.combine(knownFollowers)
+            }
         }
 
-        public struct KnownFollowers: Decodable {
+        public struct KnownFollowers: Hashable, Decodable {
             public let count: Int
             public let followers: [ProfileViewBasic]
         }
