@@ -8,20 +8,20 @@
 public extension Bsky.Richtext {
     class Facet: Codable {
         public struct Mention: Codable {
-            let did: String
+            public let did: String
         }
 
         public struct Link: Codable {
-            let uri: String
+            public let uri: String
         }
 
         public struct Tag: Codable {
-            let tag: String
+            public let tag: String
         }
 
         public struct ByteSlice: Codable {
-            let byteStart: Int
-            let byteEnd: Int
+            public let byteStart: Int
+            public let byteEnd: Int
         }
 
         public enum FeaturesType: Codable {
