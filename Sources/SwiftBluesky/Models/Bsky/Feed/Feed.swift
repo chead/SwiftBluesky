@@ -10,7 +10,7 @@ import SwiftATProto
 
 public extension Bsky {
     final class Feed {
-        public class PostView: Decodable {
+        public struct PostView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -105,7 +105,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
 //            public let threadgate: ThreadgateView?
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -131,7 +131,7 @@ public extension Bsky {
             }
         }
 
-        public class ViewerState: Decodable {
+        public struct ViewerState: Decodable {
             public let repost: String?
             public let like: String?
             public let threadMuted: Bool?
@@ -140,7 +140,7 @@ public extension Bsky {
             public let pinned: Bool?
         }
 
-        public class FeedViewPost: Decodable {
+        public struct FeedViewPost: Decodable {
             public enum ReasonType: Decodable {
                 private enum FieldType: String, Decodable {
                     case reasonRepost = "app.bsky.feed.defs#reasonRepost"
@@ -169,7 +169,7 @@ public extension Bsky {
             public let reason: ReasonType?
         }
 
-        public class FeedReplyRef: Decodable {
+        public struct FeedReplyRef: Decodable {
             public enum PostType: Decodable {
                 private enum FieldType: String, Decodable {
                     case postView = "app.bsky.feed.defs#postView"
@@ -207,7 +207,7 @@ public extension Bsky {
             public let parent: PostType
         }
 
-        public class ReasonRepost: Decodable {
+        public struct ReasonRepost: Decodable {
             private enum CodingKeys: CodingKey {
                 case by
                 case indexedAt
@@ -216,7 +216,7 @@ public extension Bsky {
             public let by: BskyActor.ProfileViewBasic
             public let indexedAt: Date
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.by = try container.decode(BskyActor.ProfileViewBasic.self, forKey: .by)
@@ -230,11 +230,11 @@ public extension Bsky {
             }
         }
 
-        public class ReasonPin: Decodable {
+        public struct ReasonPin: Decodable {
 
         }
 
-        public class ThreadViewPost: Decodable {
+        public struct ThreadViewPost: Decodable {
             public indirect enum PostType: Decodable {
                 private enum FieldType: String, Decodable {
                     case threadViewPost = "app.bsky.feed.defs#threadViewPost"
@@ -273,7 +273,7 @@ public extension Bsky {
             public let replies: [PostType]?
         }
 
-        public class NotFoundPost: Decodable {
+        public struct NotFoundPost: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
             }
@@ -281,7 +281,7 @@ public extension Bsky {
             public let uri: String
             public let notFound: Bool
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -289,7 +289,7 @@ public extension Bsky {
             }
         }
 
-        public class BlockedPost: Decodable {
+        public struct BlockedPost: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case author
@@ -299,7 +299,7 @@ public extension Bsky {
             public let blocked: Bool
             public let author: BlockedAuthor
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -308,12 +308,12 @@ public extension Bsky {
             }
         }
 
-        public class BlockedAuthor: Decodable {
+        public struct BlockedAuthor: Decodable {
             public let did: String
             public let viewer: ViewerState?
         }
 
-        public class GeneratorView: Decodable {
+        public struct GeneratorView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -336,7 +336,7 @@ public extension Bsky {
             public let viewer: GeneratorViewerState?
             public let indexedAt: Date
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -357,19 +357,19 @@ public extension Bsky {
             }
         }
 
-        public class GeneratorViewerState: Decodable {
+        public struct GeneratorViewerState: Decodable {
             public let like: String?
         }
 
-        public class SkeletonReasonRepost: Decodable {
+        public struct SkeletonReasonRepost: Decodable {
             public let repost: String
         }
 
-        public class SkeletonReasonPin: Decodable {
+        public struct SkeletonReasonPin: Decodable {
 
         }
 
-        public class ThreadgateView: Decodable {
+        public struct ThreadgateView: Decodable {
             public enum RecordType: Decodable {
                 private enum FieldType: String, Decodable {
                     case post = "app.bsky.feed.post"
@@ -399,7 +399,7 @@ public extension Bsky {
             public let lists: [Graph.ListViewBasic]
         }
 
-        public class Interaction: Decodable {
+        public struct Interaction: Decodable {
             public enum InteractionType: String, Decodable {
                 case requestLess = "app.bsky.feed.defs#requestLess"
                 case requestMore = "app.bsky.feed.defs#requestMore"
@@ -420,51 +420,51 @@ public extension Bsky {
             public let feedContext: String
         }
 
-        public class RequestLess: Decodable {
+        public struct RequestLess: Decodable {
             public let token: Token
         }
 
-        public class RequestMore: Decodable {
+        public struct RequestMore: Decodable {
             public let token: Token
         }
 
-        public class ClickthroughItem: Decodable {
+        public struct ClickthroughItem: Decodable {
             public let token: Token
         }
 
-        public class ClickthroughAuthor: Decodable {
+        public struct ClickthroughAuthor: Decodable {
             public let token: Token
         }
 
-        public class ClickthroughReposter: Decodable {
+        public struct ClickthroughReposter: Decodable {
             public let token: Token
         }
 
-        public class ClickthroughEmbed: Decodable {
+        public struct ClickthroughEmbed: Decodable {
             public let token: Token
         }
 
-        public class InteractionSeen: Decodable {
+        public struct InteractionSeen: Decodable {
             public let token: Token
         }
 
-        public class InteractionLike: Decodable {
+        public struct InteractionLike: Decodable {
             public let token: Token
         }
 
-        public class InteractionRepost: Decodable {
+        public struct InteractionRepost: Decodable {
             public let token: Token
         }
 
-        public class InteractionReply: Decodable {
+        public struct InteractionReply: Decodable {
             public let token: Token
         }
 
-        public class InteractionQuote: Decodable {
+        public struct InteractionQuote: Decodable {
             public let token: Token
         }
 
-        public class InteractionShare: Decodable {
+        public struct InteractionShare: Decodable {
             public let token: Token
         }
     }

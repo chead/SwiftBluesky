@@ -11,7 +11,7 @@ import AnyCodable
 
 public extension Bsky {
     final class Graph {
-        public class ListViewBasic: Decodable {
+        public struct ListViewBasic: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -34,7 +34,7 @@ public extension Bsky {
             public let viewer: ListViewerState?
             public let indexedAt: Date?
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -58,7 +58,7 @@ public extension Bsky {
             }
         }
 
-        public class ListView: Decodable {
+        public struct ListView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -85,7 +85,7 @@ public extension Bsky {
             public let viewer: ListViewerState?
             public let indexedAt: Date
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 self.uri = try container.decode(String.self, forKey: .uri)
                 self.cid = try container.decode(String.self, forKey: .cid)
@@ -107,12 +107,12 @@ public extension Bsky {
             }
         }
 
-        public class ListItemView: Decodable {
+        public struct ListItemView: Decodable {
             public let uri: String
             public let subject: BskyActor.ProfileView
         }
 
-        public class StarterPackView: Decodable {
+        public struct StarterPackView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -139,7 +139,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
             public let indexedAt: Date
 
-            required public init(from decoder: any Decoder) throws {
+            public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -162,7 +162,7 @@ public extension Bsky {
             }
         }
 
-        public class StarterPackViewBasic: Decodable {
+        public struct StarterPackViewBasic: Decodable {
             enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -185,7 +185,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
             public let indexedAt: Date
 
-            required public init(from decoder: any Decoder) throws {
+            public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 self.uri = try container.decode(String.self, forKey: .uri)
                 self.cid = try container.decode(String.self, forKey: .cid)
@@ -211,24 +211,24 @@ public extension Bsky {
             case bskyGraphReferenceList = "app.bsky.graph.defs#referencelist"
         }
 
-        public class ModList: Decodable {
+        public struct ModList: Decodable {
             public let type: Token
         }
 
-        public class CurateList: Decodable {
+        public struct CurateList: Decodable {
             public let type: Token
         }
 
-        public class ReferenceList: Decodable {
+        public struct ReferenceList: Decodable {
             public let type: Token
         }
 
-        public class ListViewerState: Decodable {
+        public struct ListViewerState: Decodable {
             public let muted: Bool?
             public let blocked: String?
         }
 
-        public class NotFoundActor: Decodable {
+        public struct NotFoundActor: Decodable {
             public let actor: String
             public let notFound: Bool
 
@@ -237,14 +237,14 @@ public extension Bsky {
                 case notFound
             }
 
-            public required init(from decoder: any Decoder) throws {
+            public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 self.actor = try container.decode(String.self, forKey: .actor)
                 self.notFound = true
             }
         }
 
-        public class Relationship: Decodable {
+        public struct Relationship: Decodable {
             public let did: String
             public let following: String
             public let followedBy: String

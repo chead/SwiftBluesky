@@ -8,19 +8,19 @@
 import SwiftATProto
 
 public extension Bsky.Embed {
-    class External: Decodable {
-        public class External: Decodable {
+    struct External: Decodable {
+        public struct External: Decodable {
             public let uri: String
             public let title: String
             public let description: String
             public let thumb: ATProtoBlob?
         }
 
-        public class View: Decodable {
+        public struct View: Decodable {
             public let external: ViewExternal
         }
 
-        public class ViewExternal: Decodable {
+        public struct ViewExternal: Decodable {
             public let uri: String
             public let description: String
             public let thumb: String?

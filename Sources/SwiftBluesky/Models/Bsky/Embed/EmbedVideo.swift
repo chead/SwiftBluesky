@@ -9,7 +9,7 @@ import SwiftATProto
 
 public extension Bsky.Embed {
     class Video: Decodable {
-        public class View: Decodable {
+        public struct View: Decodable {
             public let cid: String
             public let playlist: String
             public let thumbnail: String?
@@ -17,7 +17,7 @@ public extension Bsky.Embed {
             public let aspectRatio: AspectRatio?
         }
 
-        public class Caption: Decodable {
+        public struct Caption: Decodable {
             public let lang: String
             public let file: ATProtoBlob
         }

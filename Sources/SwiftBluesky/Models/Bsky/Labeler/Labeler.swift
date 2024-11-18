@@ -10,7 +10,7 @@ import SwiftATProto
 
 public extension Bsky {
     final class Labeler {
-        public class LabelerView: Decodable {
+        public struct LabelerView: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -29,7 +29,7 @@ public extension Bsky {
             public let indexedAt: Date
             public let labels: [ATProtoLabel]?
 
-            public required init(from decoder: any Decoder) throws {
+            public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -50,7 +50,7 @@ public extension Bsky {
             }
         }
 
-        public class LabelerViewerState: Decodable {
+        public struct LabelerViewerState: Decodable {
             public let like: String?
         }
     }

@@ -6,7 +6,7 @@
 //
 
 public extension Bsky.Embed {
-    class RecordWithMedia: Decodable {
+    struct RecordWithMedia: Decodable {
         public enum MediaType: Decodable {
             private enum FieldType: String, Decodable {
                 case blueskyEmbedImages = "app.bsky.embed.images"
@@ -40,7 +40,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public class View: Decodable {
+        public struct View: Decodable {
             public enum MediaType: Decodable {
                 private enum FieldType: String, Decodable {
                     case imagesView = "app.bsky.embed.images#view"

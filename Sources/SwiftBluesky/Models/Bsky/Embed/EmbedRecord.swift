@@ -10,8 +10,8 @@ import SwiftATProto
 import AnyCodable
 
 public extension Bsky.Embed {
-    class Record: Decodable {
-        public class View: Decodable {
+    struct Record: Decodable {
+        public struct View: Decodable {
             public enum RecordType: Decodable {
                 private enum FieldType: String, Decodable {
                     case recordViewRecord = "app.bsky.embed.record#viewRecord"
@@ -73,7 +73,7 @@ public extension Bsky.Embed {
             public let record: RecordType
         }
 
-        public class ViewRecord: Decodable {
+        public struct ViewRecord: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case cid
@@ -135,7 +135,7 @@ public extension Bsky.Embed {
             public let embeds: [EmbedType]?
             public let indexedAt: Date
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -155,7 +155,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public class ViewNotFound: Decodable {
+        public struct ViewNotFound: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
             }
@@ -163,14 +163,14 @@ public extension Bsky.Embed {
             public let uri: String
             public let notFound: Bool = true
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
             }
         }
 
-        public class ViewBlocked: Decodable {
+        public struct ViewBlocked: Decodable {
             private enum CodingKeys: CodingKey {
                 case uri
                 case author
@@ -180,7 +180,7 @@ public extension Bsky.Embed {
             public let blocked: Bool = true
             public let author: Bsky.Feed.BlockedAuthor
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)
@@ -188,7 +188,7 @@ public extension Bsky.Embed {
             }
         }
 
-        public class ViewDetached: Decodable {
+        public struct ViewDetached: Decodable {
             enum CodingKeys: CodingKey {
                 case uri
                 case detatched
@@ -197,7 +197,7 @@ public extension Bsky.Embed {
             public let uri: String
             public let detatched: Bool
 
-            public required init(from decoder: any Decoder) throws {
+            public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.uri = try container.decode(String.self, forKey: .uri)

@@ -10,7 +10,21 @@ import SwiftATProto
 
 public extension Bsky {
     final class BskyActor {
-        public class ProfileViewBasic: Decodable {
+        @propertyWrapper
+        public class Indirect<Value: Decodable>: Decodable {
+            var value: Value
+
+            public init(wrappedValue initialValue: Value) {
+                value = initialValue
+            }
+
+            public var wrappedValue: Value {
+                get { value }
+                set { value = newValue }
+            }
+        }
+
+        public struct ProfileViewBasic: Decodable {
             public let did: String
             public let handle: String
             public let displayName: String?
@@ -19,7 +33,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
         }
 
-        public class ProfileView: Decodable {
+        public struct ProfileView: Decodable {
             public let did: String
             public let handle: String
             public let displayName: String?
@@ -29,7 +43,7 @@ public extension Bsky {
             public let labels: [ATProtoLabel]?
         }
 
-        public class ProfileViewDetailed: Decodable {
+        public struct ProfileViewDetailed: Decodable {
             private enum CodingKeys: CodingKey {
                 case did
                 case handle
@@ -58,7 +72,7 @@ public extension Bsky {
             public let viewer: ViewerState?
             public let labels: [ATProtoLabel]?
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.did = try container.decode(String.self, forKey: .did)
@@ -86,7 +100,7 @@ public extension Bsky {
             }
         }
 
-        public class Profile: Codable {
+        public struct Profile: Codable {
             private enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case displayName
@@ -120,7 +134,7 @@ public extension Bsky {
                 self.createdAt = createdAt
             }
 
-            required public init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
                 self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
@@ -162,7 +176,7 @@ public extension Bsky {
             }
         }
 
-        public class ProfileAssociated: Decodable {
+        public struct ProfileAssociated: Decodable {
             public let lists: Int
             public let feedGens: Int
             public let starterPacks: Int
@@ -170,7 +184,7 @@ public extension Bsky {
             public let chat: ProfileAssociatedChat
         }
 
-        public class ProfileAssociatedChat: Decodable {
+        public struct ProfileAssociatedChat: Decodable {
             public enum AllowIncomingType: String, Decodable {
                 case all
                 case none
@@ -180,18 +194,18 @@ public extension Bsky {
             public let allowIncoming: AllowIncomingType
         }
 
-        public class ViewerState: Decodable {
+        public struct ViewerState: Decodable {
             public let muted: Bool?
-            public let mutedByList: Graph.ListViewBasic?
+            @Indirect public var mutedByList: Graph.ListViewBasic?
             public let blockedBy: Bool?
             public let blocking: String?
-            public let blockingByList: Graph.ListViewBasic?
+            @Indirect public var blockingByList: Graph.ListViewBasic?
             public let following: String?
             public let followedBy: String?
             public let knownFollowers: KnownFollowers?
         }
 
-        public class KnownFollowers: Decodable {
+        public struct KnownFollowers: Decodable {
             public let count: Int
             public let followers: [ProfileViewBasic]
         }

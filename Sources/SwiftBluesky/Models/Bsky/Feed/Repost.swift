@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky.Feed {
-    class Repost: Encodable {
+    struct Repost: Encodable {
         private enum CodingKeys: CodingKey {
             case subject
             case createdAt

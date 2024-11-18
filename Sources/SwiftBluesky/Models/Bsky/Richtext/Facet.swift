@@ -6,7 +6,7 @@
 //
 
 public extension Bsky.Richtext {
-    class Facet: Codable {
+    struct Facet: Codable {
         public struct Mention: Codable {
             public let did: String
         }

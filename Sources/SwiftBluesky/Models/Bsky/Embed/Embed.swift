@@ -7,7 +7,7 @@
 
 public extension Bsky {
     final class Embed {
-        public class AspectRatio: Decodable {
+        public struct AspectRatio: Decodable {
             public let width: Int
             public let height: Int
         }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftATProto
 
 public extension Bsky.Feed {
-    class Post: Codable {
+    struct Post: Codable {
         private enum CodingKeys: CodingKey {
             case text
             case facets
@@ -73,7 +73,7 @@ public extension Bsky.Feed {
         public let tags: [String]?
         public let createdAt: Date
 
-        required public init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.text = try container.decode(String.self, forKey: .text)
